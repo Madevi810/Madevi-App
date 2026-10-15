@@ -1,0 +1,97 @@
+.reader {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.toolbar {
+  position: sticky;
+  z-index: 2;
+  top: 0.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 0.75rem);
+  background: var(--surface-card);
+  color: var(--text-primary);
+}
+
+.scale {
+  min-width: 5.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.content {
+  min-width: 0;
+}
+
+.content
+  :global(.article-blocks)
+  :is(
+    p,
+    li,
+    blockquote,
+    figcaption,
+    th,
+    td,
+    code,
+    pre,
+    :global(.article-step-card),
+    :global(.article-callout),
+    :global(.article-figure-placeholder__text),
+    :global(.article-video__title),
+    :global(.article-video__desc)
+  ),
+.content
+  :global(.article-section)
+  :is(
+    p,
+    li,
+    blockquote,
+    figcaption,
+    th,
+    td,
+    code,
+    pre,
+    :global(.article-step-card),
+    :global(.article-callout),
+    :global(.article-figure-placeholder__text),
+    :global(.article-video__title),
+    :global(.article-video__desc)
+  ),
+.content :global(.article-guardrail),
+.content :global(.article-safety),
+.content :global(.article-source),
+.content :global(.article-sources__popup) :is(li, a, strong, span),
+.content :global(.article-guardrail) :is(p, strong, em),
+.content :global(.article-safety) :is(strong, em),
+.content :global(.article-source) :is(strong, em, a) {
+  font-size: calc(1rem * var(--article-text-scale, 1));
+}
+
+.focus {
+  width: min(100%, 72ch);
+  margin-inline: auto;
+}
+
+@media (max-width: 480px) {
+  .toolbar {
+    position: static;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toolbar,
+  .content {
+    scroll-behavior: auto;
+    transition: none;
+  }
+}

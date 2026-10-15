@@ -1,0 +1,282 @@
+/* ===================================================
+   GLOBALS — MADEVI
+   Minimal global layer: fonts, reset, base utilities only.
+   Component styles live in interface-refresh.css, madevi-on.css, atlas-redesign.css.
+   =================================================== */
+
+/* Import font lokal Noto Sans (wght 400, 600, 700) */
+@import '@fontsource/noto-sans/400.css';
+@import '@fontsource/noto-sans/600.css';
+@import '@fontsource/noto-sans/700.css';
+@import './tokens.css';
+
+/* ===================================================
+   CSS RESET & BASE
+   =================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  font-family: 'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: var(--text-body);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--background);
+  color: var(--text);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Baseline responsive and touch contracts used by every shell. */
+button,
+.button,
+.btn,
+.capsule-btn {
+  min-height: 44px;
+}
+
+@media (min-width: 640px) {
+  .container { max-width: 640px; }
+}
+
+@media (min-width: 1024px) {
+  .container { max-width: 1024px; }
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 899;
+  background: rgb(0 0 0 / 40%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.sidebar {
+  width: min(25rem, 80vw);
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* ===================================================
+   ACCESSIBILITY UTILITIES
+   =================================================== */
+
+/* Skip link - first focusable element */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--pr-space-3) var(--pr-space-5);
+  background: var(--accent);
+  color: var(--text-inverse);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  z-index: var(--z-skip);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: var(--pr-space-4);
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Visually hidden but accessible to screen readers */
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Focus visible polyfill fallback */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Reduced motion - global opt-out */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .public-shell .madevi-sky,
+  .public-shell .madevi-sky * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ===================================================
+   SELECTION
+   =================================================== */
+::selection {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+  color: var(--text);
+}
+
+/* ===================================================
+   SCROLLBAR (thin, theme-aware)
+   =================================================== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+  background-clip: content-box;
+}
+
+/* ===================================================
+   CONTAINER UTILITY
+   =================================================== */
+.container {
+  width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: var(--layout-padding);
+}
+
+/* ===================================================
+   TEXT UTILITIES (semantic, token-based)
+   =================================================== */
+.text-display    { font: var(--text-display); }
+.text-h1         { font: var(--text-h1); }
+.text-h2         { font: var(--text-h2); }
+.text-h3         { font: var(--text-h3); }
+.text-body       { font: var(--text-body); }
+.text-body-sm    { font: var(--text-body-sm); }
+.text-caption    { font: var(--text-caption); }
+.text-micro      { font: var(--text-micro); text-transform: uppercase; }
+
+/* ===================================================
+   SPACING UTILITIES (token-based)
+   =================================================== */
+.gap-1 { gap: var(--pr-space-1); }
+.gap-2 { gap: var(--pr-space-2); }
+.gap-3 { gap: var(--pr-space-3); }
+.gap-4 { gap: var(--pr-space-4); }
+.gap-5 { gap: var(--pr-space-5); }
+.gap-6 { gap: var(--pr-space-6); }
+.gap-7 { gap: var(--pr-space-7); }
+.gap-8 { gap: var(--pr-space-8); }
+
+.p-1 { padding: var(--pr-space-1); }
+.p-2 { padding: var(--pr-space-2); }
+.p-3 { padding: var(--pr-space-3); }
+.p-4 { padding: var(--pr-space-4); }
+.p-5 { padding: var(--pr-space-5); }
+.p-6 { padding: var(--pr-space-6); }
+
+/* ===================================================
+   LAYOUT HELPERS
+   =================================================== */
+.flex           { display: flex; }
+.flex-col       { flex-direction: column; }
+.items-center   { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.grow           { flex-grow: 1; }
+.grid           { display: grid; }
+
+/* ===================================================
+   TOUCH TARGET HELPER (ensure 44px minimum)
+   =================================================== */
+.touch-target {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+}
+
+/* ===================================================
+   PRINT
+   =================================================== */
+@media print {
+  .skip-link,
+  .site-header,
+  .sidebar,
+  .ai-fab,
+  .toast,
+  .modal-backdrop {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  a {
+    text-decoration: underline;
+  }
+}

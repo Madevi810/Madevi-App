@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS __SCHEMA__.ai_adapters;
+DROP TABLE IF EXISTS __SCHEMA__.ai_audit_events;
+DROP TABLE IF EXISTS __SCHEMA__.ai_messages;
+DROP TABLE IF EXISTS __SCHEMA__.ai_conversations;
+DROP TABLE IF EXISTS __SCHEMA__.ai_guest_usage;
+DROP TABLE IF EXISTS __SCHEMA__.ai_quota_days;
+DROP TABLE IF EXISTS __SCHEMA__.search_consistency_runs;
+DROP TABLE IF EXISTS __SCHEMA__.search_index_jobs;
+DROP TABLE IF EXISTS __SCHEMA__.search_index_entries;

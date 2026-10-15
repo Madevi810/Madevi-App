@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="terang">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulasi Madevi v15</title>
+<style>
+  /* ===== TEMA via CSS variables ===== */
+  :root {
+    --bg: #ffffff; --surface: #ffffff; --surface2: #f4f4f4;
+    --border: #e5e5e5; --border-soft: #f1f1f1;
+    --text: #222222; --muted: #888888; --muted2: #777777;
+    --ink: #1a1a1a; --shadow: rgba(0,0,0,.14);
+    --accent-line: #222222; --focus-ring: rgba(0,0,0,.06);
+    --readbg: #fdf6ec;
+  }
+  html[data-theme="gelap"] {
+    --bg: #0c1016; --surface: #141a23; --surface2: #1d2532;
+    --border: #28323f; --border-soft: #1f2835;
+    --text: #e9eef5; --muted: #8d99ab; --muted2: #a3afc1;
+    --ink: #f2f6fb; --shadow: rgba(0,0,0,.55);
+    --accent-line: #e9eef5; --focus-ring: rgba(255,255,255,.10);
+    --readbg: #151310;
+  }
+  /* Madevi On - identitas/karakter brand (opt-in, ekspresif) */
+  html[data-theme="madevi-on"] {
+    --bg: #150a24; --surface: #1e1033; --surface2: #2a1a45;
+    --border: #3d2a63; --border-soft: #2c1e49;
+    --text: #f0e9fb; --muted: #a78fca; --muted2: #bda6e0;
+    --ink: #f5efff; --shadow: rgba(0,0,0,.6);
+    --accent-line: #c084fc; --focus-ring: rgba(192,132,252,.18);
+    --brand1: #c084fc; --brand2: #7c3aed;
+    --readbg: #1d152e;
+  }
+  /* transisi tema smooth */
+  .header, .hero, .stat, .racc, .rc, .post, .p-card, .cont, .search, .field,
+  .dev-card, .lapor, .ruang a, .pf-menu a, .ltab,
+  .atab, .opt, .menu-btn, .profile-btn, .gear, .back-btn, .mp-btn, .submit,
+  .google-btn, .cta, .pf-login button, .tier, .free, .mp-badge,
+  .dbtn, .art-ctl, .ai-fab, .ai-send, .rexp, .rsub-item, .racc-main,
+  .ai-panel, .ai-field, .art-body, .crumbs button {
+    transition: background-color .3s, color .3s, border-color .3s, transform .18s, box-shadow .25s;
+  }
+  /* glow ungu halus untuk elemen interaktif di Madevi On */
+  html[data-theme="madevi-on"] .cta { box-shadow: 0 0 18px rgba(168,85,247,.45), 3px 3px 0 var(--border); }
+  html[data-theme="madevi-on"] .cta:active { box-shadow: 0 0 10px rgba(168,85,247,.35), 1px 1px 0 var(--border); }
+  html[data-theme="madevi-on"] .submit, html[data-theme="madevi-on"] .pf-login .in,
+  html[data-theme="madevi-on"] .mp-btn { box-shadow: 0 0 16px rgba(168,85,247,.35); }
+  html[data-theme="madevi-on"] .chip.sel, html[data-theme="madevi-on"] .opt.sel,
+  html[data-theme="madevi-on"] .ltab.sel, html[data-theme="madevi-on"] .atab.sel { box-shadow: 0 0 14px rgba(168,85,247,.4); }
+  html[data-theme="madevi-on"] .search:focus, html[data-theme="madevi-on"] .field:focus,
+  html[data-theme="madevi-on"] .shop-search:focus { box-shadow: 0 0 0 3px var(--focus-ring), 0 0 14px rgba(168,85,247,.3); }
+  /* hero card border gradient di Madevi On */
+  html[data-theme="madevi-on"] .hero { border: 2px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(135deg, #c084fc, #7c3aed, #4c1d95) border-box; }
+  html[data-theme="madevi-on"] .hero h1 { background: linear-gradient(120deg, #f5efff, #c084fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  html[data-theme="madevi-on"] .hero .corner { border-color: var(--brand1); }
+  /* LOGO glossy 3D ungu - HANYA di Madevi On */
+  html[data-theme="madevi-on"] .logo .ch .face {
+    background: linear-gradient(180deg, #f7efff 0%, #d9b8fb 28%, #a855f7 52%, #7c2bd8 74%, #4c1d95 100%);
+    background-size: 100% 230%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: faceFlow 4.5s ease-in-out infinite alternate;
+    filter: drop-shadow(0 1px 0 #2a0a5e) drop-shadow(0 2px 0 #230a4e) drop-shadow(0 3px 0 #1c073e) drop-shadow(0 4px 0 #150530) drop-shadow(0 5px 0 #100425) drop-shadow(0 9px 14px rgba(124,58,237,.5));
+  }
+  @keyframes faceFlow { from { background-position: 50% 0%; } to { background-position: 50% 90%; } }
+  html[data-theme="madevi-on"] .logo .ch .shine {
+    display: inline-block; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(115deg, rgba(255,255,255,0) 25%, rgba(255,255,255,.95) 45%, rgba(255,255,255,0) 65%);
+    background-size: 280% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shineMove 3s ease-in-out infinite;
+  }
+  @keyframes shineMove { 0% { background-position: 130% 0; } 100% { background-position: -130% 0; } }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; }
+  .header { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface); z-index: 50; transition: background .3s, border-color .3s; }
+  /* LOGO v11 - normal, font keren, tanpa warna/3D, gerak random (JANGAN DIUBAH) */
+  .logo { display: flex; align-items: baseline; cursor: pointer; user-select: none; padding: 6px 8px; }
+  .logo .ch { position: relative; display: inline-block; font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', 'Trebuchet MS', system-ui, sans-serif; font-weight: 800; font-size: 1.32rem; letter-spacing: -.02em; color: var(--ink); }
+  .logo .ch .face { display: inline-block; }
+  .logo .ch .shine { display: none; }
+  @keyframes liar-jump { 0%,100% { transform: translateY(0) rotate(0) scale(1); } 35% { transform: translateY(var(--jh,-14px)) rotate(var(--rr,-18deg)) scale(1.12); } 70% { transform: translateY(3px) rotate(var(--rr2,10deg)) scale(.94); } }
+  @keyframes liar-spin { 0% { transform: rotateY(0) scale(1); } 50% { transform: rotateY(180deg) scale(1.25); } 100% { transform: rotateY(360deg) scale(1); } }
+  @keyframes liar-shake { 0%,100% { transform: translate(0,0) rotate(0); } 20% { transform: translate(-4px,3px) rotate(-16deg); } 40% { transform: translate(4px,-4px) rotate(14deg); } 60% { transform: translate(-3px,-3px) rotate(-10deg); } 80% { transform: translate(3px,4px) rotate(12deg); } }
+  @keyframes liar-squash { 0%,100% { transform: scale(1,1); } 30% { transform: scale(1.5,.55) translateY(4px); } 60% { transform: scale(.7,1.4) translateY(-8px); } }
+  @keyframes liar-flip { 0% { transform: rotateX(0); } 50% { transform: rotateX(180deg) translateY(-10px); } 100% { transform: rotateX(360deg); } }
+  @keyframes liar-fall { 0% { transform: translateY(0) rotate(0); opacity: 1; } 45% { transform: translateY(16px) rotate(40deg); opacity: .4; } 100% { transform: translateY(0) rotate(0); opacity: 1; } }
+  .logo .ch.z-jump { animation: liar-jump .5s cubic-bezier(.34,1.56,.64,1); }
+  .logo .ch.z-spin { animation: liar-spin .6s ease; }
+  .logo .ch.z-shake { animation: liar-shake .45s ease; }
+  .logo .ch.z-squash { animation: liar-squash .5s ease; }
+  .logo .ch.z-flip { animation: liar-flip .6s ease; }
+  .logo .ch.z-fall { animation: liar-fall .6s ease; }
+  .search-wrap { flex: 1; display: flex; justify-content: flex-end; }
+  .search { width: 58%; max-width: 190px; margin-right: 2px; border-radius: 9999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); padding: 8px 16px; font-size: .85rem; outline: none; transition: all .25s; }
+  .search::placeholder { color: var(--muted); }
+  .search:focus { width: 78%; border-color: var(--accent-line); box-shadow: 0 0 0 3px var(--focus-ring); }
+  .profile-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 50%; width: 42px; height: 42px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform .15s; flex-shrink: 0; }
+  .profile-btn:active { transform: scale(.88); }
+  .profile-btn svg { width: 20px; height: 20px; stroke: var(--muted2); fill: none; stroke-width: 1.9; }
+  .menu-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 10px; width: 42px; height: 42px; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform .15s; flex-shrink: 0; }
+  .menu-btn:active { transform: scale(.9) rotate(90deg); }
+  .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.28); backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); opacity: 0; pointer-events: none; transition: opacity .32s; z-index: 60; }
+  .backdrop.open { opacity: 1; pointer-events: auto; }
+  /* POPUP PROFIL - dropdown ber-border di bawah header */
+  .pf-drop { position: fixed; top: 66px; right: 10px; width: 264px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; box-shadow: 0 18px 48px var(--shadow); z-index: 75; opacity: 0; transform: translateY(-10px) scale(.97); transform-origin: top right; pointer-events: none; transition: opacity .22s, transform .25s cubic-bezier(.2,.8,.3,1.2); }
+  .pf-drop.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .pf-inner { padding: 18px 16px; display: flex; flex-direction: column; gap: 13px; }
+  .pf-head { display: flex; align-items: center; gap: 12px; }
+  .pf-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pf-avatar svg { width: 24px; height: 24px; stroke: var(--muted2); fill: none; stroke-width: 1.9; }
+  .pf-head .nm { font-weight: 800; font-size: .95rem; }
+  .pf-head .st { font-size: .73rem; color: var(--muted); margin-top: 2px; }
+  .pf-login { display: flex; gap: 9px; }
+  .pf-login button { flex: 1; border-radius: 11px; padding: 11px; font-size: .84rem; font-weight: 700; cursor: pointer; transition: transform .15s; }
+  .pf-login button:active { transform: scale(.96); }
+  .pf-login .in { background: var(--ink); color: var(--bg); border: none; }
+  .pf-login .up { background: var(--surface); color: var(--ink); border: 1px solid var(--border); }
+  .pf-menu { display: flex; flex-direction: column; gap: 2px; }
+  .pf-menu a { display: flex; align-items: center; gap: 12px; padding: 11px 10px; border-radius: 11px; text-decoration: none; color: var(--text); font-size: .86rem; font-weight: 500; transition: background .2s; }
+  .pf-menu a:active { background: var(--surface2); }
+  .pf-menu a svg { width: 18px; height: 18px; stroke: var(--muted2); fill: none; stroke-width: 1.8; flex-shrink: 0; }
+  .sidebar { position: fixed; top: 0; right: 0; bottom: 0; width: 80vw; max-width: 22rem; background: var(--surface); z-index: 70; transform: translateX(106%); transition: transform .38s cubic-bezier(.32,.9,.35,1), background .3s; border-left: 1px solid var(--border); box-shadow: -12px 0 40px var(--shadow); }
+  .sidebar.open { transform: translateX(0); }
+  .inner { padding: 18px 16px 28px; display: flex; flex-direction: column; gap: 13px; overflow-y: auto; height: 100%; }
+  .sidebar.open .anim-item { animation: slideIn .4s cubic-bezier(.2,.8,.3,1) backwards; }
+  .sidebar.open .anim-item:nth-child(1) { animation-delay: .05s; }
+  .sidebar.open .anim-item:nth-child(2) { animation-delay: .1s; }
+  .sidebar.open .anim-item:nth-child(3) { animation-delay: .15s; }
+  .sidebar.open .anim-item:nth-child(4) { animation-delay: .2s; }
+  .sidebar.open .anim-item:nth-child(5) { animation-delay: .25s; }
+  .sidebar.open .anim-item:nth-child(6) { animation-delay: .3s; }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+  .info { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: var(--muted); }
+  .info .time { font-family: ui-monospace, monospace; font-weight: 700; color: var(--text); font-size: .92rem; }
+  .spacer { flex: 1; }
+  .gear { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform .3s; }
+  .gear:active { transform: rotate(90deg) scale(.9); }
+  .gear svg { width: 18px; height: 18px; stroke: var(--muted2); fill: none; stroke-width: 1.8; }
+  .popup-back { position: fixed; inset: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(4px); z-index: 80; opacity: 0; pointer-events: none; transition: opacity .25s; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .popup-back.open { opacity: 1; pointer-events: auto; }
+  .popup { background: var(--surface); color: var(--text); border-radius: 18px; padding: 22px; width: 100%; max-width: 320px; box-shadow: 0 20px 60px var(--shadow); transform: scale(.9) translateY(14px); transition: transform .3s cubic-bezier(.34,1.4,.64,1); position: relative; }
+  .popup-back.open .popup { transform: scale(1) translateY(0); }
+  .popup h3 { font-size: 1rem; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+  .popup .close-x { background: var(--surface2); color: var(--text); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+  .popup .close-x:active { transform: scale(.85) rotate(90deg); }
+  .opt-group { margin-bottom: 16px; }
+  .opt-group .lbl { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .opt-row { display: flex; gap: 8px; }
+  .opt { flex: 1; border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: .82rem; font-weight: 600; cursor: pointer; background: var(--surface); color: var(--text); transition: all .2s; }
+  .opt:active { transform: scale(.93); }
+  .opt.sel { border-color: var(--accent-line); background: var(--ink); color: var(--bg); }
+  .dev-card { border: 1px solid var(--border); border-radius: 12px; padding: 15px; }
+  .dev-card .t { font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .dev-card .t svg { width: 20px; height: 20px; }
+  .dev-card .s { font-size: .78rem; color: var(--muted); margin-top: 3px; }
+  .sosmed { display: flex; gap: 12px; justify-content: center; }
+  .sosmed a { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; transition: transform .2s cubic-bezier(.34,1.56,.64,1); background: var(--surface); color: var(--muted2); }
+  .sosmed a:active { transform: scale(1.2) rotate(15deg); border-color: var(--accent-line); }
+  .sosmed svg { width: 18px; height: 18px; }
+  .lapor { display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--border); border-radius: 12px; padding: 11px; font-size: .87rem; font-weight: 600; text-decoration: none; color: var(--text); transition: transform .15s; }
+  .lapor:active { transform: scale(.96); }
+  .lapor svg { width: 16px; height: 16px; }
+  hr { border: none; border-top: 1px solid var(--border-soft); }
+  .section-label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .ruang { display: flex; flex-direction: column; gap: 8px; }
+  .ruang a { display: flex; align-items: center; gap: 11px; border: 1px solid var(--border); border-radius: 12px; padding: 12px 13px; text-decoration: none; color: var(--text); font-size: .9rem; font-weight: 500; position: relative; transition: all .2s; overflow: hidden; }
+  .ruang a:active { transform: scale(.97); }
+  .ruang a .ico { width: 32px; height: 32px; border-radius: 9px; background: var(--surface2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .25s; }
+  .ruang a .ico svg { width: 16px; height: 16px; stroke: var(--muted2); fill: none; stroke-width: 1.8; }
+  .ruang a.active { border-color: var(--accent-line); background: var(--surface2); }
+  .ruang a.active .ico { background: var(--ink); transform: rotate(-8deg) scale(1.05); }
+  .ruang a.active .ico svg { stroke: var(--bg); }
+  .ruang a.active::after { content: ''; position: absolute; left: 13px; right: 13px; bottom: 6px; height: 2px; background: var(--accent-line); border-radius: 2px; animation: growLine .3s ease; }
+  @keyframes growLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* ============ DASHBOARD ============ */
+  .dash { padding: 20px 16px 40px; max-width: 640px; margin: 0 auto; }
+  .hero { position: relative; border: 2px solid var(--ink); border-radius: 20px; padding: 26px 22px; overflow: hidden; animation: fadeUp .55s ease backwards; transition: transform .2s; background: var(--surface); }
+  .hero:active { transform: scale(.985); }
+  .hero::before { content: ''; position: absolute; inset: 5px; border: 1px dashed var(--border); border-radius: 15px; pointer-events: none; }
+  .hero .corner { position: absolute; width: 22px; height: 22px; border: 3px solid var(--ink); }
+  .hero .c-tl { top: -3px; left: -3px; border-right: none; border-bottom: none; border-radius: 20px 0 0 0; }
+  .hero .c-tr { top: -3px; right: -3px; border-left: none; border-bottom: none; border-radius: 0 20px 0 0; }
+  .hero .c-bl { bottom: -3px; left: -3px; border-right: none; border-top: none; border-radius: 0 0 0 20px; }
+  .hero .c-br { bottom: -3px; right: -3px; border-left: none; border-top: none; border-radius: 0 0 20px 0; }
+  .hero .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .hero h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -.02em; margin: 6px 0 8px; line-height: 1.25; }
+  .hero p { font-size: .9rem; color: var(--muted2); line-height: 1.65; }
+  .hero .cta-row { display: flex; gap: 10px; margin-top: 18px; }
+  .hero .cta { flex: 1; border: none; background: var(--ink); color: var(--bg); border-radius: 12px; padding: 13px; font-size: .87rem; font-weight: 700; cursor: pointer; transition: transform .15s; box-shadow: 3px 3px 0 var(--border); }
+  .hero .cta:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--border); }
+  .hero .cta.ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--border); box-shadow: 3px 3px 0 var(--border-soft); }
+  .hero .cta.ghost:active { box-shadow: 1px 1px 0 var(--border-soft); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+  .stat { border: 1px solid var(--border-soft); border-radius: 14px; padding: 14px 12px; text-align: center; position: relative; overflow: hidden; transition: transform .2s; animation: fadeUp .5s ease backwards; background: var(--surface); }
+  .stat:nth-child(2) { animation-delay: .08s; } .stat:nth-child(3) { animation-delay: .16s; }
+  .stat:active { transform: scale(.95); }
+  .stat .num { font-size: 1.45rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .stat .cap { font-size: .7rem; color: var(--muted); margin-top: 2px; }
+  .stat::after { content: ''; position: absolute; top: 0; left: -80%; width: 60%; height: 100%; background: linear-gradient(105deg, transparent, rgba(128,128,128,.12), transparent); transform: skewX(-20deg); transition: left .6s; pointer-events: none; }
+  .stat:active::after { left: 130%; }
+  .sec-t { font-size: .95rem; font-weight: 700; margin: 24px 0 12px; display: flex; align-items: center; justify-content: space-between; animation: fadeUp .5s ease backwards; }
+  .sec-t .more { font-size: .76rem; color: var(--muted); font-weight: 500; }
+  /* DAFTAR RUANG accordion taksonomi - bersih, minimal, fungsional */
+  .room-list { display: flex; flex-direction: column; gap: 8px; }
+  .racc { background: var(--surface); border: 1px solid var(--border-soft); border-radius: 8px; overflow: hidden; animation: fadeUp .5s ease backwards; transition: background .3s, border-color .3s; }
+  .racc:nth-child(2) { animation-delay: .05s; } .racc:nth-child(3) { animation-delay: .1s; }
+  .racc:nth-child(4) { animation-delay: .15s; } .racc:nth-child(5) { animation-delay: .2s; }
+  .racc:nth-child(6) { animation-delay: .25s; } .racc:nth-child(7) { animation-delay: .3s; }
+  .racc-top { display: flex; align-items: center; gap: 4px; padding: 6px 8px 6px 14px; }
+  .racc-main { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; background: none; border: none; text-align: left; color: var(--text); font-family: inherit; cursor: pointer; padding: 5px 0; }
+  .racc-main:active { opacity: .7; }
+  .racc .ric { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .racc .ric svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.9; }
+  .racc .rtx { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .racc .rn { font-weight: 700; font-size: .88rem; }
+  .racc .rd { font-size: .74rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rexp { background: none; border: none; font-size: 1.3rem; color: var(--muted); cursor: pointer; padding: 8px 10px; line-height: 1; transition: transform .25s; font-family: inherit; flex-shrink: 0; }
+  .rexp:active { transform: scale(.85); }
+  .racc.open .rexp { transform: rotate(90deg); }
+  .rsub { display: none; border-top: 1px solid var(--border-soft); padding: 6px; background: var(--bg); }
+  .racc.open .rsub { display: block; animation: fadeUp .22s ease; }
+  .rsub-item { display: flex; align-items: center; gap: 10px; width: 100%; background: none; border: none; text-align: left; padding: 10px 12px; font-size: .83rem; font-weight: 600; color: var(--text); border-radius: 6px; cursor: pointer; font-family: inherit; }
+  .rsub-item:active { background: var(--surface2); }
+  .rsub-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+
+  /* SHOP - border persegi, katalog 2 kolom, filter dropdown ala shopee */
+  .shop-bar2 { display: flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--surface); border-radius: 6px; padding: 5px; margin-bottom: 4px; }
+  .dd-wrap { position: relative; flex-shrink: 0; }
+  .dbtn { display: flex; align-items: center; gap: 6px; border: none; background: none; color: var(--text); padding: 9px 10px; font-size: .8rem; font-weight: 700; cursor: pointer; border-radius: 4px; white-space: nowrap; font-family: inherit; transition: background .18s; }
+  .dbtn:active { background: var(--surface2); }
+  .dbtn .caret { font-size: .62rem; color: var(--muted); }
+  .dd-pop { position: absolute; top: calc(100% + 8px); left: 0; min-width: 176px; max-height: 232px; overflow-y: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 14px 36px rgba(0,0,0,.18); z-index: 40; display: none; }
+  .dd-pop.open { display: block; animation: popIn .18s ease; }
+  @keyframes popIn { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .dd-pop button { display: flex; align-items: center; gap: 9px; width: 100%; text-align: left; padding: 11px 14px; background: none; border: none; font-size: .82rem; font-weight: 600; color: var(--text); cursor: pointer; font-family: inherit; }
+  .dd-pop button .chk { width: 16px; flex-shrink: 0; color: var(--accent-line); font-weight: 800; visibility: hidden; }
+  .dd-pop button.sel .chk { visibility: visible; }
+  .dd-pop button.sel { background: var(--surface2); }
+  .dd-pop button:active { background: var(--surface2); }
+  .shop-search-sm { width: 108px; flex-shrink: 0; margin-left: auto; border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 4px; padding: 9px 10px; font-size: .78rem; outline: none; transition: border-color .2s, box-shadow .2s; font-family: inherit; }
+  .shop-search-sm::placeholder { color: var(--muted); }
+  .shop-search-sm:focus { border-color: var(--accent-line); box-shadow: 0 0 0 3px var(--focus-ring); }
+  .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .p-card { background: var(--surface); border: 1px solid var(--border-soft); border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 7px; animation: fadeUp .4s ease backwards; }
+  .p-img { width: 100%; aspect-ratio: 1/1; border-radius: 4px; background: linear-gradient(135deg, var(--surface2), var(--border-soft)); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; }
+  .p-img svg { width: 30px; height: 30px; stroke: var(--muted); fill: none; stroke-width: 1.6; }
+  .p-name { font-weight: 700; font-size: .8rem; line-height: 1.35; }
+  .p-price { font-weight: 800; font-size: .88rem; }
+  .p-rate { font-size: .7rem; color: var(--muted); }
+  .p-card .mp-badge { margin-top: 2px; align-self: flex-start; border-radius: 4px; }
+  .p-card .mp-btn { border-radius: 4px; padding: 9px; font-size: .76rem; margin-top: 2px; }
+  .affil { font-size: .66rem; color: var(--muted); }
+  .shop-empty { text-align: center; color: var(--muted); padding: 26px 10px; font-size: .85rem; grid-column: 1 / -1; }
+  .fmt { font-size: .72rem; color: var(--muted); margin-top: 6px; font-weight: 600; }
+  .cont { border: 1px solid var(--border-soft); border-radius: 14px; padding: 15px; display: flex; gap: 13px; align-items: center; animation: fadeUp .5s .1s ease backwards; transition: transform .18s; background: var(--surface); }
+  .cont:active { transform: scale(.98); }
+  .cont .thumb { width: 52px; height: 52px; border-radius: 12px; background: var(--surface2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.3rem; }
+  .cont .ct { flex: 1; }
+  .cont .ct .a { font-size: .72rem; color: var(--muted); }
+  .cont .ct .b { font-weight: 700; font-size: .88rem; margin: 2px 0; }
+  .bar { height: 5px; background: var(--surface2); border-radius: 3px; margin-top: 8px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent-line); border-radius: 3px; animation: fillbar 1.2s .5s ease forwards; }
+  @keyframes fillbar { to { width: 65%; } }
+  .cont .pct { font-size: .78rem; font-weight: 700; }
+  .foot { text-align: center; margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--border-soft); animation: fadeUp .5s ease backwards; }
+  .foot-main { font-weight: 800; font-size: 1.05rem; color: var(--text); letter-spacing: -.01em; }
+  .foot-sub { font-size: .74rem; color: var(--muted); margin-top: 5px; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ============ HALAMAN RUANG ============ */
+  .back-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 10px; width: 38px; height: 38px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: transform .15s; flex-shrink: 0; }
+  .back-btn:active { transform: scale(.92); }
+  .room-top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; animation: fadeUp .4s ease backwards; }
+  .room-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -.02em; }
+  .room-grid { display: flex; flex-direction: column; gap: 10px; }
+  .rc { background: var(--surface); border: 1px solid var(--border-soft); border-radius: 16px; padding: 15px; display: flex; gap: 13px; align-items: flex-start; transition: transform .16s; animation: fadeUp .5s ease backwards; cursor: pointer; }
+  .rc:active { transform: scale(.98); }
+  .rc .re { width: 46px; height: 46px; border-radius: 13px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0; }
+  .rc .rt { font-weight: 700; font-size: .9rem; }
+  .rc .rs { font-size: .78rem; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .rc .tiers { display: flex; gap: 8px; margin-top: 9px; flex-wrap: wrap; }
+  .tier { font-size: .72rem; font-weight: 700; border: 1px solid var(--border); border-radius: 999px; padding: 5px 11px; }
+  .tier b { font-weight: 800; }
+  .tier.pro { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .mp-badge { display: inline-block; font-size: .68rem; font-weight: 800; letter-spacing: .05em; background: var(--surface2); border: 1px solid var(--border); border-radius: 999px; padding: 5px 11px; margin-top: 9px; }
+  .mp-btn { display: block; margin-top: 10px; width: 100%; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 11px; padding: 11px; font-size: .83rem; font-weight: 700; cursor: pointer; transition: transform .15s; }
+  .mp-btn:active { transform: scale(.97); }
+  .free { display: inline-block; font-size: .68rem; font-weight: 800; letter-spacing: .06em; border: 1px dashed var(--muted); color: var(--muted); border-radius: 999px; padding: 5px 11px; margin-top: 9px; }
+  /* tab Line */
+  .ltabs { display: flex; gap: 8px; margin-bottom: 14px; animation: fadeUp .45s .05s ease backwards; }
+  .ltab { flex: 1; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 12px; padding: 11px; font-size: .85rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+  .ltab.sel { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .ltab:active { transform: scale(.97); }
+  .post { background: var(--surface); border: 1px solid var(--border-soft); border-radius: 16px; padding: 15px; margin-bottom: 10px; animation: fadeUp .5s ease backwards; }
+  .post .ph { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .post .pa { width: 38px; height: 38px; border-radius: 50%; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+  .post .pn { font-weight: 700; font-size: .85rem; }
+  .post .pt { font-size: .7rem; color: var(--muted); }
+  .post .pb { font-size: .87rem; line-height: 1.6; }
+  .post .pf { font-size: .74rem; color: var(--muted); margin-top: 10px; font-weight: 600; }
+
+  /* ============ MODAL AUTH ============ */
+  .auth { max-width: 340px; }
+  .atabs { display: flex; gap: 8px; margin-bottom: 18px; }
+  .atab { flex: 1; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 11px; padding: 11px; font-size: .87rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+  .atab.sel { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .atab:active { transform: scale(.96); }
+  .google-btn { width: 100%; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 12px; padding: 13px; font-size: .88rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: transform .15s; }
+  .google-btn:active { transform: scale(.97); }
+  .google-btn .g { width: 20px; height: 20px; border-radius: 50%; background: conic-gradient(#4285f4 0 25%, #34a853 25% 50%, #fbbc05 50% 75%, #ea4335 75% 100%); display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: .7rem; font-weight: 800; flex-shrink: 0; }
+  .divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; color: var(--muted); font-size: .78rem; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border-soft); }
+  .field { width: 100%; border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 12px; padding: 12px 14px; font-size: .88rem; outline: none; margin-bottom: 10px; transition: border-color .2s, box-shadow .2s; }
+  .field::placeholder { color: var(--muted); }
+  .field:focus { border-color: var(--accent-line); box-shadow: 0 0 0 3px var(--focus-ring); }
+  .submit { width: 100%; border: none; background: var(--ink); color: var(--bg); border-radius: 12px; padding: 13px; font-size: .9rem; font-weight: 800; cursor: pointer; transition: transform .15s; margin-top: 2px; }
+  .submit:active { transform: scale(.97); }
+  .sim-note { font-size: .72rem; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.5; }
+
+  /* ============ GELEMBUNG AI ASISTEN ============ */
+  .ai-fab { position: fixed; right: 16px; bottom: 16px; width: 58px; height: 58px; border-radius: 50%; background: var(--ink); border: none; cursor: pointer; z-index: 65; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px var(--shadow); transition: transform .2s; -webkit-tap-highlight-color: transparent; }
+  .ai-fab:active { transform: scale(.9); }
+  .ai-fab svg { width: 30px; height: 30px; stroke: var(--bg); fill: none; stroke-width: 1.8; color: var(--bg); }
+  html[data-theme="madevi-on"] .ai-fab { background: linear-gradient(135deg, #c084fc, #7c3aed); box-shadow: 0 8px 26px rgba(124,58,237,.5); }
+  .ai-panel { position: fixed; right: 16px; bottom: 86px; width: min(340px, calc(100vw - 32px)); height: 430px; max-height: 62vh; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; z-index: 66; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 22px 60px var(--shadow); }
+  .ai-panel.open { display: flex; animation: popIn .22s ease; }
+  .ai-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border-soft); font-weight: 800; font-size: .92rem; }
+  .ai-head button { background: var(--surface2); color: var(--text); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: .8rem; }
+  .ai-head button:active { transform: scale(.88); }
+  .ai-msgs { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 9px; }
+  .msg { max-width: 82%; padding: 10px 13px; border-radius: 14px; font-size: .84rem; line-height: 1.55; animation: fadeUp .25s ease; }
+  .msg.bot { background: var(--surface2); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .msg.user { background: var(--ink); color: var(--bg); align-self: flex-end; border-bottom-right-radius: 4px; }
+  .ai-input { display: flex; gap: 8px; padding: 10px; border-top: 1px solid var(--border-soft); }
+  .ai-field { flex: 1; border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 999px; padding: 10px 15px; font-size: .83rem; outline: none; font-family: inherit; min-width: 0; }
+  .ai-field::placeholder { color: var(--muted); }
+  .ai-field:focus { border-color: var(--accent-line); }
+  .ai-send { border: none; background: var(--ink); color: var(--bg); border-radius: 999px; padding: 10px 16px; font-size: .8rem; font-weight: 800; cursor: pointer; font-family: inherit; flex-shrink: 0; }
+  .ai-send:active { transform: scale(.94); }
+  /* badge angka menu profil */
+  .nbadge { margin-left: auto; background: #e11d48; color: #fff; font-size: .68rem; font-weight: 800; min-width: 20px; height: 20px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; padding: 0 6px; flex-shrink: 0; }
+
+  /* ============ HALAMAN ARTIKEL ============ */
+  .crumbs { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: var(--muted); margin-bottom: 14px; animation: fadeUp .4s ease backwards; flex-wrap: wrap; }
+  .crumbs button { background: none; border: none; color: inherit; cursor: pointer; font-size: inherit; font-family: inherit; padding: 2px 0; }
+  .crumbs button:active { color: var(--text); }
+  .crumbs .sep { color: var(--muted); }
+  .crumbs .cur { color: var(--text); font-weight: 600; }
+  .art-title { font-size: 1.45rem; font-weight: 800; line-height: 1.32; letter-spacing: -.01em; margin-bottom: 16px; animation: fadeUp .45s ease backwards; }
+  .art-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; animation: fadeUp .5s ease backwards; }
+  .art-ctl { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 8px; padding: 8px 13px; font-size: .78rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: transform .15s, background .2s; }
+  .art-ctl:active { transform: scale(.94); }
+  .art-ctl.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .art-ctl:disabled { opacity: .35; cursor: default; }
+  .art-body { border: 1px solid var(--border); border-radius: 12px; margin: 0 5%; padding: 24px 22px; background: var(--surface); font-size: 1rem; line-height: 1.75; animation: fadeUp .55s ease backwards; transition: background .3s, line-height .3s; }
+  .art-body.read-mode { line-height: 2.1; background: var(--readbg); }
+  .art-body h2 { font-size: 1.12rem; font-weight: 800; margin: 2px 0 12px; letter-spacing: -.01em; }
+  .art-body h3 { font-size: .95rem; font-weight: 700; margin: 16px 0 8px; color: var(--muted2); }
+  .art-body p { margin-bottom: 14px; }
+  .art-body p:last-child { margin-bottom: 0; }
+  .art-nav { display: flex; align-items: center; justify-content: space-between; margin: 16px 5% 0; gap: 8px; }
+  .art-nav .pg { font-size: .78rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo" id="logo" aria-label="Madevi" title="Klik!"></div>
+  <div class="search-wrap"><input class="search" id="searchInput" type="search" data-i18n-ph="search_ph" placeholder="Cari..."></div>
+  <button class="profile-btn" id="profileBtn" aria-label="Profil"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></button>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+</header>
+<div class="backdrop" id="backdrop"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="inner">
+    <div class="info anim-item"><span class="time" id="clock">--:--:--</span><span id="date">...</span><span class="spacer"></span><button class="gear" id="gearBtn" aria-label="Pengaturan"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div>
+    <div class="dev-card anim-item">
+      <div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Madevi Developer</div>
+      <div class="s">Platform edukasi & jasa digital</div>
+    </div>
+    <div class="sosmed anim-item">
+      <a href="#" aria-label="Gmail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 17.5V6l10-2.2V15"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="15" r="2.5"/></svg></a>
+    </div>
+    <a class="lapor anim-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span data-i18n="report">Laporkan Masalah</span></a>
+    <hr class="anim-item">
+    <div class="section-label anim-item" data-i18n="rooms">Ruang</div>
+    <nav class="ruang anim-item">
+      <a href="#" class="active" data-room="explore"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-4 1 2-5z"/></svg></span><span data-i18n="room_explore">Explore & Learn</span></a>
+      <a href="#" data-room="tutorial"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.1-2.1z"/></svg></span><span data-i18n="room_tutorial">Tutorial & Problem Solve</span></a>
+      <a href="#" data-room="school"><span class="ico"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></span><span data-i18n="room_school">Madevi School</span></a>
+      <a href="#" data-room="line"><span class="ico"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/></svg></span><span data-i18n="room_line">Madevi Line</span></a>
+      <a href="#" data-room="services"><span class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span><span data-i18n="room_services">Madevi Services</span></a>
+      <a href="#" data-room="shop"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.6 12.5a1 1 0 0 0 1 .5h8.7a1 1 0 0 0 1-.8L21 7H6"/></svg></span><span data-i18n="room_shop">Madevi Shop</span></a>
+      <a href="#" data-room="tools"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0-5.6 5.6L3 18l3 3 5.9-5.9a4 4 0 0 0 5.6-5.6l-2.8 2.8-2.1-2.1z"/></svg></span><span data-i18n="room_tools">Tools & Equipment</span></a>
+    </nav>
+  </div>
+</aside>
+<!-- POPUP PROFIL (dropdown di bawah header) -->
+<div class="pf-drop" id="pfDrop" aria-label="Profil">
+  <div class="pf-inner">
+    <div class="pf-head">
+      <div class="pf-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg></div>
+      <div><div class="nm" id="pfName" data-i18n="pf_guest">Halo, Tamu</div><div class="st" id="pfStatus" data-i18n="pf_guest_sub">Masuk untuk pengalaman penuh</div></div>
+    </div>
+    <div class="pf-login" id="pfLoginRow">
+      <button class="in" id="pfInBtn" data-i18n="login">Masuk</button>
+      <button class="up" id="pfUpBtn" data-i18n="register">Daftar</button>
+    </div>
+    <hr>
+    <nav class="pf-menu">
+      <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg><span data-i18n="m_profile">Profil Saya</span></a>
+      <a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span data-i18n="m_messages">Pesan</span><span class="nbadge">3</span></a>
+      <a href="#"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span data-i18n="m_notif">Notifikasi</span><span class="nbadge">5</span></a>
+      <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M4.9 4.9l2.1 2.1m10 10l2.1 2.1m0-14.2l-2.1 2.1m-10 10l-2.1 2.1"/></svg><span data-i18n="m_settings">Pengaturan Akun</span></a>
+      <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-i18n="m_history">Riwayat</span></a>
+      <a href="#"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span data-i18n="m_saved">Simpan</span></a>
+      <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3m.1 4h.01"/></svg><span data-i18n="m_help">Bantuan</span></a>
+    </nav>
+  </div>
+</div>
+<!-- POPUP PENGATURAN -->
+<div class="popup-back" id="popupBack">
+  <div class="popup">
+    <h3><span data-i18n="set_title">Pengaturan</span><button class="close-x" id="popupClose">✕</button></h3>
+    <div class="opt-group">
+      <div class="lbl" data-i18n="set_lang">Bahasa</div>
+      <div class="opt-row"><button class="opt sel" id="langId">Indonesia</button><button class="opt" id="langEn">English</button></div>
+    </div>
+    <div class="opt-group">
+      <div class="lbl" data-i18n="set_theme">Tema</div>
+      <div class="opt-row"><button class="opt sel" id="thTerang" data-i18n="theme_terang">Terang</button><button class="opt" id="thGelap" data-i18n="theme_gelap">Gelap</button><button class="opt" id="thMadeviOn" data-i18n="theme_madeon">Madevi On</button></div>
+    </div>
+  </div>
+</div>
+<!-- MODAL AUTH -->
+<div class="popup-back" id="authBack">
+  <div class="popup auth">
+    <h3><span data-i18n="auth_title">Akun Madevi</span><button class="close-x" id="authClose">✕</button></h3>
+    <div class="atabs">
+      <button class="atab sel" id="tabLogin" data-i18n="auth_login">Masuk</button>
+      <button class="atab" id="tabReg" data-i18n="auth_register">Daftar</button>
+    </div>
+    <div id="paneLogin">
+      <button class="google-btn" id="googleBtn"><span class="g">G</span><span data-i18n="auth_google">Masuk dengan Google (Simulasi)</span></button>
+      <div class="divider"><span data-i18n="auth_or">atau</span></div>
+      <input class="field" type="email" data-i18n-ph="auth_email" placeholder="Email">
+      <input class="field" type="password" data-i18n-ph="auth_password" placeholder="Kata sandi">
+      <button class="submit" id="doLogin" data-i18n="auth_go">Masuk</button>
+      <p class="sim-note" data-i18n="auth_sim">Mode simulasi: tidak ada data yang dikirim.</p>
+    </div>
+    <div id="paneReg" style="display:none">
+      <input class="field" type="text" data-i18n-ph="auth_name" placeholder="Nama lengkap">
+      <input class="field" type="email" data-i18n-ph="auth_email" placeholder="Email">
+      <input class="field" type="password" data-i18n-ph="auth_password" placeholder="Kata sandi">
+      <button class="submit" id="doReg" data-i18n="auth_create">Buat Akun</button>
+      <p class="sim-note" data-i18n="auth_sim">Mode simulasi: tidak ada data yang dikirim.</p>
+    </div>
+  </div>
+</div>
+
+<!-- GELEMBUNG AI ASISTEN -->
+<button class="ai-fab" id="aiFab" aria-label="Asisten Madevi"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="10" rx="4"/><path d="M12 9V5.5"/><circle cx="12" cy="4" r="1.2" fill="currentColor" stroke="none"/><circle cx="9.2" cy="13.2" r="1.1" fill="currentColor" stroke="none"/><circle cx="14.8" cy="13.2" r="1.1" fill="currentColor" stroke="none"/><path d="M9.5 16.2c.7.6 1.6.9 2.5.9s1.8-.3 2.5-.9"/></svg></button>
+<div class="ai-panel" id="aiPanel" aria-label="Chat Asisten">
+  <div class="ai-head"><span data-i18n="ai_title">Asisten Madevi</span><button id="aiClose">✕</button></div>
+  <div class="ai-msgs" id="aiMsgs"></div>
+  <div class="ai-input">
+    <input class="ai-field" id="aiInput" type="text" data-i18n-ph="ai_ph" placeholder="Tulis pesan...">
+    <button class="ai-send" id="aiSend" data-i18n="ai_send">Kirim</button>
+  </div>
+</div>
+
+<main class="dash">
+<div id="viewHome">
+  <!-- HERO WELCOME -->
+  <div class="hero">
+    <span class="corner c-tl"></span><span class="corner c-tr"></span>
+    <span class="corner c-bl"></span><span class="corner c-br"></span>
+    <div class="eyebrow" id="greetTime">Selamat datang</div>
+    <h1 data-i18n="hero_title">Belajar apapun,<br>kapanpun.</h1>
+    <p data-i18n="hero_sub">Tujuh ruang untuk semua kebutuhanmu: tutorial praktis, sekolah digital, jasa, sampai komunitas. Semua berjalan di perangkatmu.</p>
+    <div class="cta-row">
+      <button class="cta" data-i18n="cta_explore">Mulai Jelajah →</button>
+      <button class="cta ghost" data-i18n="cta_learn">Pelajari Dulu</button>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="num">7</div><div class="cap" data-i18n="stat_rooms">Ruang</div></div>
+    <div class="stat"><div class="num">667</div><div class="cap" data-i18n="stat_articles">Artikel</div></div>
+    <div class="stat"><div class="num">15+</div><div class="cap" data-i18n="stat_tools">Tools</div></div>
+  </div>
+  <div class="sec-t"><span data-i18n="rooms">Ruang</span><span class="more" data-i18n="see_all">Lihat semua →</span></div>
+  <div class="room-list">
+    <div class="racc" data-acc="explore"><div class="racc-top"><button class="racc-main" data-room="explore"><span class="ric" style="background:#8b5cf6"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-4 1 2-5z"/></svg></span><span class="rtx"><span class="rn" data-i18n="room_explore_t">Explore & Learn</span><span class="rd" data-i18n="room_explore_d">Peta pengetahuan interaktif</span></span></button><button class="rexp" data-acc="explore" aria-label="Expand">›</button></div><div class="rsub" id="rsub-explore"></div></div>
+    <div class="racc" data-acc="tutorial"><div class="racc-top"><button class="racc-main" data-room="tutorial"><span class="ric" style="background:#0ea5e9"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.1-2.1z"/></svg></span><span class="rtx"><span class="rn" data-i18n="room_tutorial_t">Tutorial & Problem Solve</span><span class="rd" data-i18n="room_tutorial_d">Panduan masalah ke solusi</span></span></button><button class="rexp" data-acc="tutorial" aria-label="Expand">›</button></div><div class="rsub" id="rsub-tutorial"></div></div>
+    <div class="racc" data-acc="school"><div class="racc-top"><button class="racc-main" data-room="school"><span class="ric" style="background:#f59e0b"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></span><span class="rtx"><span class="rn" data-i18n="room_school_t">Madevi School</span><span class="rd" data-i18n="room_school_d">SD sampai kuliah</span></span></button><button class="rexp" data-acc="school" aria-label="Expand">›</button></div><div class="rsub" id="rsub-school"></div></div>
+    <div class="racc" data-acc="line"><div class="racc-top"><button class="racc-main" data-room="line"><span class="ric" style="background:#ec4899"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/></svg></span><span class="rtx"><span class="rn" data-i18n="room_line_t">Madevi Line</span><span class="rd" data-i18n="room_line_d">Karya dan curhat aman</span></span></button><button class="rexp" data-acc="line" aria-label="Expand">›</button></div><div class="rsub" id="rsub-line"></div></div>
+    <div class="racc" data-acc="services"><div class="racc-top"><button class="racc-main" data-room="services"><span class="ric" style="background:#10b981"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span><span class="rtx"><span class="rn" data-i18n="room_services_t">Madevi Services</span><span class="rd" data-i18n="room_services_d">Jasa digital HEMAT dan PRO</span></span></button><button class="rexp" data-acc="services" aria-label="Expand">›</button></div><div class="rsub" id="rsub-services"></div></div>
+    <div class="racc" data-acc="shop"><div class="racc-top"><button class="racc-main" data-room="shop"><span class="ric" style="background:#ef4444"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.6 12.5a1 1 0 0 0 1 .5h8.7a1 1 0 0 0 1-.8L21 7H6"/></svg></span><span class="rtx"><span class="rn" data-i18n="room_shop_t">Madevi Shop</span><span class="rd" data-i18n="room_shop_d">Katalog afiliasi</span></span></button><button class="rexp" data-acc="shop" aria-label="Expand">›</button></div><div class="rsub" id="rsub-shop"></div></div>
+    <div class="racc" data-acc="tools"><div class="racc-top"><button class="racc-main" data-room="tools"><span class="ric" style="background:#6366f1"><svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0-5.6 5.6L3 18l3 3 5.9-5.9a4 4 0 0 0 5.6-5.6l-2.8 2.8-2.1-2.1z"/></svg></span><span class="rtx"><span class="rn" data-i18n="room_tools_t">Tools & Equipment</span><span class="rd" data-i18n="room_tools_d">Perkakas gratis</span></span></button><button class="rexp" data-acc="tools" aria-label="Expand">›</button></div><div class="rsub" id="rsub-tools"></div></div>
+  </div>
+  <div class="sec-t"><span data-i18n="continue">Lanjutkan</span><span class="more" data-i18n="history_link">Riwayat →</span></div>
+  <div class="cont" onclick="showArticle()" style="cursor:pointer">
+    <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:24px;height:24px;color:var(--muted2)"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+    <div class="ct"><div class="a" data-i18n="room_tutorial">Tutorial & Problem Solve</div><div class="b">Investasi untuk Pemula: Mulai dari Rp10 Ribu</div><div class="bar"><i></i></div></div>
+    <div class="pct">65%</div>
+  </div>
+  <div class="foot"><div class="foot-main" data-i18n="foot_main">Madevi @2027</div><div class="foot-sub" data-i18n="foot_sub">Dibuat dengan teliti di Indonesia</div></div>
+</div>
+<div id="viewRoom" style="display:none"></div>
+</main>
+<script>
+/* ================= I18N ================= */
+const I18N = {
+  id: {
+    search_ph: 'Cari...', rooms: 'Ruang', continue: 'Lanjutkan',
+    see_all: 'Lihat semua →', history_link: 'Riwayat →', report: 'Laporkan Masalah',
+    login: 'Masuk', register: 'Daftar',
+    cta_explore: 'Mulai Jelajah →', cta_learn: 'Pelajari Dulu',
+    hero_title: 'Belajar apapun,<br>kapanpun.',
+    hero_sub: 'Tujuh ruang untuk semua kebutuhanmu: tutorial praktis, sekolah digital, jasa, sampai komunitas. Semua berjalan di perangkatmu.',
+    stat_rooms: 'Ruang', stat_articles: 'Artikel', stat_tools: 'Tools',
+    pf_guest: 'Halo, Tamu', pf_guest_sub: 'Masuk untuk pengalaman penuh',
+    pf_user: 'Halo, Pengguna', pf_user_sub: 'Akun simulasi',
+    m_profile: 'Profil Saya', m_settings: 'Pengaturan Akun', m_history: 'Riwayat', m_saved: 'Simpan', m_help: 'Bantuan',
+    set_title: 'Pengaturan', set_lang: 'Bahasa', set_theme: 'Tema',
+    back_home: 'Beranda', foot: 'Madevi, dibuat dengan teliti di Indonesia<br>© 2026',
+    room_explore: 'Explore &<br>Learn', room_tutorial: 'Tutorial &<br>Problem Solve',
+    room_school: 'Madevi<br>School', room_line: 'Madevi<br>Line',
+    room_services: 'Madevi<br>Services', room_shop: 'Madevi<br>Shop', room_tools: 'Tools &<br>Equipment',
+    room_explore_t: 'Explore & Learn', room_tutorial_t: 'Tutorial & Problem Solve',
+    room_school_t: 'Madevi School', room_line_t: 'Madevi Line',
+    room_services_t: 'Madevi Services', room_shop_t: 'Madevi Shop', room_tools_t: 'Tools & Equipment',
+    auth_title: 'Akun Madevi', auth_login: 'Masuk', auth_register: 'Daftar',
+    auth_google: 'Masuk dengan Google (Simulasi)', auth_or: 'atau',
+    auth_email: 'Email', auth_password: 'Kata sandi', auth_name: 'Nama lengkap',
+    auth_go: 'Masuk', auth_create: 'Buat Akun',
+    auth_sim: 'Mode simulasi: tidak ada data yang dikirim.',
+    tier_hemat: 'HEMAT', tier_pro: 'PRO', gratis: 'GRATIS',
+    badge_marketplace: 'Link Marketplace', btn_marketplace: 'Lihat di Marketplace →',
+    tab_karya: 'Sosial Karya', tab_curhat: 'Sosial Curhat',
+    greet_morning: 'Selamat pagi', greet_noon: 'Selamat siang',
+    greet_evening: 'Selamat sore', greet_night: 'Selamat malam', greet_welcome: 'selamat datang',
+    room_explore_d: 'Peta pengetahuan interaktif', room_tutorial_d: 'Panduan masalah ke solusi',
+    room_school_d: 'SD sampai kuliah', room_line_d: 'Karya dan curhat aman',
+    room_services_d: 'Jasa digital HEMAT dan PRO', room_shop_d: 'Katalog afiliasi',
+    room_tools_d: 'Perkakas gratis',
+    sim_tag: 'Harga simulasi', fmt_ps: 'Masalah → Solusi',
+    line_safe: 'Terlindungi moderasi',
+    shop_search_ph: 'Cari produk di shop...',
+    shop_cat_all: 'Semua', shop_cat_elektronik: 'Elektronik', shop_cat_perkakas: 'Perkakas',
+    shop_cat_rumahtangga: 'Rumah Tangga', shop_cat_dapur: 'Dapur',
+    shop_f_cheap: 'Termurah', shop_f_exp: 'Termahal',
+    shop_sort_relevan: 'Relevan', shop_sort_terbaru: 'Terbaru', shop_sort_harga: 'Harga',
+    shop_sim_note: 'Halaman simulasi. Harga dan produk hanya contoh.',
+    affil_disclosure: 'Link afiliasi',
+    shop_empty: 'Tidak ada produk yang cocok.',
+    theme_terang: 'Terang', theme_gelap: 'Gelap', theme_madeon: 'Madevi On',
+    m_messages: 'Pesan', m_notif: 'Notifikasi',
+    foot_main: 'Madevi @2027', foot_sub: 'Dibuat dengan teliti di Indonesia',
+    ai_title: 'Asisten Madevi', ai_ph: 'Tulis pesan...', ai_send: 'Kirim',
+    ai_greet: 'Halo! Saya asisten Madevi (simulasi). Tanya saya soal ruang, tema, atau cara memakai web ini.',
+    ai_hello: 'Halo juga! Ada yang bisa saya bantu?',
+    ai_rooms: 'Tujuh ruang Madevi',
+    ai_theme: 'Ada 3 tema: Terang, Gelap, dan Madevi On. Ganti lewat ikon gerigi di sidebar.',
+    ai_shop: 'Madevi Shop adalah katalog afiliasi. Klik produk lalu tombol Lihat di Marketplace untuk membeli di marketplace.',
+    ai_help: 'Saya bisa bantu soal: daftar ruang, ganti tema, cara belanja di Shop, dan membaca artikel.',
+    ai_fallback: 'Saya asisten simulasi, jadi jawaban saya terbatas. Coba tanya soal "ruang", "tema", atau "shop".',
+    shop_dd_kategori: 'Kategori', shop_dd_urutkan: 'Urutkan',
+    shop_cat_otomotif: 'Otomotif', shop_cat_olahraga: 'Olahraga', shop_cat_kesehatan: 'Kesehatan',
+    art_bab: 'Bab', art_of: 'dari', art_prev: 'Bab sebelumnya', art_next: 'Bab berikutnya',
+    art_readmode: 'Mode Baca', art_listen: 'Dengarkan', art_stop: 'Berhenti',
+    sub_exp_sains: 'Sains', sub_exp_tekno: 'Teknologi', sub_exp_sejarah: 'Sejarah', sub_exp_bahasa: 'Bahasa',
+    sub_tut_finansial: 'Finansial', sub_tut_tukang: 'Pertukangan', sub_tut_dapur: 'Dapur', sub_tut_rumah: 'Rumah',
+    sub_sch_sd: 'SD', sub_sch_smp: 'SMP', sub_sch_sma: 'SMA', sub_sch_kuliah: 'Kuliah',
+    sub_svc_rab: 'RAB Material Mini', sub_svc_surat: 'SuratKu RT', sub_svc_cekhp: 'CekHP', sub_svc_ronda: 'Jadwal Ronda',
+    sub_tool_konverter: 'Konverter', sub_tool_kalkulator: 'Kalkulator', sub_tool_banding: 'Perbandingan'
+  },
+  en: {
+    search_ph: 'Search...', rooms: 'Rooms', continue: 'Continue',
+    see_all: 'See all →', history_link: 'History →', report: 'Report an Issue',
+    login: 'Sign in', register: 'Sign up',
+    cta_explore: 'Start Exploring →', cta_learn: 'Learn More',
+    hero_title: 'Learn anything,<br>anytime.',
+    hero_sub: 'Seven rooms for all your needs: practical tutorials, digital school, services, and community. All running on your device.',
+    stat_rooms: 'Rooms', stat_articles: 'Articles', stat_tools: 'Tools',
+    pf_guest: 'Hello, Guest', pf_guest_sub: 'Sign in for the full experience',
+    pf_user: 'Hello, User', pf_user_sub: 'Simulated account',
+    m_profile: 'My Profile', m_settings: 'Account Settings', m_history: 'History', m_saved: 'Saved', m_help: 'Help',
+    set_title: 'Settings', set_lang: 'Language', set_theme: 'Theme',
+    back_home: 'Home', foot: 'Madevi, carefully crafted in Indonesia<br>© 2026',
+    room_explore: 'Explore &<br>Learn', room_tutorial: 'Tutorial &<br>Problem Solve',
+    room_school: 'Madevi<br>School', room_line: 'Madevi<br>Line',
+    room_services: 'Madevi<br>Services', room_shop: 'Madevi<br>Shop', room_tools: 'Tools &<br>Equipment',
+    room_explore_t: 'Explore & Learn', room_tutorial_t: 'Tutorial & Problem Solve',
+    room_school_t: 'Madevi School', room_line_t: 'Madevi Line',
+    room_services_t: 'Madevi Services', room_shop_t: 'Madevi Shop', room_tools_t: 'Tools & Equipment',
+    auth_title: 'Madevi Account', auth_login: 'Sign in', auth_register: 'Sign up',
+    auth_google: 'Sign in with Google (Simulation)', auth_or: 'or',
+    auth_email: 'Email', auth_password: 'Password', auth_name: 'Full name',
+    auth_go: 'Sign in', auth_create: 'Create Account',
+    auth_sim: 'Simulation mode: no data is sent.',
+    tier_hemat: 'BUDGET', tier_pro: 'PRO', gratis: 'FREE',
+    badge_marketplace: 'Marketplace Link', btn_marketplace: 'View on Marketplace →',
+    tab_karya: 'Sosial Karya', tab_curhat: 'Sosial Curhat',
+    greet_morning: 'Good morning', greet_noon: 'Good afternoon',
+    greet_evening: 'Good evening', greet_night: 'Good night', greet_welcome: 'welcome',
+    room_explore_d: 'Interactive knowledge map', room_tutorial_d: 'Problem-to-solution guides',
+    room_school_d: 'Elementary to college', room_line_d: 'Safe creations and stories',
+    room_services_d: 'BUDGET and PRO digital services', room_shop_d: 'Affiliate catalog',
+    room_tools_d: 'Free tools',
+    sim_tag: 'Simulated prices', fmt_ps: 'Problem → Solution',
+    line_safe: 'Protected by moderation',
+    shop_search_ph: 'Search products in shop...',
+    shop_cat_all: 'All', shop_cat_elektronik: 'Electronics', shop_cat_perkakas: 'Tools',
+    shop_cat_rumahtangga: 'Household', shop_cat_dapur: 'Kitchen',
+    shop_f_cheap: 'Cheapest', shop_f_exp: 'Priciest',
+    shop_sort_relevan: 'Relevant', shop_sort_terbaru: 'Newest', shop_sort_harga: 'Price',
+    shop_sim_note: 'Simulation page. Prices and products are samples only.',
+    affil_disclosure: 'Affiliate link',
+    shop_empty: 'No matching products.',
+    theme_terang: 'Light', theme_gelap: 'Dark', theme_madeon: 'Madevi On',
+    m_messages: 'Messages', m_notif: 'Notifications',
+    foot_main: 'Madevi @2027', foot_sub: 'Carefully crafted in Indonesia',
+    ai_title: 'Madevi Assistant', ai_ph: 'Type a message...', ai_send: 'Send',
+    ai_greet: 'Hello! I am the Madevi assistant (simulation). Ask me about rooms, themes, or how to use this site.',
+    ai_hello: 'Hello too! How can I help?',
+    ai_rooms: 'The seven Madevi rooms',
+    ai_theme: 'There are 3 themes: Light, Dark, and Madevi On. Change via the gear icon in the sidebar.',
+    ai_shop: 'Madevi Shop is an affiliate catalog. Click a product then the View on Marketplace button to buy on the marketplace.',
+    ai_help: 'I can help with: room list, changing themes, shopping in Shop, and reading articles.',
+    ai_fallback: 'I am a simulation assistant, so my answers are limited. Try asking about "rooms", "themes", or "shop".',
+    shop_dd_kategori: 'Category', shop_dd_urutkan: 'Sort',
+    shop_cat_otomotif: 'Automotive', shop_cat_olahraga: 'Sports', shop_cat_kesehatan: 'Health',
+    art_bab: 'Chapter', art_of: 'of', art_prev: 'Previous chapter', art_next: 'Next chapter',
+    art_readmode: 'Reading Mode', art_listen: 'Listen', art_stop: 'Stop',
+    sub_exp_sains: 'Science', sub_exp_tekno: 'Technology', sub_exp_sejarah: 'History', sub_exp_bahasa: 'Languages',
+    sub_tut_finansial: 'Finance', sub_tut_tukang: 'Craft', sub_tut_dapur: 'Kitchen', sub_tut_rumah: 'Home',
+    sub_sch_sd: 'Elementary', sub_sch_smp: 'Junior High', sub_sch_sma: 'Senior High', sub_sch_kuliah: 'College',
+    sub_svc_rab: 'Mini Material Budget', sub_svc_surat: 'SuratKu RT', sub_svc_cekhp: 'CekHP', sub_svc_ronda: 'Night Watch Schedule',
+    sub_tool_konverter: 'Converters', sub_tool_kalkulator: 'Calculators', sub_tool_banding: 'Comparators'
+  }
+};
+/* ================= DATA RUANG ================= */
+const SVG = {
+  explore: '<circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-4 1 2-5z"/>',
+  tutorial: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.1-2.1z"/>',
+  school: '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/>',
+  line: '<path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/>',
+  services: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>',
+  shop: '<circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.6 12.5a1 1 0 0 0 1 .5h8.7a1 1 0 0 0 1-.8L21 7H6"/>',
+  tools: '<path d="M14.5 6.5a4 4 0 0 0-5.6 5.6L3 18l3 3 5.9-5.9a4 4 0 0 0 5.6-5.6l-2.8 2.8-2.1-2.1z"/>'
+};
+const ROOM_COLOR = { explore:'#8b5cf6', tutorial:'#0ea5e9', school:'#f59e0b', line:'#ec4899', services:'#10b981', shop:'#ef4444', tools:'#6366f1' };
+const ROOMS = {
+  explore: { nameKey:'room_explore_t', desc:{id:'Jelajahi peta pengetahuan: dari sains sampai bahasa, tersusun rapi.',en:'Browse the knowledge map: from science to languages, neatly organized.'}, cards:[
+    {t:{id:'Sains',en:'Science'},s:{id:'Fisika, kimia, biologi dari dasar.',en:'Physics, chemistry, biology from basics.'}},
+    {t:{id:'Teknologi',en:'Technology'},s:{id:'Komputer, internet, dan AI.',en:'Computers, internet, and AI.'}},
+    {t:{id:'Sejarah',en:'History'},s:{id:'Peradaban dan peristiwa dunia.',en:'Civilizations and world events.'}},
+    {t:{id:'Bahasa',en:'Languages'},s:{id:'Indonesia, Inggris, dan lainnya.',en:'Indonesian, English, and more.'}}]},
+  tutorial: { nameKey:'room_tutorial_t', desc:{id:'Panduan praktis langkah demi langkah untuk masalah sehari-hari.',en:'Practical step-by-step guides for everyday problems.'}, cards:[
+    {kind:'tutorial',art:true,t:{id:'Investasi untuk Pemula: Mulai dari Rp10 Ribu',en:'Investing for Beginners: Start from Rp10 Thousand'},s:{id:'8 menit, Finansial',en:'8 min, Finance'}},
+    {kind:'tutorial',t:{id:'Merawat Solder agar Awet Bertahun-tahun',en:'Maintaining Your Soldering Iron for Years'},s:{id:'6 menit, Pertukangan',en:'6 min, Craft'}},
+    {kind:'tutorial',t:{id:'Dasar Instalasi Listrik Rumah yang Aman',en:'Basic Safe Home Electrical Wiring'},s:{id:'12 menit, Rumah',en:'12 min, Home'}},
+    {kind:'tutorial',t:{id:'Nasi Goreng Sempurna dalam 15 Menit',en:'Perfect Fried Rice in 15 Minutes'},s:{id:'5 menit, Dapur',en:'5 min, Kitchen'}}]},
+  school: { nameKey:'room_school_t', desc:{id:'Sekolah digital lengkap: dari SD sampai kuliah dan vokasi.',en:'Complete digital school: from elementary to college and vocational.'}, cards:[
+    {t:{id:'SD',en:'Elementary'},s:{id:'Kelas 1-6, semua mata pelajaran',en:'Grades 1-6, all subjects'}},
+    {t:{id:'SMP',en:'Junior High'},s:{id:'Kelas 7-9, persiapan ujian',en:'Grades 7-9, exam prep'}},
+    {t:{id:'SMA',en:'Senior High'},s:{id:'Kelas 10-12, IPA / IPS / Bahasa',en:'Grades 10-12, Science / Social / Language'}},
+    {t:{id:'Kuliah & Diploma',en:'College & Diploma'},s:{id:'Semester, SMK dan vokasi',en:'Semesters, vocational'}}]},
+  line: { nameKey:'room_line_t', desc:{id:'Komunitas Madevi: berbagi karya dan curhat dengan aman.',en:'The Madevi community: share creations and stories safely.'}, tabs:true, posts:{
+    karya:[
+      {n:'Budi',t:'2 jam lalu',b:'Rak sepatu dari kardus bekas, total biaya nol rupiah!',f:{id:'12 suka, 4 komentar',en:'12 likes, 4 comments'}},
+      {n:'Sari',t:'5 jam lalu',b:'Poster "Hemat Listrik" buatanku, kritik dan saran dipersilakan.',f:{id:'28 suka, 9 komentar',en:'28 likes, 9 comments'}}],
+    curhat:[
+      {n:'Anonim',t:'1 jam lalu',b:'Capek kerja lembur terus minggu ini, butuh semangat.',f:{id:'45 dukungan',en:'45 supports'}},
+      {n:'Anonim',t:'3 jam lalu',b:'Bagaimana cara bicara ke orang tua soal pilihan jurusan kuliah?',f:{id:'32 dukungan',en:'32 supports'}}]}},
+  services: { nameKey:'room_services_t', desc:{id:'Jasa digital profesional dengan tier hemat dan pro.',en:'Professional digital services with budget and pro tiers.'}, cards:[
+    {t:{id:'RAB Material Mini',en:'Mini Material Budget'},s:{id:'Hitung kebutuhan dan biaya material.',en:'Calculate material needs and costs.'},kind:'service',tiers:[['tier_hemat','Rp25rb'],['tier_pro','Rp99rb']]},
+    {t:{id:'SuratKu RT',en:'SuratKu RT'},s:{id:'Template dan nomor surat RT.',en:'RT letter templates and numbering.'},kind:'service',tiers:[['tier_hemat','Rp15rb'],['tier_pro','Rp75rb']]},
+    {t:{id:'CekHP',en:'CekHP'},s:{id:'Diagnosis kondisi HP bekas.',en:'Diagnose used phone condition.'},kind:'service',tiers:[['tier_hemat','Rp10rb'],['tier_pro','Rp50rb']]},
+    {t:{id:'Jadwal Ronda',en:'Night Watch Schedule'},s:{id:'Atur giliran siskamling.',en:'Organize neighborhood watch shifts.'},kind:'service',tiers:[['tier_hemat','Rp10rb'],['tier_pro','Rp50rb']]}]},
+  shop: { nameKey:'room_shop_t', desc:{id:'Katalog afiliasi: beli langsung di marketplace.',en:'Affiliate catalog: buy directly on the marketplace.'}, custom:'shop' },
+  tools: { nameKey:'room_tools_t', desc:{id:'Perkakas gratis untuk kebutuhan harian.',en:'Free tools for daily needs.'}, cards:[
+    {t:{id:'Konverter Satuan Tukang',en:'Builder Unit Converter'},s:{id:'Konversi satuan bahan bangunan.',en:'Convert building material units.'},kind:'tool'},
+    {t:{id:'Konversi Satuan Tanah',en:'Land Unit Converter'},s:{id:'Ubin, bata, tumbak, hektar.',en:'Ubin, bata, tumbak, hectare.'},kind:'tool'},
+    {t:{id:'Banding Ongkos Tukang',en:'Labor Cost Comparator'},s:{id:'Bandingkan harian vs borongan.',en:'Compare daily vs contract rates.'},kind:'tool'},
+    {t:{id:'Teorema Pythagoras',en:'Pythagoras Theorem'},s:{id:'Rumus segitiga siku-siku.',en:'Right-triangle formula.'},kind:'tool'},
+    {t:{id:'Luas Lingkaran',en:'Circle Area'},s:{id:'Pi r kuadrat, hitung cepat.',en:'Pi r squared, quick calc.'},kind:'tool'}]}
+};
+/* ================= DATA PRODUK SHOP (simulasi) ================= */
+const SHOP_PRODUCTS = [
+  {cat:'elektronik', price:85000, rating:'4.8 (212)', added:3, name:{id:'Solder Listrik 60W',en:'60W Electric Soldering Iron'}},
+  {cat:'elektronik', price:120000, rating:'4.9 (98)', added:6, name:{id:'Multimeter Digital',en:'Digital Multimeter'}},
+  {cat:'perkakas', price:350000, rating:'4.7 (340)', added:1, name:{id:'Bor Listrik 12V',en:'12V Electric Drill'}},
+  {cat:'perkakas', price:65000, rating:'4.8 (156)', added:5, name:{id:'Obeng Set 32 in 1',en:'32-in-1 Screwdriver Set'}},
+  {cat:'rumahtangga', price:55000, rating:'4.6 (421)', added:2, name:{id:'Lampu LED 10W Isi 4',en:'10W LED Bulbs, Pack of 4'}},
+  {cat:'dapur', price:95000, rating:'4.9 (77)', added:4, name:{id:'Pisau Dapur Set 5 Pcs',en:'5-Pc Kitchen Knife Set'}},
+  {cat:'otomotif', price:48000, rating:'4.7 (189)', added:7, name:{id:'Oli Motor 1L',en:'1L Motor Oil'}},
+  {cat:'olahraga', price:35000, rating:'4.8 (264)', added:8, name:{id:'Tali Skipping',en:'Skipping Rope'}}
+];
+let shopCat = 'all', shopSort = 'rel', shopQuery = '';
+const SHOP_CATS = ['all','elektronik','perkakas','rumahtangga','dapur','otomotif','olahraga','kesehatan'];
+const SHOP_SORTS = [['rel','shop_sort_relevan'],['new','shop_sort_terbaru'],['cheap','shop_f_cheap'],['exp','shop_f_exp']];
+function fmtRp(n){ return 'Rp' + n.toLocaleString('id-ID'); }
+function closeShopPops(except) {
+  ['catPop','sortPop'].forEach(id => {
+    if (id === except) return;
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('open');
+  });
+}
+function renderShop(){
+  const d = I18N[lang];
+  const q = shopQuery.trim().toLowerCase();
+  let list = SHOP_PRODUCTS.filter(p => (shopCat === 'all' || p.cat === shopCat) && p.name[lang].toLowerCase().indexOf(q) !== -1);
+  if (shopSort === 'cheap') list = list.slice().sort((a,b) => a.price - b.price);
+  else if (shopSort === 'exp') list = list.slice().sort((a,b) => b.price - a.price);
+  else if (shopSort === 'new') list = list.slice().sort((a,b) => b.added - a.added);
+  const grid = document.getElementById('shopGrid');
+  grid.innerHTML = list.length ? list.map((p,i) =>
+    '<div class="p-card" style="animation-delay:' + (i * 0.05) + 's">'
+    + '<div class="p-img"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></div>'
+    + '<div class="p-name">' + p.name[lang] + '</div>'
+    + '<div class="p-price">' + fmtRp(p.price) + '</div>'
+    + '<div class="p-rate">Rating ' + p.rating + '</div>'
+    + '<span class="mp-badge">' + d.badge_marketplace + '</span>'
+    + '<button class="mp-btn">' + d.btn_marketplace + '</button>'
+    + '<span class="affil">' + d.affil_disclosure + '</span></div>'
+  ).join('') : '<div class="shop-empty">' + d.shop_empty + '</div>';
+  const cp = document.getElementById('catPop');
+  cp.innerHTML = SHOP_CATS.map(c => '<button data-cat="' + c + '"' + (shopCat === c ? ' class="sel"' : '') + '><span class="chk">✓</span><span>' + d['shop_cat_' + c] + '</span></button>').join('');
+  cp.querySelectorAll('button').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    shopCat = b.getAttribute('data-cat');
+    renderShop();
+  }));
+  const sp = document.getElementById('sortPop');
+  sp.innerHTML = SHOP_SORTS.map(s => '<button data-sort="' + s[0] + '"' + (shopSort === s[0] ? ' class="sel"' : '') + '><span class="chk">✓</span><span>' + d[s[1]] + '</span></button>').join('');
+  sp.querySelectorAll('button').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    shopSort = b.getAttribute('data-sort');
+    renderShop();
+  }));
+  const sortLbl = document.getElementById('sortLbl');
+  if (sortLbl) sortLbl.textContent = d[SHOP_SORTS.find(s => s[0] === shopSort)[1]];
+  const catBtn = document.getElementById('catBtn'), sortBtn = document.getElementById('sortBtn');
+  catBtn.onclick = e => { e.stopPropagation(); closeShopPops('catPop'); cp.classList.toggle('open'); };
+  sortBtn.onclick = e => { e.stopPropagation(); closeShopPops('sortPop'); sp.classList.toggle('open'); };
+}
+document.addEventListener('click', () => closeShopPops());
+/* ================= STATE ================= */
+let lang = 'id', theme = 'terang', loggedIn = false, currentView = 'home';
+function applyI18n() {
+  const d = I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (d[k] === undefined) return;
+    if (loggedIn && (k === 'pf_guest' || k === 'pf_guest_sub')) return; // jangan timpa status login
+    el.innerHTML = d[k];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const k = el.getAttribute('data-i18n-ph');
+    if (d[k] !== undefined) el.placeholder = d[k];
+  });
+  document.documentElement.lang = lang;
+  greet();
+}
+function setLang(l) {
+  lang = l; applyI18n(); renderSubs();
+  if (currentView === 'room:shop') showView('room:shop');
+  else if (currentView === 'article') { stopTTS(); renderArticle(); }
+}
+function setTheme(t) { theme = t; document.documentElement.setAttribute('data-theme', t); }
+/* ================= LOGO LIAR (jangan diubah) ================= */
+const logo = document.getElementById('logo');
+'Madevi'.split('').forEach(c => {
+  const s = document.createElement('span'); s.className = 'ch';
+  s.innerHTML = '<span class="face">' + c + '</span><span class="shine" aria-hidden="true">' + c + '</span>';
+  s.querySelector('.face').style.animationDelay = (Math.random() * -4.5) + 's';
+  s.querySelector('.shine').style.animationDelay = (Math.random() * -3) + 's';
+  logo.appendChild(s);
+});
+const letters = logo.querySelectorAll('.ch');
+const anims = ['z-jump','z-spin','z-shake','z-squash','z-flip','z-fall'];
+function liarPlay(el) {
+  const a = anims[Math.floor(Math.random() * anims.length)];
+  el.style.setProperty('--jh', (-8 - Math.random() * 14) + 'px');
+  el.style.setProperty('--rr', (Math.random() * 50 - 25) + 'deg');
+  el.style.setProperty('--rr2', (Math.random() * 36 - 18) + 'deg');
+  el.classList.remove(...anims);
+  void el.offsetWidth;
+  el.classList.add(a);
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove(a), 650);
+}
+function liarLoop() {
+  const n = 1 + Math.floor(Math.random() * 3);
+  const picked = new Set();
+  for (let i = 0; i < n; i++) {
+    let idx; do { idx = Math.floor(Math.random() * letters.length); } while (picked.has(idx));
+    picked.add(idx);
+    setTimeout(() => liarPlay(letters[idx]), i * 90);
+  }
+  setTimeout(liarLoop, 350 + Math.random() * 1100);
+}
+liarLoop();
+logo.addEventListener('click', () => {
+  letters.forEach((el, i) => setTimeout(() => liarPlay(el), i * 55));
+  setTimeout(() => letters.forEach((el, i) => setTimeout(() => liarPlay(el), i * 40)), 700);
+});
+/* ================= SAPAAN ================= */
+function greet() {
+  const d = I18N[lang], h = new Date().getHours();
+  const w = h < 11 ? d.greet_morning : h < 15 ? d.greet_noon : h < 18 ? d.greet_evening : d.greet_night;
+  document.getElementById('greetTime').textContent = w + ', ' + d.greet_welcome;
+}
+/* ================= SIDEBAR & PROFIL ================= */
+const btn = document.getElementById('menuBtn'), sb = document.getElementById('sidebar'), bd = document.getElementById('backdrop');
+const pfBtn = document.getElementById('profileBtn'), pfDrop = document.getElementById('pfDrop');
+function tg(f) {
+  const o = f !== undefined ? f : !sb.classList.contains('open');
+  sb.classList.toggle('open', o);
+  bd.classList.toggle('open', o);
+  if (o) tgPf(false);
+  btn.textContent = o ? '✕' : '☰';
+}
+function tgPf(f) {
+  const o = f !== undefined ? f : !pfDrop.classList.contains('open');
+  pfDrop.classList.toggle('open', o);
+}
+btn.onclick = () => tg(); bd.onclick = () => tg(false);
+pfBtn.addEventListener('click', e => { e.stopPropagation(); tgPf(); });
+document.addEventListener('click', e => { if (!pfDrop.contains(e.target)) tgPf(false); });
+/* ================= NAVIGASI RUANG ================= */
+const viewHome = document.getElementById('viewHome'), viewRoom = document.getElementById('viewRoom');
+function roomCardHTML(c, i) {
+  let extra = '';
+  if (c.kind === 'service') extra = '<div class="tiers">' + c.tiers.map(t => '<span class="tier' + (t[0] === 'tier_pro' ? ' pro' : '') + '"><b>' + I18N[lang][t[0]] + '</b> ' + t[1] + '</span>').join('') + '</div>';
+  else if (c.kind === 'tool') extra = '<span class="free">' + I18N[lang].gratis + '</span>';
+  else if (c.kind === 'tutorial') extra = '<div class="fmt">' + I18N[lang].fmt_ps + '</div>';
+  const click = c.art ? ' onclick="showArticle()" style="animation-delay:' + (i * 0.06) + 's;cursor:pointer"' : ' style="animation-delay:' + (i * 0.06) + 's"';
+  return '<div class="rc"' + click + '><div class="re sq"></div><div><div class="rt">' + c.t[lang] + '</div><div class="rs">' + c.s[lang] + '</div>' + extra + '</div></div>';
+}
+function linePostsHTML(list) {
+  return list.map(p => '<div class="post"><div class="ph"><div class="pa"></div><div><div class="pn">' + p.n + '</div><div class="pt">' + p.t + '</div></div></div><div class="pb">' + p.b + '</div><div class="pf">' + p.f[lang] + '</div></div>').join('');
+}
+function showView(view) {
+  currentView = view;
+  if (view === 'home') {
+    viewRoom.style.display = 'none'; viewHome.style.display = '';
+    document.querySelectorAll('.ruang a').forEach(x => x.classList.remove('active'));
+    document.querySelector('.ruang a[data-room="explore"]').classList.add('active');
+  } else {
+    const key = view.split(':')[1], r = ROOMS[key], d = I18N[lang];
+    let body = '';
+    if (r.custom === 'shop') {
+      body = '<div class="shop-bar2">'
+        + '<span class="dd-wrap"><button class="dbtn" id="catBtn"><span>' + d.shop_dd_kategori + '</span><span class="caret">▾</span></button>'
+        + '<span class="dd-pop" id="catPop"></span></span>'
+        + '<span class="dd-wrap"><button class="dbtn" id="sortBtn"><span id="sortLbl">' + d.shop_sort_relevan + '</span><span class="caret">▾</span></button>'
+        + '<span class="dd-pop" id="sortPop"></span></span>'
+        + '<input class="shop-search-sm" id="shopSearch" placeholder="' + d.shop_search_ph + '" value="' + shopQuery.replace(/"/g, '&quot;') + '"></div>'
+        + '<p class="sim-note" style="text-align:left;margin:10px 0 0">' + d.shop_sim_note + '</p>'
+        + '<div class="shop-grid" id="shopGrid"></div>';
+    } else if (r.tabs) {
+      body = '<div class="ltabs"><button class="ltab sel" id="ltKarya">' + d.tab_karya + '</button><button class="ltab" id="ltCurhat">' + d.tab_curhat + '</button></div>'
+        + '<p class="sim-note" style="text-align:left;margin:0 0 12px">' + d.line_safe + '</p>'
+        + '<div id="lpKarya">' + linePostsHTML(r.posts.karya) + '</div>'
+        + '<div id="lpCurhat" style="display:none">' + linePostsHTML(r.posts.curhat) + '</div>';
+    } else {
+      body = '<div class="room-grid">' + r.cards.map(roomCardHTML).join('') + '</div>';
+      if (key === 'services') body += '<p class="sim-note" style="text-align:left;margin-top:12px">' + d.sim_tag + '</p>';
+    }
+    viewRoom.innerHTML =
+      '<div class="room-top"><button class="back-btn" onclick="showView(\'home\')">←</button>'
+      + '<h1 class="room-title">' + d[r.nameKey] + '</h1></div>' + body;
+    viewHome.style.display = 'none'; viewRoom.style.display = '';
+    document.querySelectorAll('.ruang a').forEach(x => x.classList.toggle('active', x.getAttribute('data-room') === key));
+    if (key === 'shop') {
+      renderShop();
+      document.getElementById('shopSearch').addEventListener('input', function(e){ shopQuery = e.target.value; renderShop(); });
+    }
+    if (r.tabs) {
+      const k = document.getElementById('ltKarya'), c = document.getElementById('ltCurhat');
+      k.onclick = () => { k.classList.add('sel'); c.classList.remove('sel'); document.getElementById('lpKarya').style.display = ''; document.getElementById('lpCurhat').style.display = 'none'; };
+      c.onclick = () => { c.classList.add('sel'); k.classList.remove('sel'); document.getElementById('lpCurhat').style.display = ''; document.getElementById('lpKarya').style.display = 'none'; };
+    }
+    applyI18n();
+  }
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll('.ruang a').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault(); tg(false); showView('room:' + a.getAttribute('data-room'));
+}));
+/* ================= TAKSONOMI ACCORDION RUANG ================= */
+const SUBS = {
+  explore: ['sub_exp_sains','sub_exp_tekno','sub_exp_sejarah','sub_exp_bahasa'],
+  tutorial: ['sub_tut_finansial','sub_tut_tukang','sub_tut_dapur','sub_tut_rumah'],
+  school: ['sub_sch_sd','sub_sch_smp','sub_sch_sma','sub_sch_kuliah'],
+  line: ['tab_karya','tab_curhat'],
+  services: ['sub_svc_rab','sub_svc_surat','sub_svc_cekhp','sub_svc_ronda'],
+  shop: ['shop_cat_elektronik','shop_cat_perkakas','shop_cat_rumahtangga','shop_cat_dapur'],
+  tools: ['sub_tool_konverter','sub_tool_kalkulator','sub_tool_banding']
+};
+function renderSubs() {
+  const d = I18N[lang];
+  Object.keys(SUBS).forEach(key => {
+    const el = document.getElementById('rsub-' + key);
+    if (!el) return;
+    el.innerHTML = SUBS[key].map(k => '<button class="rsub-item" data-room="' + key + '"><span class="dot"></span><span>' + d[k] + '</span></button>').join('');
+    el.querySelectorAll('.rsub-item').forEach(b => b.addEventListener('click', () => showView('room:' + b.getAttribute('data-room'))));
+  });
+}
+document.querySelectorAll('.racc-main').forEach(b => b.addEventListener('click', () => showView('room:' + b.getAttribute('data-room'))));
+document.querySelectorAll('.rexp').forEach(b => b.addEventListener('click', e => {
+  e.stopPropagation();
+  const acc = b.closest('.racc');
+  const wasOpen = acc.classList.contains('open');
+  document.querySelectorAll('.racc.open').forEach(x => x.classList.remove('open'));
+  if (!wasOpen) acc.classList.add('open');
+}));
+renderSubs();
+/* ================= PENGATURAN ================= */
+const pb = document.getElementById('popupBack');
+document.getElementById('gearBtn').onclick = () => pb.classList.add('open');
+document.getElementById('popupClose').onclick = () => pb.classList.remove('open');
+pb.addEventListener('click', e => { if (e.target === pb) pb.classList.remove('open'); });
+document.querySelectorAll('.opt').forEach(o => o.addEventListener('click', () => {
+  o.parentElement.querySelectorAll('.opt').forEach(x => x.classList.remove('sel')); o.classList.add('sel');
+}));
+document.getElementById('langId').onclick = () => setLang('id');
+document.getElementById('langEn').onclick = () => setLang('en');
+document.getElementById('thTerang').onclick = () => setTheme('terang');
+document.getElementById('thGelap').onclick = () => setTheme('gelap');
+document.getElementById('thMadeviOn').onclick = () => setTheme('madevi-on');
+/* ================= AUTH ================= */
+const authBack = document.getElementById('authBack');
+const tabLogin = document.getElementById('tabLogin'), tabReg = document.getElementById('tabReg');
+const paneLogin = document.getElementById('paneLogin'), paneReg = document.getElementById('paneReg');
+function openAuth(tab) {
+  tgPf(false);
+  (tab === 'reg' ? tabReg : tabLogin).click();
+  authBack.classList.add('open');
+}
+function closeAuth() { authBack.classList.remove('open'); }
+tabLogin.onclick = () => { tabLogin.classList.add('sel'); tabReg.classList.remove('sel'); paneLogin.style.display = ''; paneReg.style.display = 'none'; };
+tabReg.onclick = () => { tabReg.classList.add('sel'); tabLogin.classList.remove('sel'); paneReg.style.display = ''; paneLogin.style.display = 'none'; };
+document.getElementById('authClose').onclick = closeAuth;
+authBack.addEventListener('click', e => { if (e.target === authBack) closeAuth(); });
+document.getElementById('pfInBtn').onclick = () => openAuth('login');
+document.getElementById('pfUpBtn').onclick = () => openAuth('reg');
+function doAuth() {
+  loggedIn = true; closeAuth();
+  document.getElementById('pfName').textContent = I18N[lang].pf_user;
+  document.getElementById('pfStatus').textContent = I18N[lang].pf_user_sub;
+  document.getElementById('pfLoginRow').style.display = 'none';
+}
+document.getElementById('doLogin').onclick = doAuth;
+document.getElementById('doReg').onclick = doAuth;
+document.getElementById('googleBtn').onclick = doAuth;
+/* ================= AI ASISTEN (simulasi lokal) ================= */
+var aiFabEl = document.getElementById('aiFab');
+var aiPanelEl = document.getElementById('aiPanel');
+var aiMsgsEl = document.getElementById('aiMsgs');
+var aiInputEl = document.getElementById('aiInput');
+var aiOpened = false;
+function aiIsOpen() { return aiPanelEl.classList.contains('open'); }
+function aiOpen() {
+  aiPanelEl.classList.add('open');
+  if (!aiOpened) { aiOpened = true; aiSay('bot', I18N[lang].ai_greet); }
+  setTimeout(function() { try { aiInputEl.focus(); } catch (e) {} }, 250);
+}
+function aiCloseFn() { aiPanelEl.classList.remove('open'); }
+function aiToggle() { aiIsOpen() ? aiCloseFn() : aiOpen(); }
+function aiSay(who, text) {
+  const m = document.createElement('div');
+  m.className = 'msg ' + who;
+  m.textContent = text;
+  aiMsgsEl.appendChild(m);
+  aiMsgsEl.scrollTop = aiMsgsEl.scrollHeight;
+}
+function aiReply(q) {
+  const s = q.toLowerCase(), d = I18N[lang];
+  if (/ruang|room/.test(s)) return d.ai_rooms + ': ' + [d.room_explore_t, d.room_tutorial_t, d.room_school_t, d.room_line_t, d.room_services_t, d.room_shop_t, d.room_tools_t].join(', ') + '.';
+  if (/tema|theme|gelap|terang|dark|light|madevi on/.test(s)) return d.ai_theme;
+  if (/shop|belanja|beli|marketplace/.test(s)) return d.ai_shop;
+  if (/bantuan|help|tolong/.test(s)) return d.ai_help;
+  if (/halo|hai\b|hello|hi\b|pagi|siang|sore|malam/.test(s)) return d.ai_hello;
+  return d.ai_fallback;
+}
+function aiSend() {
+  const v = aiInputEl.value.trim();
+  if (!v) return;
+  aiSay('user', v);
+  aiInputEl.value = '';
+  setTimeout(() => aiSay('bot', aiReply(v)), 450);
+}
+aiFabEl.addEventListener('click', function(e) { e.stopPropagation(); aiToggle(); });
+document.getElementById('aiClose').addEventListener('click', function(e) { e.stopPropagation(); aiCloseFn(); });
+document.getElementById('aiSend').addEventListener('click', function(e) { e.stopPropagation(); aiSend(); });
+aiInputEl.addEventListener('keydown', function(e) { if (e.key === 'Enter') aiSend(); });
+/* ================= HALAMAN ARTIKEL ================= */
+const ARTICLE = {
+  title: { id: 'Investasi untuk Pemula: Mulai dari Rp10 Ribu', en: 'Investing for Beginners: Start from Rp10 Thousand' },
+  chapters: [
+    { h: { id: 'Bab 1: Kenapa Rp10 Ribu Bisa Jadi Awal', en: 'Chapter 1: Why Rp10 Thousand Can Be a Start' },
+      sub: 'Modal kecil bukan alasan untuk menunda',
+      ps: [
+        'Banyak orang menunda investasi karena merasa modalnya kurang. Padahal reksa dana pasar uang dan emas digital kini bisa dibeli mulai dari Rp10 ribu. Yang menentukan hasil jangka panjang bukan besarnya modal awal, melainkan kebiasaan menyisihkan secara rutin.',
+        'Strategi DCA (dollar cost averaging) membuatmu membeli rutin setiap bulan tanpa perlu menebak harga pasar. Dalam jangka panjang, konsistensi hampir selalu mengalahkan usaha mencari waktu terbaik.'
+      ] },
+    { h: { id: 'Bab 2: Pilih Instrumen Sesuai Profil Risiko', en: 'Chapter 2: Choose Instruments Matching Your Risk Profile' },
+      sub: 'Kenali profil risikomu sebelum mulai',
+      ps: [
+        'Investor pemula sebaiknya mulai dari instrumen berisiko rendah seperti reksa dana pasar uang atau deposito. Pahami dulu cara kerjanya sebelum mencoba instrumen yang fluktuasinya besar seperti saham.',
+        'Jangan menaruh semua dana di satu tempat. Bagi ke beberapa instrumen agar satu kegagalan tidak menghapus seluruh modalmu.'
+      ] },
+    { h: { id: 'Bab 3: Jebakan yang Harus Dihindari', en: 'Chapter 3: Traps to Avoid' },
+      sub: 'Waspada janji untung besar dalam waktu singkat',
+      ps: [
+        'Hindari tawaran investasi yang menjanjikan keuntungan besar dalam waktu singkat. Itu ciri khas skema ponzi. Investasi yang sehat tumbuh perlahan dan masuk akal.',
+        'Jangan berinvestasi dengan uang pinjaman atau dana darurat. Investasi memakai uang dingin, yaitu uang yang tidak dibutuhkan dalam waktu dekat.'
+      ] }
+  ]
+};
+let artChap = 0, artFs = 1, artRead = false, artSpeaking = false;
+function stopTTS() { try { speechSynthesis.cancel(); } catch (e) {} artSpeaking = false; }
+function toggleTTS() {
+  if (artSpeaking) { stopTTS(); renderArticle(); return; }
+  try {
+    const ch = ARTICLE.chapters[artChap];
+    const u = new SpeechSynthesisUtterance(ch.h.id + '. ' + ch.sub + '. ' + ch.ps.join(' '));
+    u.lang = 'id-ID'; u.rate = 0.95;
+    u.onend = () => { artSpeaking = false; if (currentView === 'article') renderArticle(); };
+    u.onerror = () => { artSpeaking = false; if (currentView === 'article') renderArticle(); };
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+    artSpeaking = true;
+  } catch (e) { artSpeaking = false; }
+  renderArticle();
+}
+function showArticle() {
+  currentView = 'article';
+  artChap = 0;
+  stopTTS();
+  renderArticle();
+  viewHome.style.display = 'none'; viewRoom.style.display = '';
+  window.scrollTo(0, 0);
+}
+function renderArticle() {
+  const d = I18N[lang], A = ARTICLE, ch = A.chapters[artChap], n = A.chapters.length;
+  viewRoom.innerHTML =
+    '<div class="crumbs"><button onclick="showView(\'home\')">' + d.back_home + '</button><span class="sep">›</span>'
+    + '<button onclick="showView(\'room:tutorial\')">' + d.room_tutorial_t + '</button></div>'
+    + '<h1 class="art-title">' + A.title[lang] + '</h1>'
+    + '<div class="art-controls">'
+    + '<button class="art-ctl" id="fsDec">A-</button><button class="art-ctl" id="fsInc">A+</button>'
+    + '<button class="art-ctl' + (artRead ? ' on' : '') + '" id="readMode">' + d.art_readmode + '</button>'
+    + '<button class="art-ctl' + (artSpeaking ? ' on' : '') + '" id="ttsBtn">' + (artSpeaking ? d.art_stop : d.art_listen) + '</button>'
+    + '</div>'
+    + '<div class="art-body' + (artRead ? ' read-mode' : '') + '" id="artBody" style="font-size:' + artFs + 'rem">'
+    + '<h2>' + ch.h[lang] + '</h2><h3>' + ch.sub + '</h3>' + ch.ps.map(p => '<p>' + p + '</p>').join('') + '</div>'
+    + '<div class="art-nav"><button class="art-ctl" id="chapPrev"' + (artChap === 0 ? ' disabled' : '') + '>‹ ' + d.art_prev + '</button>'
+    + '<span class="pg">' + d.art_bab + ' ' + (artChap + 1) + ' ' + d.art_of + ' ' + n + '</span>'
+    + '<button class="art-ctl" id="chapNext"' + (artChap === n - 1 ? ' disabled' : '') + '>' + d.art_next + ' ›</button></div>';
+  document.getElementById('fsDec').onclick = () => { artFs = Math.max(0.85, +(artFs - 0.1).toFixed(2)); renderArticle(); };
+  document.getElementById('fsInc').onclick = () => { artFs = Math.min(1.3, +(artFs + 0.1).toFixed(2)); renderArticle(); };
+  document.getElementById('readMode').onclick = () => { artRead = !artRead; renderArticle(); };
+  document.getElementById('ttsBtn').onclick = toggleTTS;
+  document.getElementById('chapPrev').onclick = () => { if (artChap > 0) { stopTTS(); artChap--; renderArticle(); window.scrollTo(0, 0); } };
+  document.getElementById('chapNext').onclick = () => { if (artChap < n - 1) { stopTTS(); artChap++; renderArticle(); window.scrollTo(0, 0); } };
+}
+/* ================= JAM ================= */
+const MONTHS = {
+  id: ['januari','februari','maret','april','mei','juni','juli','agustus','september','oktober','november','desember'],
+  en: ['January','February','March','April','May','June','July','August','September','October','November','December']
+};
+function tick() {
+  const n = new Date(), p = x => String(x).padStart(2,'0'), mo = MONTHS[lang];
+  document.getElementById('clock').textContent = p(n.getHours()) + ':' + p(n.getMinutes()) + ':' + p(n.getSeconds());
+  document.getElementById('date').textContent = lang === 'id'
+    ? n.getDate() + ' ' + mo[n.getMonth()] + ' ' + n.getFullYear()
+    : mo[n.getMonth()] + ' ' + n.getDate() + ', ' + n.getFullYear();
+}
+setInterval(tick, 1000); tick();
+/* ================= INIT ================= */
+applyI18n();
+</script>
+</body>
+</html>

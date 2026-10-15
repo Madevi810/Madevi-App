@@ -1,0 +1,451 @@
+/*
+ * MADEVI ON
+ * A distinct living theme: a restrained moving atmosphere, active-state
+ * signals, and a local-assistant orb. It deliberately never animates the
+ * document layout or changes the placement of navigation and dialogs.
+ *
+ * Token kanonis Madevi On ada di interface-refresh.css (layer terakhir
+ * cascade); blok ini hanya berisi aturan tema yang tidak bertabrakan
+ * dengannya — D07: aksen plum/amethyst/amber, bukan biru kerja.
+ */
+
+[data-theme='madevi-on'] {
+  color-scheme: dark;
+
+  --madevi-on-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --madevi-on-quiet-ease: cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+/* One low-frequency atmospheric motion layer; the page structure stays still. */
+@keyframes madevi-on-atmosphere {
+  0%, 100% {
+    background-position: 6% 14%, 94% 8%, 50% 100%, 0 0;
+  }
+  50% {
+    background-position: 16% 2%, 82% 22%, 56% 88%, 0 0;
+  }
+}
+
+/* Catatan cascade: background kanonis Madevi On (plum/amethyst/amber) diatur oleh
+   blok AMBIENT-001 di akhir interface-refresh.css; blok ini hanya fallback. */
+[data-theme='madevi-on'],
+[data-theme='madevi-on'] body {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 66% 48% at 8% 8%, rgb(124 92 255 / 20%), transparent 72%),
+    radial-gradient(ellipse 52% 42% at 92% 14%, rgb(255 178 92 / 10%), transparent 72%),
+    radial-gradient(ellipse 62% 38% at 52% 108%, rgb(96 60 168 / 16%), transparent 76%),
+    linear-gradient(142deg, #0b0910 0%, #100a18 49%, #0d0813 100%);
+  background-repeat: no-repeat;
+  background-size: 142% 142%, 132% 132%, 138% 138%, 100% 100%;
+  animation: madevi-on-atmosphere 30s var(--madevi-on-quiet-ease) infinite;
+}
+
+[data-theme='madevi-on'] .public-shell {
+  background: transparent;
+  color: var(--text);
+}
+
+/* Restore canonical component positioning after the theme is applied. */
+[data-theme='madevi-on'] .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+[data-theme='madevi-on'] .sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  width: min(24rem, calc(100vw - 1rem));
+  max-width: calc(100vw - 1rem);
+  z-index: 800;
+}
+
+[data-theme='madevi-on'] .ai-popup {
+  position: fixed;
+}
+
+[data-theme='madevi-on'] :is(.site-header, .header, .sidebar) {
+  isolation: isolate;
+  background:
+    linear-gradient(118deg, rgb(12 28 49 / 90%), rgb(5 13 26 / 86%) 58%, rgb(17 30 57 / 84%));
+  border-color: var(--border);
+  box-shadow: 0 1px 0 rgb(246 238 255 / 6%), var(--shadow-sm);
+  backdrop-filter: blur(24px) saturate(132%);
+  -webkit-backdrop-filter: blur(24px) saturate(132%);
+}
+
+[data-theme='madevi-on'] :is(.popup, .ai-popup, .settings-popup) {
+  background: rgb(7 17 32 / 94%);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  backdrop-filter: blur(26px) saturate(138%);
+  -webkit-backdrop-filter: blur(26px) saturate(138%);
+}
+
+/* Remove inherited rotating frames before adding two quiet, directional signals. */
+[data-theme='madevi-on'] :is(.site-header, .sidebar, .welcome-card, .ai-popup)::after {
+  content: none;
+  animation: none;
+}
+
+@keyframes madevi-on-header-scan {
+  0%, 20% { transform: translateX(-130%); opacity: 0; }
+  26%, 74% { opacity: 0.86; }
+  82%, 100% { transform: translateX(420%); opacity: 0; }
+}
+
+[data-theme='madevi-on'] .site-header::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, #a487ff 46%, #f0e8ff 50%, #f3b86b 54%, transparent 100%);
+  transform: translateX(-130%);
+  animation: madevi-on-header-scan 13s var(--madevi-on-quiet-ease) infinite;
+}
+
+@keyframes madevi-on-sidebar-signal {
+  0%, 18% { transform: translateY(-130%); opacity: 0; }
+  27%, 71% { opacity: 0.78; }
+  83%, 100% { transform: translateY(410%); opacity: 0; }
+}
+
+[data-theme='madevi-on'] .sidebar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  width: 1px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, #9a7cff 44%, #efe6ff 50%, #f0ad63 56%, transparent 100%);
+  transform: translateY(-130%);
+  animation: madevi-on-sidebar-signal 14s var(--madevi-on-quiet-ease) infinite;
+}
+
+/* Surface depth is consistent, while motion is reserved for direct interaction.
+   Catatan cascade: tampilan kartu kanonis diatur oleh blok "TOTAL REDESIGN" di
+   interface-refresh.css; override glass Madevi On ada di sana, setelah blok itu. */
+[data-theme='madevi-on'] :is(.card, .article-card, .welcome-card, .sidebar-card, .settings__option, .rnav__context-card, .shop-disclosure, .tool-registry-summary) {
+  background: linear-gradient(145deg, rgb(15 31 51 / 90%), rgb(8 18 32 / 92%));
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 180ms var(--madevi-on-ease), box-shadow 180ms var(--madevi-on-ease), transform 180ms var(--madevi-on-ease);
+}
+
+[data-theme='madevi-on'] :is(.card, .article-card, .welcome-card):hover {
+  transform: translateY(-2px);
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+/* Sidebar remains spatially fixed; active information is conveyed with color and light only.
+   Catatan cascade: warna status aktif kanonis diatur oleh blok "TOTAL REDESIGN"
+   di interface-refresh.css (plum/amethyst). */
+[data-theme='madevi-on'] .sidebar-menu-card {
+  background: rgb(20 12 32 / 74%);
+  border-color: rgb(214 196 255 / 16%);
+  color: var(--text);
+  box-shadow: none;
+  transition: background-color 160ms var(--madevi-on-ease), border-color 160ms var(--madevi-on-ease), box-shadow 160ms var(--madevi-on-ease), color 160ms var(--madevi-on-ease);
+}
+
+[data-theme='madevi-on'] .sidebar-menu-card:hover,
+[data-theme='madevi-on'] .sidebar-menu-card:focus-visible,
+[data-theme='madevi-on'] .site-header__search-btn:hover {
+  transform: none;
+  background: rgb(36 22 58 / 82%);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+@keyframes madevi-on-active-beacon {
+  0%, 100% { box-shadow: inset 2px 0 0 #a487ff, 0 0 0 rgb(164 135 255 / 0%); }
+  50% { box-shadow: inset 2px 0 0 #d9c9ff, 0 0 22px rgb(164 135 255 / 15%); }
+}
+
+[data-theme='madevi-on'] :is(.sidebar-menu-card--active, .sidebar__tab--active, .rnav__tab--active, .r1-mapel-tab--active, .r1-semester-pill--active) {
+  transform: none;
+  background: linear-gradient(98deg, rgb(124 92 255 / 26%), rgb(96 60 168 / 30%) 66%, rgb(164 135 255 / 20%));
+  border-color: rgb(214 196 255 / 70%);
+  color: var(--accent-strong);
+  animation: madevi-on-active-beacon 4.8s var(--madevi-on-quiet-ease) infinite;
+}
+
+[data-theme='madevi-on'] .sidebar-menu-cards__divider {
+  background: var(--border);
+}
+
+@keyframes madevi-on-button-sheen {
+  from { background-position: 120% 0; }
+  to { background-position: -30% 0; }
+}
+
+[data-theme='madevi-on'] .button:not(.button--secondary):not(.button--outline):not(.button--ghost) {
+  background: linear-gradient(112deg, #8f6bff 0%, #b39dff 43%, #e9deff 50%, #a58bff 58%, #8f6bff 100%);
+  background-size: 185% 100%;
+  border-color: transparent;
+  color: var(--text-inverse);
+  box-shadow: 0 8px 20px rgb(164 135 255 / 20%);
+  transition: transform 160ms var(--madevi-on-ease), box-shadow 160ms var(--madevi-on-ease), filter 160ms var(--madevi-on-ease);
+}
+
+[data-theme='madevi-on'] .button:not(.button--secondary):not(.button--outline):not(.button--ghost):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgb(164 135 255 / 30%);
+  animation: madevi-on-button-sheen 720ms var(--madevi-on-ease) both;
+}
+
+[data-theme='madevi-on'] :is(.button--secondary, .button--outline, .button--ghost) {
+  background: rgb(10 24 42 / 68%);
+  border-color: var(--border-strong);
+  color: var(--accent-strong);
+  transition: background-color 160ms var(--madevi-on-ease), border-color 160ms var(--madevi-on-ease), box-shadow 160ms var(--madevi-on-ease), transform 160ms var(--madevi-on-ease);
+}
+
+[data-theme='madevi-on'] :is(.button--secondary, .button--outline, .button--ghost):hover {
+  transform: translateY(-1px);
+  background: rgb(36 22 58 / 76%);
+  border-color: var(--accent);
+  box-shadow: 0 8px 18px rgb(164 135 255 / 14%);
+}
+
+[data-theme='madevi-on'] :is(.input, input:not([type='checkbox']):not([type='radio']), textarea, select) {
+  background: rgb(5 15 28 / 86%);
+  border-color: var(--border-strong);
+  color: var(--text);
+  box-shadow: inset 0 1px 2px rgb(0 2 8 / 38%);
+  transition: border-color 160ms var(--madevi-on-ease), box-shadow 160ms var(--madevi-on-ease), background-color 160ms var(--madevi-on-ease);
+}
+
+[data-theme='madevi-on'] :is(input, textarea)::placeholder {
+  color: var(--text-placeholder);
+}
+
+[data-theme='madevi-on'] :is(button, a, input, textarea, select):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+[data-theme='madevi-on'] :is(input:not([type='checkbox']):not([type='radio']), textarea, select):focus-visible {
+  border-color: var(--accent);
+  box-shadow: inset 0 1px 2px rgb(0 2 8 / 38%), 0 0 0 4px rgb(180 158 255 / 18%);
+}
+
+[data-theme='madevi-on'] .badge {
+  background: rgb(11 26 45 / 80%);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+/* The assistant becomes a small, living local-source presence without covering its icon. */
+@keyframes madevi-on-orb-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.5px); }
+}
+
+@keyframes madevi-on-orb-orbit {
+  to { transform: rotate(1turn); }
+}
+
+[data-theme='madevi-on'] .ai-fab {
+  isolation: isolate;
+  overflow: hidden;
+  background: radial-gradient(circle at 35% 24%, #efe6ff 0%, #b79dff 13%, #453073 47%, #160c2b 74%);
+  border: 1px solid rgb(214 196 255 / 76%);
+  color: #faf8ff;
+  box-shadow: 0 10px 28px rgb(8 4 22 / 46%), 0 0 0 1px rgb(190 168 255 / 12%);
+  transition: transform 180ms var(--madevi-on-ease), box-shadow 180ms var(--madevi-on-ease);
+}
+
+[data-theme='madevi-on'] .ai-fab::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  z-index: 0;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background: linear-gradient(rgb(24 16 38 / 20%), rgb(24 16 38 / 20%)) padding-box, conic-gradient(from 40deg, transparent 0 48%, rgb(240 232 255 / 94%) 55%, #a487ff 63%, transparent 70% 100%) border-box;
+  animation: madevi-on-orb-orbit 5.4s linear infinite;
+}
+
+[data-theme='madevi-on'] .ai-fab__icon {
+  position: relative;
+  z-index: 1;
+  animation: madevi-on-orb-float 2.7s var(--madevi-on-quiet-ease) infinite;
+}
+
+[data-theme='madevi-on'] .ai-fab:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 15px 32px rgb(12 6 26 / 56%), 0 0 24px rgb(183 157 255 / 28%);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  [data-theme='madevi-on'] :is(.site-header, .header, .sidebar) {
+    background: #17111e;
+  }
+
+  [data-theme='madevi-on'] :is(.popup, .ai-popup, .settings-popup) {
+    background: #1c1428;
+  }
+}
+
+/*
+ * AMBIENT-001 — lapisan suasana mengacu gamenative.app, disesuaikan ke Madevi On:
+ * mesh-gradient blobs (elemen HTML, bukan gambar), grid 56px yang memudar, dan
+ * parallax lewat satu custom property. Semua mengikuti .madevi-sky (layer di
+ * belakang body, lihat interface-refresh.css), aria-hidden, dan berhenti total
+ * saat reduced-motion / route artikel.
+ */
+@keyframes madevi-on-blob-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(2.4vw, -2.2vh, 0) scale(1.05); }
+}
+
+@keyframes madevi-on-blob-drift-alt {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.02); }
+  50% { transform: translate3d(-3vw, 2.6vh, 0) scale(0.97); }
+}
+
+[data-theme='madevi-on'] .madevi-sky__blobs {
+  position: absolute;
+  inset: 0;
+}
+
+[data-theme='madevi-on'] .madevi-sky__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.5;
+  pointer-events: none;
+  will-change: transform;
+  /* Parallax: faktor per blob dipasang lewat var() agar satu scroll listener cukup. */
+  transform: translate3d(0, calc(var(--madevi-sky-parallax, 0) * var(--madevi-sky-blob-factor, 0)), 0);
+}
+
+[data-theme='madevi-on'] .madevi-sky__blob--amethyst {
+  top: -14%;
+  left: -8%;
+  width: 42vw;
+  height: 42vw;
+  max-width: 620px;
+  max-height: 620px;
+  background: radial-gradient(circle, rgb(124 92 255 / 62%), rgb(124 92 255 / 0%) 68%);
+  --madevi-sky-blob-factor: 0.18;
+  animation: madevi-on-blob-drift 34s var(--madevi-on-quiet-ease) infinite;
+}
+
+[data-theme='madevi-on'] .madevi-sky__blob--ember {
+  top: 4%;
+  right: -12%;
+  width: 36vw;
+  height: 36vw;
+  max-width: 540px;
+  max-height: 540px;
+  background: radial-gradient(circle, rgb(255 178 92 / 46%), rgb(255 178 92 / 0%) 68%);
+  --madevi-sky-blob-factor: 0.3;
+  animation: madevi-on-blob-drift-alt 41s var(--madevi-on-quiet-ease) infinite;
+}
+
+[data-theme='madevi-on'] .madevi-sky__blob--plum {
+  bottom: -22%;
+  left: 28%;
+  width: 48vw;
+  height: 48vw;
+  max-width: 700px;
+  max-height: 700px;
+  background: radial-gradient(circle, rgb(96 60 168 / 52%), rgb(96 60 168 / 0%) 70%);
+  --madevi-sky-blob-factor: 0.12;
+  animation: madevi-on-blob-drift 47s var(--madevi-on-quiet-ease) infinite;
+}
+
+/* Fading grid: satu lapis linear-gradient 56px dengan mask radial agar tepi memudar. */
+[data-theme='madevi-on'] .madevi-sky__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(178 156 255 / 8%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(178 156 255 / 8%) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 78% 62% at 50% 34%, black 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 62% at 50% 34%, black 40%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Route artikel & reduced-motion: aturan kanonis ada di blok AMBIENT-001 pada
+   interface-refresh.css (menang cascade). Tidak ada duplikat di sini. */
+.public-shell[data-reading-mode='true'] .madevi-sky__blobs,
+.public-shell[data-reading-mode='true'] .madevi-sky__grid {
+  opacity: 0;
+  transition: opacity 420ms var(--madevi-on-quiet-ease);
+}
+
+/* Theme-only decorative keyframes; definitions live with Madevi On rules. */
+@keyframes madevi-on-nebula-shift {
+  0%, 100% { background-position: 6% 4%, 94% 10%, 50% 106%, 0 0; }
+  48% { background-position: 14% 16%, 82% 2%, 58% 92%, 0 0; }
+  72% { background-position: 4% 12%, 96% 18%, 45% 98%, 0 0; }
+}
+
+@keyframes madevi-on-glow-drift {
+  0%, 100% { transform: translate3d(-3%, -2%, 0) scale(0.96); }
+  50% { transform: translate3d(5%, 4%, 0) scale(1.08); }
+}
+
+@keyframes madevi-on-map-orbit {
+  from { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(4deg) scale(1.04); }
+  to { transform: rotate(0deg) scale(1); }
+}
+
+@keyframes madevi-on-star-pulse {
+  0%, 100% { opacity: 0.42; transform: scale(0.82); }
+  50% { opacity: 1; transform: scale(1.18); }
+}
+
+@keyframes madevi-on-grid-flow {
+  to { background-position: 2rem 2rem, 2rem 2rem; }
+}
+
+@keyframes madevi-on-scan {
+  to { transform: translateX(110%); }
+}
+
+@keyframes madevi-on-cta-charge {
+  0%, 100% { box-shadow: 0 0 0 1px rgb(120 221 255 / 0.34), 0 0 14px rgb(78 177 255 / 0.16); }
+  50% { box-shadow: 0 0 0 1px rgb(186 239 255 / 0.72), 0 0 26px rgb(78 177 255 / 0.34); }
+}
+
+@keyframes madevi-on-assistant-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgb(94 206 255 / 0.1), 0 0 20px rgb(65 175 255 / 0.22); }
+  50% { box-shadow: 0 0 0 6px rgb(94 206 255 / 0.16), 0 0 34px rgb(65 175 255 / 0.4); }
+}
+
+@keyframes madevi-on-active-rail {
+  to { background-position: 0 160%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme='madevi-on'],
+  [data-theme='madevi-on'] body,
+  [data-theme='madevi-on'] .site-header::after,
+  [data-theme='madevi-on'] .sidebar::after,
+  [data-theme='madevi-on'] :is(.sidebar-menu-card--active, .sidebar__tab--active, .rnav__tab--active, .r1-mapel-tab--active, .r1-semester-pill--active),
+  [data-theme='madevi-on'] .ai-fab::before,
+  [data-theme='madevi-on'] .ai-fab__icon {
+    animation: none !important;
+  }
+
+  [data-theme='madevi-on'] :is(.card, .article-card, .welcome-card, .button, .sidebar-menu-card, .ai-fab):hover {
+    transform: none;
+  }
+}

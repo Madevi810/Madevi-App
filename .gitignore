@@ -1,0 +1,19 @@
+node_modules/
+.next/
+.npm-cache/
+.env
+.env.*
+!.env.example
+coverage/
+var/
+*.log
+*.pid
+.DS_Store
+# L07: runtime/backup/cache/build/agent artifact tidak masuk source release (Aturan 08).
+backup-local/
+cloud-local/
+*.dump
+*.orig
+*.rej
+tsconfig.tsbuildinfo
+/restore-targets/

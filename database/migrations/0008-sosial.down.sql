@@ -1,0 +1,18 @@
+DROP TABLE IF EXISTS __SCHEMA__.social_retention_runs;
+DROP TABLE IF EXISTS __SCHEMA__.group_appeals;
+DROP TABLE IF EXISTS __SCHEMA__.group_memberships;
+ALTER TABLE IF EXISTS __SCHEMA__.social_posts DROP CONSTRAINT IF EXISTS social_posts_group_fk;
+DROP TABLE IF EXISTS __SCHEMA__.public_groups;
+DROP TABLE IF EXISTS __SCHEMA__.message_evidence;
+DROP TABLE IF EXISTS __SCHEMA__.message_tombstones;
+DROP TABLE IF EXISTS __SCHEMA__.direct_messages;
+DROP TABLE IF EXISTS __SCHEMA__.direct_conversations;
+DROP TABLE IF EXISTS __SCHEMA__.message_requests;
+DROP TABLE IF EXISTS __SCHEMA__.friend_connections;
+DROP TABLE IF EXISTS __SCHEMA__.social_blocks;
+DROP TABLE IF EXISTS __SCHEMA__.social_reports;
+DROP TABLE IF EXISTS __SCHEMA__.saved_social_posts;
+DROP TABLE IF EXISTS __SCHEMA__.social_reactions;
+DROP TABLE IF EXISTS __SCHEMA__.social_comments;
+DROP TABLE IF EXISTS __SCHEMA__.social_post_attachments;
+DROP TABLE IF EXISTS __SCHEMA__.social_posts;

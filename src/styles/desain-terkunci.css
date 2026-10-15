@@ -1,0 +1,636 @@
+/* ==========================================================================
+   DESAIN TERKUNCI 20261015 — Header + Sidebar (spek Ade, ~00:50 WIB)
+   --------------------------------------------------------------------------
+   HEADER (3 bagian):
+     kiri   : teks "Madevi"
+     tengah : search bar kolom kapsul
+     kanan  : icon sidebar — 3 garis saat tertutup, X saat terbuka
+   SIDEBAR (slide dari kanan, DI BAWAH header + spasi):
+     1. baris info horizontal: jam 23:58:23 + tgl 17 oktober 2026,
+        icon pengaturan paling kanan (bahasa & tema)
+     2. developer card ber-border: "Madevi developer" + logo web
+     3. 3 icon sosmed follow kecil (Gmail, IG, TikTok)
+     4. kolom "Laporkan masalah"
+     5. divider
+     6. 7 kolom ruang ber-border; yang terpilih: garis warna tipis di dalamnya
+   Catatan: WEB bukan app — tanpa bottom nav. Basic dulu; tema menyusul.
+   ========================================================================== */
+
+:root {
+  --locked-header-height: 64px;
+  --locked-sidebar-gap: 10px;
+}
+
+/* ---- Header: 3 kolom sejajar ------------------------------------------- */
+
+.public-shell > .site-header .site-header__inner--locked {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.site-header__brand-name {
+  font-size: 1.18rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* Logo animasi per-huruf (kontrak visual v15): tiap huruf melayang acak. */
+.site-header__brand-name .mv-ch {
+  display: inline-block;
+  position: relative;
+  animation-duration: 5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.mv-a { animation-name: mvA; }
+.mv-b { animation-name: mvB; animation-delay: -1.2s; }
+.mv-c { animation-name: mvC; animation-delay: -2.1s; }
+.mv-d { animation-name: mvD; animation-delay: -0.6s; }
+.mv-e { animation-name: mvE; animation-delay: -3.3s; }
+.mv-f { animation-name: mvF; animation-delay: -1.8s; }
+@keyframes mvA { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-2px,-3px); } }
+@keyframes mvB { 0%,100% { transform: translate(0,0); } 50% { transform: translate(2px,-2px); } }
+@keyframes mvC { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-1px,3px); } }
+@keyframes mvD { 0%,100% { transform: translate(0,0); } 50% { transform: translate(3px,1px); } }
+@keyframes mvE { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-3px,2px); } }
+@keyframes mvF { 0%,100% { transform: translate(0,0); } 50% { transform: translate(1px,-3px); } }
+/* Madevi On: logo glossy 3D ungu (hanya tema ini, sesuai kontrak v15). */
+[data-theme='madevi-on'] .site-header__brand-name .mv-ch {
+  background: linear-gradient(180deg, #f0e4ff 10%, #c084fc 55%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 25%), 0 3px 8px rgb(124 58 237 / 45%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header__brand-name .mv-ch { animation: none; }
+}
+
+.site-header__brand:hover .site-header__brand-name,
+.site-header__brand:focus-visible .site-header__brand-name {
+  color: var(--accent-strong);
+}
+
+/* Search bar kolom kapsul di tengah header */
+.site-header__search-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: left;
+}
+
+.site-header__search-pill:hover,
+.site-header__search-pill:focus-visible {
+  border-color: var(--accent);
+  color: var(--text);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+.site-header__search-pill .site-header__search-placeholder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+/* ---- Sidebar full-height dari kanan (kontrak v15) ------------------------- */
+/* Ditutup via klik backdrop atau tombol Escape. */
+
+.public-shell > .sidebar-backdrop {
+  top: 0;
+}
+
+.public-shell > .sidebar {
+  top: 0;
+  height: 100dvh;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.9rem 0.9rem max(0.9rem, env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* ---- Popup pengaturan: terpusat sesuai kontrak v15 ------------------------ */
+
+.popup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(0 0 0 / 0.45);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.settings-popup {
+  width: min(100%, 320px);
+  max-height: min(88dvh, 42rem);
+  overflow-y: auto;
+  border-radius: 18px;
+}
+
+/* 1. Baris info: jam + tanggal horizontal, pengaturan kanan */
+.sidebar__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.15rem 0.15rem 0;
+}
+
+.sidebar__clock {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.sidebar__clock-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.sidebar__clock-date {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__settings-btn {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.sidebar__settings-btn:hover,
+.sidebar__settings-btn:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+  background: var(--accent-subtle);
+  outline: none;
+}
+
+/* 2. Developer card */
+.sidebar-dev {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.85rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-card);
+}
+
+.sidebar-dev__logo {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.sidebar-dev__title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+/* 3. Icon sosmed kecil */
+.sidebar-socials {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+  padding: 0 0.15rem;
+}
+
+.sidebar-socials__link {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-muted);
+  background: transparent;
+}
+
+.sidebar-socials__link:hover,
+.sidebar-socials__link:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+  background: var(--accent-subtle);
+  outline: none;
+}
+
+/* 4. Kolom laporkan masalah */
+.sidebar-report {
+  display: block;
+  margin-top: 0.75rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+.sidebar-report:hover,
+.sidebar-report:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+  background: var(--accent-subtle);
+  outline: none;
+}
+
+/* 5. Divider */
+.sidebar__divider {
+  margin: 0.9rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+/* 6. Tujuh kolom ruang */
+.sidebar-rooms {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding-bottom: 0.25rem;
+}
+
+.sidebar-room {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.sidebar-room:hover,
+.sidebar-room:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  outline: none;
+}
+
+.sidebar-room__icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+}
+
+.sidebar-room:hover .sidebar-room__icon,
+.sidebar-room:focus-visible .sidebar-room__icon {
+  color: var(--accent-strong);
+}
+
+.sidebar-room__title {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+/* Ruang terpilih: garis warna tipis di dalam kolom (bawah). */
+.sidebar-room--active {
+  border-color: color-mix(in srgb, var(--space-accent, var(--accent)) 55%, var(--border));
+  background: color-mix(in srgb, var(--space-tint, var(--accent-subtle)) 55%, var(--surface-card));
+}
+
+.sidebar-room--active::after {
+  content: '';
+  position: absolute;
+  left: 0.85rem;
+  right: 0.85rem;
+  bottom: 0.32rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--space-accent, var(--accent));
+}
+
+.sidebar-room--active .sidebar-room__icon {
+  color: var(--space-accent, var(--accent-strong));
+}
+
+/* Mode HP portrait: sidebar hampir selebar layar */
+@media (max-width: 30rem) {
+  .public-shell > .sidebar {
+    width: min(24rem, calc(100vw - 2rem)) !important;
+    max-width: none !important;
+  }
+  .site-header__search-pill .site-header__search-placeholder {
+    font-size: 0.88rem;
+  }
+}
+
+/* Reduced motion: tanpa kejutan */
+@media (prefers-reduced-motion: reduce) {
+  .site-header__search-pill,
+  .sidebar-socials__link,
+  .sidebar-report,
+  .sidebar-room {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   FASE 1 (DESAIN-V15-001) — Lapisan variabel kontrak visual v15
+   Memetakan nama variabel simulasi v15 ke sistem tema yang sudah ada.
+   Tidak mengubah sistem token atlas; hanya menambah alias per tema.
+   Default tema tetap dark (theme-provider.tsx); label Terang = light.
+   ========================================================================== */
+:root,
+[data-theme='light'] {
+  --bg: var(--background);
+  --surface2: var(--surface-muted);
+  --muted: var(--text-muted);
+  --border-soft: #e8e2d4;
+  --ink: #1a1a1a;
+  --shadow: rgba(0, 0, 0, 0.14);
+  --accent-line: var(--accent);
+}
+[data-theme='dark'] {
+  --bg: var(--background);
+  --surface2: var(--surface-muted);
+  --muted: var(--text-muted);
+  --border-soft: #2b2e32;
+  --ink: #f2f6fb;
+  --shadow: rgba(0, 0, 0, 0.55);
+  --accent-line: var(--accent);
+}
+[data-theme='madevi-on'] {
+  --bg: var(--background);
+  --surface2: var(--surface-muted);
+  --muted: var(--text-muted);
+  --border-soft: rgb(225 199 247 / 12%);
+  --ink: #f5efff;
+  --shadow: rgba(0, 0, 0, 0.6);
+  --accent-line: var(--accent);
+}
+
+/* ==========================================================================
+   FASE 2 (DESAIN-V15-001) — Tombol profil + dropdown + badge
+   ========================================================================== */
+.site-header__icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.site-header__icon-btn:active { transform: scale(0.92); }
+.site-header__dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #e11d48;
+  border: 2px solid var(--surface-header, var(--surface));
+}
+
+/* Dropdown profil: popup ber-border tepat di bawah header (kontrak v15). */
+.pf-drop--header {
+  position: fixed;
+  top: calc(var(--locked-header-height, 64px) + 6px);
+  right: 10px;
+  width: 264px;
+  max-width: calc(100vw - 20px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 18px 48px var(--shadow);
+  z-index: 75;
+  padding: 6px;
+  animation: pfIn 0.22s ease;
+}
+@keyframes pfIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.pf-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 12px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: left;
+}
+.pf-item:active { background: var(--surface-hover); }
+.pf-item .nbadge {
+  margin-left: auto;
+  background: #e11d48;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-drop--header { animation: none; }
+}
+
+/* Halaman notifikasi (Fase 2) */
+.notif-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.notif-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.notif-item--unread { border-color: var(--accent-line); background: var(--surface-card); }
+.notif-item__summary { margin: 0 0 6px; font-size: 0.9rem; line-height: 1.5; color: var(--text); }
+.notif-item__meta { margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.75rem; color: var(--muted); }
+.notif-item__mark { background: none; border: 1px solid var(--border); border-radius: 999px; color: var(--text); font-size: 0.72rem; font-weight: 700; padding: 5px 12px; cursor: pointer; font-family: inherit; }
+.notif-item__mark:active { transform: scale(0.94); }
+.art-ctl { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 999px; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+.art-ctl:active { transform: scale(0.95); }
+
+/* ==========================================================================
+   FASE 4 (DESAIN-V15-001) — Dashboard: stats + accordion taksonomi ruang
+   ========================================================================== */
+.home-stats {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0 4px;
+}
+.home-stat {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+}
+.home-stat__num { display: block; font-size: 1.35rem; font-weight: 800; color: var(--text); line-height: 1.1; }
+.home-stat__cap { display: block; font-size: 0.68rem; color: var(--muted); margin-top: 4px; }
+
+.home-rooms { margin-top: 22px; }
+.home-rooms__title { font-size: 1.05rem; font-weight: 800; color: var(--text); margin: 0 0 10px; }
+.home-rooms__list { display: flex; flex-direction: column; gap: 8px; }
+.room-acc { background: var(--surface); border: 1px solid var(--border-soft); border-radius: 10px; overflow: hidden; }
+.room-acc__top { display: flex; align-items: center; gap: 4px; padding: 6px 8px 6px 12px; }
+.room-acc__main { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; text-decoration: none; color: var(--text); padding: 6px 0; }
+.room-acc__icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: var(--surface2); color: var(--text); flex-shrink: 0; }
+.room-acc__icon svg { width: 20px; height: 20px; }
+.room-acc__name { font-size: 0.92rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.room-acc__exp { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: none; background: none; color: var(--muted); cursor: pointer; border-radius: 8px; flex-shrink: 0; transition: transform 0.2s; }
+.room-acc__exp--open { transform: rotate(90deg); color: var(--text); }
+.room-acc__exp:active { transform: scale(0.88); }
+.room-acc__exp--open:active { transform: rotate(90deg) scale(0.88); }
+.room-acc__sub { border-top: 1px solid var(--border-soft); padding: 6px 8px 10px 60px; display: flex; flex-direction: column; gap: 2px; animation: pfIn 0.2s ease; }
+.room-acc__subitem { display: block; padding: 8px 10px; border-radius: 8px; color: var(--text); text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+.room-acc__subitem:active { background: var(--surface2); }
+.room-acc__empty { margin: 4px 0; font-size: 0.8rem; color: var(--muted); }
+
+/* ==========================================================================
+   FASE 5 (DESAIN-V15-001) — Shop: bar filter horizontal + popup scroll + grid
+   ========================================================================== */
+/* Bar satu baris: [Kategori] [Urutkan] [search kecil kanan] (kontrak v15). */
+.shop-catalog__filters {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.shop-catalog__filters::-webkit-scrollbar { display: none; }
+.shop-catalog__dropdown { flex-shrink: 0; }
+.shop-catalog__query {
+  flex: 0 1 130px;
+  min-width: 110px;
+  margin-left: auto;
+}
+.shop-catalog__search-action { flex-shrink: 0; }
+.shop-catalog__saved-icon { flex-shrink: 0; }
+
+/* Popup kategori: daftar vertikal scrollable + centang (kontrak v15). */
+.shop-catalog__dropdown-menu {
+  max-height: 240px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.shop-catalog__dropdown-menu button.is-selected::after {
+  content: '✓';
+  font-weight: 800;
+  margin-left: 8px;
+}
+
+/* Grid 2 kolom di HP portrait (kontrak v15). */
+@media (max-width: 560px) {
+  .shop-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .shop-card { border-radius: 8px; }
+  .shop-card__img { border-radius: 8px 8px 0 0; }
+}
+
+/* ==========================================================================
+   FASE 6 (DESAIN-V15-001) — Artikel: border besar mepet tepi + navigasi bab
+   Judul sudah di luar border (article-header terpisah dari article-body-wrapper).
+   ========================================================================== */
+@media (max-width: 720px) {
+  .article-body-wrapper {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 18px 16px;
+    background: var(--surface);
+  }
+}
+@media (min-width: 721px) {
+  .article-body-wrapper {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    background: var(--surface);
+  }
+}
+.chapter-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 22px 5% 0;
+}
+.chapter-nav__pg { font-size: 0.82rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.chapter-nav .art-ctl:disabled { opacity: 0.4; cursor: default; }
+
+/* ==========================================================================
+   FASE 7 (DESAIN-V15-001) — AI fab di kanan bawah (kontrak v15)
+   ========================================================================== */
+.ai-fab {
+  left: auto;
+  right: max(1rem, env(safe-area-inset-right));
+}
+
+/* ==========================================================================
+   FASE 8 (DESAIN-V15-001) — Footer: "Madevi @2027" jelas (kontrak v15)
+   ========================================================================== */
+.site-footer__brand {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0 0 6px;
+  text-align: center;
+}
+.site-footer__inner { text-align: center; }

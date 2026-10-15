@@ -1,0 +1,1474 @@
+/*
+ * UX-REDESIGN-002 — Final visual system
+ *
+ * Fieldbook, Night Ledger, and Signal Atlas share semantic tokens, while
+ * their surfaces, typography, motion, and visual density remain distinct.
+ * This layer is intentionally imported last so it owns the final theme and
+ * motion cascade without changing routes, data, or sidebar structure.
+ */
+
+@font-face {
+  font-family: 'Madevi Space';
+  src: url('/fonts/space-grotesk-400.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Madevi Space';
+  src: url('/fonts/space-grotesk-600.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Madevi Space';
+  src: url('/fonts/space-grotesk-700.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Madevi Serif';
+  src: url('/fonts/instrument-serif-400.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --atlas-font-ui: 'Madevi Space', 'Noto Sans', ui-sans-serif, system-ui, sans-serif;
+  --atlas-font-editorial: 'Madevi Serif', Georgia, serif;
+  --atlas-radius-data: 0.5rem;
+  --atlas-radius-panel: 0.78rem;
+  --atlas-radius-feature: 1.7rem 1.7rem 1.7rem 0.42rem;
+  --atlas-line: 1px;
+  --atlas-content-max: 72rem;
+  --atlas-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --atlas-ease-entry: cubic-bezier(0.22, 1, 0.3, 1);
+  --basic-motion-enter: 300ms;
+  --basic-motion-distance: 6px;
+  --on-motion-enter: 620ms;
+  --on-motion-stagger: 75ms;
+  --on-motion-meteor-min: 3500ms;
+  --on-motion-meteor-max: 7000ms;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--atlas-font-ui);
+  font-synthesis: none;
+}
+
+/* Fieldbook: a calm paper workbench for reading and orientation. */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --background: #f7f4ee;
+  --surface: #fdfbf7;
+  --surface-muted: #f0ece2;
+  --surface-card: #fffdf8;
+  --surface-header: rgb(253 251 247 / 94%);
+  --surface-hover: #f0f5ef;
+  --surface-overlay: rgb(19 27 25 / 42%);
+  --accent: #176b63;
+  --accent-strong: #0e4d47;
+  --accent-hover: #0c5b53;
+  --accent-subtle: rgb(23 107 99 / 12%);
+  --text: #16201e;
+  --text-muted: #5b665f;
+  --text-inverse: #fffdf8;
+  --text-placeholder: #7d8780;
+  --border: #d8d2c6;
+  --border-strong: #90897c;
+  --focus-ring: #bc663a;
+  --shadow-sm: none;
+  --shadow-md: 0 12px 28px rgb(45 39 30 / 10%);
+  --shadow-lg: 0 24px 54px rgb(45 39 30 / 17%);
+  --radius-sm: var(--atlas-radius-data);
+  --radius-md: var(--atlas-radius-data);
+  --radius-lg: var(--atlas-radius-panel);
+  --radius-card: var(--atlas-radius-panel);
+}
+
+/* Night Ledger: dense, graphite, and deliberately non-cosmic. */
+[data-theme='dark'] {
+  color-scheme: dark;
+  --background: #121315;
+  --surface: #191a1c;
+  --surface-muted: #0e0f11;
+  --surface-card: #1d1f21;
+  --surface-header: #1d1f21;
+  --surface-hover: #27292c;
+  --surface-overlay: rgb(0 0 0 / 72%);
+  --accent: #c5c8ca;
+  --accent-strong: #f2f3f3;
+  --accent-hover: #dedfe0;
+  --accent-subtle: rgb(197 200 202 / 15%);
+  --text: #f0f1f1;
+  --text-muted: #b9bbbd;
+  --text-inverse: #17181a;
+  --text-placeholder: #909397;
+  --border: #404347;
+  --border-strong: #767a7e;
+  --focus-ring: #d9dcde;
+  --shadow-sm: none;
+  --shadow-md: 0 16px 32px rgb(0 0 0 / 30%);
+  --shadow-lg: 0 28px 64px rgb(0 0 0 / 48%);
+  --radius-sm: var(--atlas-radius-data);
+  --radius-md: var(--atlas-radius-data);
+  --radius-lg: var(--atlas-radius-panel);
+  --radius-card: var(--atlas-radius-panel);
+}
+
+/* Dark keeps contextual semantic colours where needed, while the former
+   green/turquoise room accents follow Night Ledger's graphite language. */
+[data-theme='dark'] :is([data-space='line'], [data-space='shop'], [data-space='tools']) {
+  --space-accent: #c5c8ca;
+  --space-tint: rgb(197 200 202 / 13%);
+}
+
+/* Signal Atlas: expressive, but the cosmic layer never replaces readable UI. */
+[data-theme='madevi-on'] {
+  color-scheme: dark;
+  --background: #110b18;
+  --surface: #17101f;
+  --surface-muted: #100a17;
+  --surface-card: #1a1223;
+  --surface-header: rgb(19 12 28 / 86%);
+  --surface-hover: #271936;
+  --surface-overlay: rgb(5 2 9 / 76%);
+  --accent: #c99bff;
+  --accent-strong: #f0e4ff;
+  --accent-hover: #dfc7ff;
+  --accent-subtle: rgb(201 155 255 / 16%);
+  --text: #f5eef8;
+  --text-muted: #c7b7cf;
+  --text-inverse: #160d20;
+  --text-placeholder: #a997b1;
+  --border: rgb(225 199 247 / 23%);
+  --border-strong: rgb(235 208 255 / 54%);
+  --focus-ring: #f5c15c;
+  --shadow-sm: none;
+  --shadow-md: 0 18px 38px rgb(0 0 0 / 34%);
+  --shadow-lg: 0 30px 72px rgb(0 0 0 / 50%);
+  --radius-sm: var(--atlas-radius-data);
+  --radius-md: var(--atlas-radius-data);
+  --radius-lg: var(--atlas-radius-panel);
+  --radius-card: var(--atlas-radius-panel);
+}
+
+/* --- Shell and static overlay ------------------------------------------------ */
+
+.public-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  background: var(--background);
+}
+
+.public-shell > .site-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 700 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  opacity: 1 !important;
+}
+
+.public-shell__body,
+.public-shell .site-header__inner {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - clamp(1.25rem, 4vw, 3.5rem)), var(--madevi-page-width));
+  max-width: var(--madevi-page-width);
+  margin-inline: auto;
+}
+
+.public-shell__body {
+  padding-inline: 0;
+  padding-block: clamp(1.25rem, 3vw, 2.5rem) max(5rem, calc(env(safe-area-inset-bottom) + 4rem));
+}
+
+.public-shell > :is(footer, .footer) {
+  position: relative;
+  z-index: 1;
+}
+
+.madevi-sky {
+  display: none;
+}
+
+[data-theme='madevi-on'] .madevi-sky {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 16% 9%, rgb(201 155 255 / 13%), transparent 24rem),
+    radial-gradient(circle at 92% 19%, rgb(245 193 92 / 10%), transparent 20rem),
+    #110b18;
+}
+
+[data-theme='madevi-on'] .madevi-sky__stars,
+[data-theme='madevi-on'] .madevi-sky__atlas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+[data-theme='madevi-on'] .madevi-sky__stars {
+  color: rgb(245 230 255 / 36%);
+  opacity: 0.68;
+}
+
+[data-theme='madevi-on'] .madevi-sky__stars circle {
+  fill: currentColor;
+  filter: none;
+}
+
+[data-theme='madevi-on'] .madevi-sky__atlas {
+  color: rgb(213 182 255 / 16%);
+  opacity: 0.72;
+}
+
+[data-theme='madevi-on'] .madevi-sky__atlas path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-dasharray: 3 13;
+}
+
+[data-theme='madevi-on'] .madevi-sky__atlas-node {
+  fill: #d9c3ff;
+  opacity: 0.55;
+}
+
+[data-space='explore'] .madevi-sky__atlas-node--explore,
+[data-space='tutorial'] .madevi-sky__atlas-node--tutorial,
+[data-space='school'] .madevi-sky__atlas-node--school,
+[data-space='line'] .madevi-sky__atlas-node--line,
+[data-space='services'] .madevi-sky__atlas-node--services,
+[data-space='shop'] .madevi-sky__atlas-node--shop,
+[data-space='tools'] .madevi-sky__atlas-node--tools {
+  fill: #f5c15c;
+  opacity: 1;
+}
+
+[data-theme='madevi-on'] .madevi-sky__grid {
+  position: absolute;
+  inset: 0;
+  display: block;
+  opacity: 0.34;
+  background-image:
+    linear-gradient(rgb(221 196 255 / 10%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(221 196 255 / 10%) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 72% 58% at 50% 24%, black 36%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 72% 58% at 50% 24%, black 36%, transparent 100%);
+}
+
+[data-theme='madevi-on'] .madevi-sky__blobs {
+  position: absolute;
+  inset: -18%;
+  display: block;
+  overflow: hidden;
+  opacity: 0.88;
+}
+
+[data-theme='madevi-on'] .madevi-sky__blob {
+  position: absolute;
+  display: block;
+  width: min(54rem, 76vw);
+  aspect-ratio: 1.18;
+  border-radius: 48% 52% 46% 54%;
+  filter: blur(72px);
+  opacity: 0.48;
+  will-change: transform, opacity;
+}
+
+[data-theme='madevi-on'] .madevi-sky__blob--amethyst {
+  top: -8%;
+  left: -10%;
+  background: #9c6cff;
+  animation: atlas-aurora-amethyst 18s ease-in-out infinite alternate;
+}
+
+[data-theme='madevi-on'] .madevi-sky__blob--ember {
+  top: 7%;
+  right: -17%;
+  background: #f0ac5b;
+  animation: atlas-aurora-ember 23s ease-in-out infinite alternate;
+}
+
+[data-theme='madevi-on'] .madevi-sky__blob--plum {
+  bottom: -24%;
+  left: 22%;
+  background: #4a79db;
+  animation: atlas-aurora-plum 27s ease-in-out infinite alternate;
+}
+
+[data-theme='madevi-on'] .madevi-sky__scan {
+  position: absolute;
+  top: 10%;
+  left: -24%;
+  width: 26%;
+  height: 72%;
+  border-right: 1px solid rgb(245 193 92 / 0%);
+  background: linear-gradient(90deg, transparent, rgb(201 155 255 / 0%), rgb(245 193 92 / 14%), transparent);
+  opacity: 0;
+}
+
+[data-theme='madevi-on'] .madevi-sky__meteor {
+  width: min(16rem, 36vw);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #82c6ff 38%, #f5c15c 70%, transparent);
+  box-shadow: 0 0 12px rgb(130 198 255 / 44%);
+}
+
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .madevi-sky__scan {
+  animation: atlas-scan-pass 8s var(--atlas-ease) infinite;
+}
+
+[data-theme='madevi-on'] .public-shell:not([data-atlas-signal]) :is(.madevi-sky__scan, .madevi-sky__meteor) {
+  display: none;
+}
+
+.public-shell[data-reading-mode='true'] :is(.madevi-sky__grid, .madevi-sky__atlas, .madevi-sky__scan, .madevi-sky__meteor) {
+  animation: none !important;
+}
+
+.public-shell[data-reading-mode='true'] .madevi-sky__grid {
+  opacity: 0.08;
+}
+
+.public-shell[data-reading-mode='true'] .madevi-sky__atlas {
+  opacity: 0.14;
+}
+
+.public-shell[data-reading-mode='true'] .madevi-sky__blobs {
+  display: none;
+}
+
+@keyframes atlas-aurora-amethyst {
+  0% { transform: translate3d(-5%, -2%, 0) scale(0.92) rotate(-8deg); opacity: 0.3; }
+  52% { transform: translate3d(12%, 10%, 0) scale(1.13) rotate(11deg); opacity: 0.58; }
+  100% { transform: translate3d(4%, 22%, 0) scale(0.98) rotate(2deg); opacity: 0.4; }
+}
+
+@keyframes atlas-aurora-ember {
+  0% { transform: translate3d(8%, -8%, 0) scale(0.86) rotate(14deg); opacity: 0.18; }
+  48% { transform: translate3d(-18%, 18%, 0) scale(1.15) rotate(-13deg); opacity: 0.46; }
+  100% { transform: translate3d(-7%, 28%, 0) scale(0.98) rotate(6deg); opacity: 0.26; }
+}
+
+@keyframes atlas-aurora-plum {
+  0% { transform: translate3d(-12%, 8%, 0) scale(0.94) rotate(-10deg); opacity: 0.2; }
+  56% { transform: translate3d(14%, -13%, 0) scale(1.18) rotate(9deg); opacity: 0.43; }
+  100% { transform: translate3d(22%, -4%, 0) scale(0.96) rotate(1deg); opacity: 0.28; }
+}
+
+@keyframes atlas-scan-pass {
+  0%, 76% { transform: translateX(0); opacity: 0; }
+  80% { opacity: 0.74; }
+  92% { transform: translateX(470%); opacity: 0.52; }
+  100% { transform: translateX(470%); opacity: 0; }
+}
+
+/* --- Header and kinetic typography ----------------------------------------- */
+
+.public-shell .site-header {
+  border-bottom: var(--atlas-line) solid var(--border);
+  background: var(--surface-card) !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+[data-theme='light'] .public-shell .site-header,
+[data-theme='dark'] .public-shell .site-header {
+  border-color: var(--border-strong);
+  background: var(--surface-card) !important;
+  box-shadow: none !important;
+}
+
+[data-theme='madevi-on'] .public-shell .site-header {
+  border-color: rgb(235 208 255 / 36%);
+  background: #190f24 !important;
+  box-shadow: inset 0 -1px 0 rgb(245 193 92 / 18%) !important;
+}
+
+.public-shell .site-header::before,
+.public-shell .site-header::after {
+  display: none !important;
+  content: none !important;
+}
+
+.site-header__inner {
+  min-height: 4.25rem;
+}
+
+.site-header__brand {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.62rem;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.site-header__brand-mark {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.65rem 0.65rem 0.65rem 0.16rem;
+  background: var(--surface-card);
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.site-header__brand-mark img {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.site-header__brand-lockup {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  width: 5.45rem;
+  min-width: 5.45rem;
+  height: 1.75rem;
+  overflow: visible;
+  color: var(--text);
+  font-family: var(--atlas-font-ui);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.site-header__brand-name {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 1.13rem;
+}
+
+/* Older cascades drew a second transparent "Madevi" via pseudo-elements.
+   The wordmark now owns a single, real set of six animated letters. */
+.public-shell .site-header__brand-name::before,
+.public-shell .site-header__brand-name::after {
+  display: none !important;
+  content: none !important;
+  animation: none !important;
+}
+
+.site-header__brand-letter {
+  display: inline-block;
+  transform-origin: center bottom;
+  will-change: transform, opacity;
+}
+
+.site-header__brand-bolt {
+  position: absolute;
+  z-index: 2;
+  bottom: -0.3rem;
+  left: -0.38rem;
+  width: 6.25rem;
+  height: 2rem;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(0 0 4px rgb(121 188 255 / 76%)) drop-shadow(0 0 7px rgb(245 193 92 / 45%));
+}
+
+.site-header__bolt {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.1;
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+  opacity: 0;
+}
+
+.site-header__bolt--blue { stroke: #79bcff; }
+.site-header__bolt--yellow { stroke: #f5c15c; }
+
+/* Animasi huruf logo hanya untuk Madevi On. Light dan Dark tampil statis. */
+[data-theme='madevi-on'] .site-header__brand-lockup[data-brand-motion='basic'] .site-header__brand-letter {
+  animation: atlas-pixar-letter 820ms var(--atlas-ease-entry) both;
+  animation-delay: var(--atlas-letter-delay);
+}
+
+[data-theme='madevi-on'] .site-header__brand-lockup {
+  color: #fff7ff;
+}
+
+[data-theme='madevi-on'] .site-header__brand-lockup[data-brand-motion='on'] .site-header__brand-letter {
+  animation: atlas-pixar-letter 1.16s var(--atlas-ease-entry) both !important;
+  animation-delay: var(--atlas-letter-delay);
+}
+
+[data-theme='madevi-on'] .site-header__brand-lockup[data-brand-motion='on'] .site-header__bolt--blue {
+  animation: atlas-bolt-blue 1.55s var(--atlas-ease) both 470ms;
+}
+
+[data-theme='madevi-on'] .site-header__brand-lockup[data-brand-motion='on'] .site-header__bolt--yellow {
+  animation: atlas-bolt-yellow 1.32s var(--atlas-ease) both 620ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  [data-theme='madevi-on'] .site-header__brand:hover .site-header__brand-letter {
+    animation: atlas-letter-hover 380ms var(--atlas-ease) both;
+    animation-delay: var(--atlas-letter-delay);
+  }
+
+  [data-theme='madevi-on'] .site-header__brand:hover .site-header__bolt--yellow {
+    animation: atlas-bolt-yellow 420ms var(--atlas-ease) both;
+  }
+}
+
+@keyframes atlas-letter-basic {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes atlas-letter-assemble {
+  0% { opacity: 0; transform: translate(var(--atlas-entry-x), var(--atlas-entry-y)) rotate(var(--atlas-entry-rotate)) scale(0.72, 1.24); }
+  62% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1.1, 0.84); }
+  80% { transform: translate(0, 0) scale(0.96, 1.08); }
+  100% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+
+@keyframes atlas-pixar-letter {
+  0% { opacity: 0; transform: translate(var(--atlas-entry-x), var(--atlas-entry-y)) rotate(var(--atlas-entry-rotate)) scale(0.38, 1.62); }
+  28% { opacity: 1; transform: translate(0.16em, -0.18em) rotate(-3deg) scale(1.22, 0.68); }
+  54% { transform: translate(-0.08em, 0.05em) rotate(1deg) scale(0.88, 1.18); }
+  74% { transform: translate(0, -0.13em) rotate(0deg) scale(1.07, 0.94); }
+  100% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+
+@keyframes atlas-letter-hover {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  40% { transform: translateY(-3px) rotate(-2deg) scale(1.04, 0.96); }
+  72% { transform: translateY(1px) rotate(1deg) scale(0.98, 1.02); }
+}
+
+@keyframes atlas-bolt-blue {
+  0%, 12% { opacity: 0; stroke-dashoffset: 150; }
+  27% { opacity: 0.88; }
+  58% { opacity: 0.62; stroke-dashoffset: 0; }
+  100% { opacity: 0; stroke-dashoffset: -16; }
+}
+
+@keyframes atlas-bolt-yellow {
+  0%, 12% { opacity: 0; stroke-dashoffset: 150; }
+  35% { opacity: 1; }
+  72% { opacity: 0.72; stroke-dashoffset: 0; }
+  100% { opacity: 0; stroke-dashoffset: -16; }
+}
+
+/* --- Layout, hierarchy, and component surfaces ----------------------------- */
+
+.page-shell,
+.home-content-wrapper,
+.social-dashboard,
+.profile-main,
+.info-page__inner,
+.jasa-page__content {
+  min-width: 0;
+}
+
+.page-shell > header,
+.home-content-wrapper > section,
+.section-heading,
+.info-page__inner > section {
+  border-top: var(--atlas-line) solid var(--border);
+}
+
+.page-shell > header,
+.home-content-wrapper > section:first-child {
+  border-top: 0;
+}
+
+:is(.page-shell, .home-content-wrapper, .social-dashboard, .profile-main, .info-page__inner) h1,
+.welcome-card__title {
+  color: var(--text);
+  font-family: var(--atlas-font-ui);
+  font-weight: 700;
+  letter-spacing: -0.065em;
+  line-height: 0.98;
+}
+
+[data-theme='light'] :is(.article-page, .article-detail, .article-content, article) :is(h1, h2) {
+  font-family: var(--atlas-font-editorial);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.03;
+}
+
+.welcome-card,
+.home-content-wrapper .home-hero {
+  border: var(--atlas-line) solid var(--border);
+  border-radius: var(--atlas-radius-feature);
+  background: var(--surface-card);
+  box-shadow: none;
+}
+
+/* The hero no longer reserves a visual-card column. Copy and real quick paths
+   use the full width after the large decorative M card was removed. */
+.public-shell .home-content-wrapper .home-hero {
+  display: grid;
+  grid-template-areas: 'copy' 'paths';
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: clamp(1.35rem, 3vw, 2.35rem);
+  min-height: clamp(25rem, 36vw, 31rem);
+  padding: clamp(1.5rem, 4vw, 3.35rem);
+}
+
+.public-shell .home-hero__copy {
+  grid-area: copy;
+  max-width: 48rem;
+}
+
+.public-shell .home-hero__paths {
+  grid-area: paths;
+  width: min(100%, 44rem);
+}
+
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-content-wrapper .home-hero {
+  overflow: hidden;
+  animation: atlas-hero-arrive 860ms var(--atlas-ease-entry) both;
+}
+
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__copy {
+  animation: atlas-hero-copy-arrive 920ms var(--atlas-ease-entry) both 80ms;
+}
+
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__wordmark-letters > span {
+  animation: atlas-hero-letter 880ms var(--atlas-ease-entry) both;
+}
+
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__wordmark-letters {
+  font-family: var(--atlas-font-ui);
+}
+
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__wordmark-letters > span:nth-child(2) { animation-delay: 80ms; }
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__wordmark-letters > span:nth-child(3) { animation-delay: 160ms; }
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__wordmark-letters > span:nth-child(4) { animation-delay: 240ms; }
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__wordmark-letters > span:nth-child(5) { animation-delay: 320ms; }
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__wordmark-letters > span:nth-child(6) { animation-delay: 400ms; }
+
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__paths a {
+  animation: atlas-path-arrive 680ms var(--atlas-ease-entry) both;
+}
+
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__paths a:nth-child(2) { animation-delay: 140ms; }
+[data-theme='madevi-on'] .public-shell[data-atlas-signal] .home-hero__paths a:nth-child(3) { animation-delay: 220ms; }
+
+:is([data-theme='light'], [data-theme='dark']) .public-shell[data-atlas-signal] .home-content-wrapper .home-hero {
+  animation: atlas-basic-arrive var(--basic-motion-enter) var(--atlas-ease-entry) both;
+}
+
+@keyframes atlas-hero-arrive {
+  0% { opacity: 0; transform: translateY(16px); clip-path: inset(0 0 100% 0); }
+  66% { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); }
+  82% { transform: translateY(-3px); }
+  100% { opacity: 1; transform: translateY(0); clip-path: inset(0); }
+}
+
+@keyframes atlas-hero-copy-arrive {
+  0% { opacity: 0; transform: translate3d(-1.2rem, 0.5rem, 0); }
+  70% { opacity: 1; transform: translate3d(0.12rem, 0, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes atlas-hero-letter {
+  0% { opacity: 0; transform: translateY(1.25em) rotate(11deg) scale(0.58, 1.35); }
+  44% { opacity: 1; transform: translateY(-0.24em) rotate(-3deg) scale(1.13, 0.82); }
+  72% { transform: translateY(0.08em) rotate(1deg) scale(0.95, 1.08); }
+  100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+}
+
+@keyframes atlas-path-arrive {
+  from { opacity: 0; transform: translateX(-0.8rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes atlas-basic-arrive {
+  from { opacity: 0.78; transform: translateY(var(--basic-motion-distance)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.welcome-card__illustration {
+  border: var(--atlas-line) solid var(--border-strong);
+  border-radius: 1.25rem 1.25rem 1.25rem 0.32rem;
+  background: var(--surface-muted);
+  box-shadow: none;
+}
+
+.public-shell :is(.card, .article-card, .home-space-card, .sidebar-card, .settings__option, .rnav__context-card, .shop-disclosure, .tool-registry-summary, .profile-card__panel, .rnav-branch, .r1-school-section, .r1-access-gate, .messages-compose, .messages-list, .messages-chat, .social-dashboard__content) {
+  border: var(--atlas-line) solid var(--border);
+  border-radius: var(--atlas-radius-panel);
+  background: var(--surface-card);
+  box-shadow: none;
+  transition: border-color 160ms var(--atlas-ease), background-color 160ms var(--atlas-ease), box-shadow 160ms var(--atlas-ease);
+}
+
+.public-shell :is(.card, .article-card, .home-space-card, .sidebar-card, .settings__option, .rnav__context-card, .shop-disclosure, .tool-registry-summary):hover {
+  transform: none !important;
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+[data-theme='madevi-on'] .public-shell :is(.card, .article-card, .home-space-card, .sidebar-card, .settings__option, .rnav__context-card, .shop-disclosure, .tool-registry-summary, .profile-card__panel, .rnav-branch, .r1-school-section, .r1-access-gate, .messages-compose, .messages-list, .messages-chat, .social-dashboard__content) {
+  background: #1a1223;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
+}
+
+[data-theme='madevi-on'] .public-shell :is(.home-content-wrapper .home-hero, .home-space-card:first-child) {
+  border-color: rgb(232 202 255 / 44%);
+  background: linear-gradient(136deg, #21152d 0%, #17101f 72%);
+}
+
+[data-theme='madevi-on'] .public-shell :is(.article-card, article, .article-content, .article-detail) {
+  background: #17101f;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.public-shell :is(.button, .mdv-button) {
+  position: relative;
+  overflow: hidden;
+  border: var(--atlas-line) solid var(--accent);
+  border-radius: var(--atlas-radius-data);
+  background: var(--accent);
+  color: var(--text-inverse);
+  box-shadow: none;
+  transition: border-color 150ms var(--atlas-ease), background-color 150ms var(--atlas-ease), box-shadow 150ms var(--atlas-ease), color 150ms var(--atlas-ease);
+}
+
+.public-shell :is(.button, .mdv-button):is(.button--secondary, .button--outline, .button--ghost) {
+  border-color: var(--border-strong);
+  background: transparent;
+  color: var(--text);
+}
+
+.public-shell :is(.button, .mdv-button):hover:not(:disabled) {
+  transform: none !important;
+  border-color: var(--accent-strong);
+  background: var(--accent-hover);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 16%);
+}
+
+.public-shell :is(.button, .mdv-button):is(.button--secondary, .button--outline, .button--ghost):hover:not(:disabled) {
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+}
+
+[data-theme='madevi-on'] .public-shell :is(.button, .mdv-button):not(.button--secondary):not(.button--outline):not(.button--ghost) {
+  border-color: #f5c15c;
+  background: linear-gradient(112deg, #c99bff 0%, #ecd7ff 48%, #f5c15c 100%);
+  color: #160d20;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  [data-theme='madevi-on'] .public-shell :is(.button, .mdv-button):not(.button--secondary):not(.button--outline):not(.button--ghost):hover:not(:disabled) {
+    box-shadow: inset 0 -2px 0 rgb(22 13 32 / 30%), 0 0 0 3px rgb(245 193 92 / 10%);
+  }
+}
+
+:is(input:not([type='checkbox']):not([type='radio']), textarea, select) {
+  min-height: 2.75rem;
+  border: var(--atlas-line) solid var(--border-strong);
+  border-radius: var(--atlas-radius-data);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: none;
+}
+
+:is(button, a, input, textarea, select):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+:is(input:not([type='checkbox']):not([type='radio']), textarea, select):focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+/* --- Sidebar, filters, and temporary chrome -------------------------------- */
+
+.sidebar,
+.site-header,
+.search-overlay__dialog,
+.ai-popup,
+.settings-popup,
+.r1-popup {
+  border-color: var(--border-strong);
+}
+
+.public-shell .sidebar {
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.public-shell :is(.sidebar-menu-card, .sidebar__tab, .rnav__tab, .r1-mapel-tab, .r1-semester-pill) {
+  position: relative;
+  border-color: var(--border);
+  border-radius: var(--atlas-radius-data);
+  background: transparent;
+  color: var(--text);
+  transition: color 160ms var(--atlas-ease), background-color 160ms var(--atlas-ease), border-color 160ms var(--atlas-ease), box-shadow 160ms var(--atlas-ease);
+}
+
+.public-shell :is(.sidebar-menu-card, .sidebar__tab, .rnav__tab, .r1-mapel-tab, .r1-semester-pill):hover,
+.public-shell :is(.sidebar-menu-card, .sidebar__tab, .rnav__tab, .r1-mapel-tab, .r1-semester-pill):focus-visible {
+  transform: none !important;
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+}
+
+.public-shell :is(.sidebar-menu-card--active, .sidebar__tab--active, .rnav__tab--active, .r1-mapel-tab--active, .r1-semester-pill--active) {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+[data-theme='madevi-on'] .public-shell :is(.site-header, .sidebar, .search-overlay__dialog, .ai-popup, .settings-popup, .r1-popup) {
+  background: rgb(23 14 32 / 88%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%), var(--shadow-lg);
+  backdrop-filter: blur(18px) saturate(118%);
+  -webkit-backdrop-filter: blur(18px) saturate(118%);
+}
+
+[data-theme='madevi-on'] .public-shell .site-header {
+  background: #190f24 !important;
+  box-shadow: inset 0 -1px 0 rgb(245 193 92 / 18%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+[data-theme='madevi-on'] .public-shell :is(.sidebar-menu-card--active, .sidebar__tab--active, .rnav__tab--active, .r1-mapel-tab--active, .r1-semester-pill--active) {
+  border-color: #c99bff;
+  box-shadow: inset 3px 0 0 #f5c15c;
+}
+
+.site-header__search-btn,
+.site-header__menu-btn {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border-radius: var(--atlas-radius-data);
+}
+
+.site-header__search-btn:hover,
+.site-header__menu-btn:hover {
+  transform: none;
+  background: var(--accent-subtle);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Final chrome repair                                                        */
+/*                                                                            */
+/* The drawer is rendered after the header, but its backdrop is intentionally */
+/* below the drawer. Keep both layers fixed so the drawer cannot be clipped by */
+/* the sticky shell or hidden behind its own backdrop.                         */
+/* -------------------------------------------------------------------------- */
+
+.public-shell > .site-header {
+  isolation: isolate;
+}
+
+.public-shell > .sidebar-backdrop {
+  position: fixed;
+  z-index: 899;
+  inset: 0;
+}
+
+.public-shell > .sidebar {
+  position: fixed;
+  z-index: 900;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  display: flex;
+  flex-direction: column;
+  width: min(25rem, calc(100vw - 1rem));
+  max-width: calc(100vw - 1rem);
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-left: 1px solid var(--border-strong);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-lg);
+}
+
+.public-shell > .sidebar .sidebar__header {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.public-shell > .sidebar .sidebar__menu-area {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.public-shell > .sidebar .sidebar-menu-cards {
+  min-width: 0;
+}
+
+.public-shell .site-header__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.public-shell .site-header__brand {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.public-shell .site-header__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.public-shell .site-header__search-btn {
+  display: inline-flex;
+  flex: 0 1 13rem;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  min-width: 2.75rem;
+  max-width: 13rem;
+  padding-inline: 0.75rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.public-shell .site-header__search-placeholder {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.public-shell .site-header__menu-btn,
+.public-shell .site-header__search-btn {
+  flex-shrink: 0;
+}
+
+.search-mode {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.search-mode .site-header--search {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+}
+
+.search-mode .search-overlay {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.search-mode .site-header__search-input {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 30rem) {
+  .public-shell > .sidebar {
+    width: calc(100vw - 0.5rem);
+    max-width: calc(100vw - 0.5rem);
+  }
+
+  .public-shell .site-header__inner {
+    width: min(calc(100% - 1rem), var(--madevi-page-width));
+    gap: 0.35rem;
+  }
+
+  .public-shell .site-header__actions {
+    gap: 0.25rem;
+  }
+
+  .public-shell .site-header__search-btn {
+    flex-basis: 2.75rem;
+    width: 2.75rem;
+    padding-inline: 0;
+    justify-content: center;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Stable application chrome                                                  */
+/*                                                                            */
+/* Keep the public shell calm and predictable. This is intentionally the last */
+/* layer: older visual experiments above it must not be able to reintroduce   */
+/* overflow, giant headings, or competing surfaces.                          */
+/* -------------------------------------------------------------------------- */
+
+.public-shell {
+  min-height: 100dvh;
+  overflow-x: clip;
+}
+
+.public-shell__body {
+  width: min(calc(100% - 2rem), var(--madevi-page-width, 72rem));
+  max-width: var(--madevi-page-width, 72rem);
+  margin-inline: auto;
+  padding-block: clamp(1.25rem, 3vw, 2.5rem) max(5rem, calc(env(safe-area-inset-bottom) + 4rem));
+}
+
+.public-shell .page-shell,
+.public-shell .home-content-wrapper,
+.public-shell .social-dashboard,
+.public-shell .profile-main,
+.public-shell .info-page__inner,
+.public-shell .jasa-page__content {
+  width: 100%;
+  min-width: 0;
+  margin-inline: auto;
+}
+
+.public-shell .page-shell {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.public-shell .page-shell > header,
+.public-shell .section-heading {
+  display: grid;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.public-shell .page-shell > header h1,
+.public-shell .jasa-page__intro h1,
+.public-shell .shop-page__header h1,
+.public-shell .utilities-page__header h1 {
+  max-width: 18ch;
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.public-shell .site-header {
+  min-height: 4rem;
+}
+
+.public-shell .site-header__inner {
+  min-height: 4rem;
+}
+
+.public-shell .site-header__brand-lockup {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.public-shell .site-header__brand-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.public-shell .site-header__search-btn,
+.public-shell .site-header__menu-btn {
+  height: 2.75rem;
+  margin: 0;
+}
+
+.public-shell .sidebar-card,
+.public-shell .sidebar-menu-card {
+  width: 100%;
+  min-width: 0;
+}
+
+.public-shell .sidebar-menu-card__content,
+.public-shell .sidebar-menu-card__title,
+.public-shell .sidebar-menu-card__description {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.search-mode {
+  background: var(--background);
+}
+
+.search-mode .site-header__inner {
+  width: min(calc(100% - 2rem), var(--madevi-page-width, 72rem));
+  max-width: var(--madevi-page-width, 72rem);
+  margin-inline: auto;
+}
+
+.search-mode .search-overlay {
+  width: min(calc(100% - 2rem), 60rem);
+  max-width: 60rem;
+  margin-inline: auto;
+  padding-block: 1rem 3rem;
+}
+
+.search-mode .search-overlay__bar {
+  display: flex;
+  justify-content: flex-end;
+  width: min(calc(100% - 2rem), 60rem);
+  margin-inline: auto;
+}
+
+.search-mode .search-overlay__body {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.search-mode .search-overlay__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 1rem);
+  background: var(--surface-card);
+}
+
+.search-mode .search-overlay__filters legend {
+  flex: 0 0 100%;
+  margin-bottom: 0.15rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.search-mode .search-overlay__filter {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+}
+
+.search-mode .search-overlay__filter--active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+}
+
+.search-mode .search-overlay__results {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-mode .search-overlay__item {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 1rem);
+  background: var(--surface-card);
+  color: var(--text);
+}
+
+.search-mode .search-overlay__item:hover,
+.search-mode .search-overlay__item:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+@media (max-width: 30rem) {
+  .public-shell__body,
+  .search-mode .site-header__inner,
+  .search-mode .search-overlay,
+  .search-mode .search-overlay__bar {
+    width: min(calc(100% - 1rem), var(--madevi-page-width, 72rem));
+  }
+
+  .public-shell .site-header__search-placeholder {
+    display: none;
+  }
+
+  .public-shell .site-header__search-btn {
+    width: 2.75rem;
+    padding-inline: 0;
+    justify-content: center;
+  }
+}
+
+/* --- Responsive and reduced motion ----------------------------------------- */
+
+@media (max-width: 44rem) {
+  .public-shell__body {
+    width: min(calc(100% - 1.25rem), var(--atlas-content-max));
+  }
+
+  .site-header__inner {
+    min-height: 3.85rem;
+  }
+
+  .site-header__brand-lockup {
+    width: 4.92rem;
+    min-width: 4.92rem;
+  }
+
+  .site-header__brand-name {
+    font-size: 1rem;
+  }
+
+  .site-header__brand-bolt {
+    bottom: -0.26rem;
+    left: -0.32rem;
+    width: 5.7rem;
+    height: 1.9rem;
+  }
+
+  .site-header__search-placeholder {
+    display: none;
+  }
+
+  .welcome-card,
+  .home-content-wrapper .home-hero {
+    border-radius: 1.2rem 1.2rem 1.2rem 0.32rem;
+  }
+}
+
+/* --- Global shell refinement: compact, readable, and stable ---------------- */
+.public-shell > .sidebar {
+  width: min(25rem, calc(100vw - 1rem));
+  max-width: calc(100vw - 1rem);
+}
+
+.public-shell > .sidebar .sidebar__header {
+  display: grid;
+  gap: 0.55rem;
+  padding: max(0.65rem, env(safe-area-inset-top)) 0.85rem 0.65rem;
+}
+
+.public-shell .sidebar__header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  gap: 0.65rem;
+}
+
+.public-shell .sidebar__clock {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.55rem;
+  row-gap: 0.1rem;
+}
+
+.public-shell .sidebar__clock-day {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font: var(--text-caption);
+  line-height: 1.35;
+}
+
+.public-shell .sidebar__clock-time {
+  flex: 0 0 auto;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.public-shell .sidebar__header-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.public-shell :is(.sidebar__settings-btn, .sidebar__close-btn) {
+  display: grid;
+  flex: 0 0 44px;
+  place-items: center;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+}
+
+.public-shell .sidebar__divider {
+  margin: 0.15rem 0 0;
+}
+
+.public-shell .sidebar__tabs {
+  margin: 0;
+}
+
+.public-shell .sidebar-card--developer {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.45rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.public-shell .sidebar-card--developer .sidebar-card__socials {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.public-shell .sidebar-card--developer .sidebar-card__social-link {
+  width: 40px;
+  height: 40px;
+}
+
+.public-shell .sidebar-card__developer-content {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.4rem;
+}
+
+.public-shell .sidebar-card--developer .sidebar-card__action {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.public-shell .sidebar-card--developer .sidebar-card__action .button {
+  min-width: 0;
+  min-height: 44px;
+  padding-inline: 0.5rem;
+  overflow-wrap: anywhere;
+}
+
+.public-shell .site-header__brand {
+  min-width: 0;
+  overflow: visible;
+}
+
+.public-shell .site-header__brand-lockup {
+  flex: 0 0 6rem;
+  width: 6rem;
+  min-width: 6rem;
+  overflow: visible;
+}
+
+.public-shell .site-header__brand-name {
+  overflow: visible;
+  white-space: nowrap;
+}
+
+@media (max-width: 22rem) {
+  .public-shell > .sidebar .sidebar__header {
+    padding-inline: 0.65rem;
+  }
+
+  .public-shell .sidebar__header-top {
+    gap: 0.35rem;
+  }
+
+  .public-shell .sidebar__clock {
+    column-gap: 0.35rem;
+  }
+
+  .public-shell .sidebar-card--developer .sidebar-card__action {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .public-shell .site-header__brand-lockup {
+    flex-basis: 6.5rem;
+    width: 6.5rem;
+    min-width: 6.5rem;
+  }
+}
+
+@media (max-width: 24rem) {
+  .public-shell .site-header__brand-lockup {
+    flex: 0 0 6.75rem;
+    width: 6.75rem;
+    min-width: 6.75rem;
+  }
+
+  [data-theme='madevi-on'] .public-shell .site-header__brand-name {
+    font-size: 0.64rem;
+    letter-spacing: -0.02em;
+  }
+
+  [data-theme='madevi-on'] .public-shell .site-header__brand-name > span {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+[data-theme='madevi-on'] .public-shell .sidebar-card--developer {
+  border-color: var(--border);
+}
+
+[data-theme] .public-shell > .sidebar {
+  background: var(--surface);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .site-header__brand-bolt,
+  .madevi-sky__scan,
+  .madevi-sky__meteor {
+    display: none !important;
+  }
+
+  .site-header__brand-letter {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .public-shell :is(.sidebar-card, .sidebar-menu-card, .site-header__brand, .site-header__search-btn, .sidebar__settings-btn, .sidebar__close-btn) {
+    transform: none !important;
+  }
+}
+

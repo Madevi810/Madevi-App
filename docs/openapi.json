@@ -1,0 +1,5807 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Madevi API",
+    "version": "0.5.0"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "GET /api/health",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/account/appeal": {
+      "post": {
+        "summary": "POST /account/appeal",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/account/contact": {
+      "post": {
+        "summary": "POST /account/contact",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/account/data-request": {
+      "post": {
+        "summary": "POST /account/data-request",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/account/export/{id}": {
+      "get": {
+        "summary": "GET /account/export/{id}",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/account/password": {
+      "post": {
+        "summary": "POST /account/password",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/admin/capabilities": {
+      "get": {
+        "summary": "GET /admin/capabilities",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/admin/operations/execute": {
+      "post": {
+        "summary": "POST /admin/operations/execute",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/admin/operations/preview": {
+      "post": {
+        "summary": "POST /admin/operations/preview",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ai/availability": {
+      "get": {
+        "summary": "GET /ai/availability",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ai/conversations/{id}": {
+      "get": {
+        "summary": "GET /ai/conversations/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "delete": {
+        "summary": "DELETE /ai/conversations/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ai/conversations": {
+      "get": {
+        "summary": "GET /ai/conversations",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /ai/conversations",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ai/quota": {
+      "get": {
+        "summary": "GET /ai/quota",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/articles/{id}/blocks": {
+      "post": {
+        "summary": "POST /articles/{id}/blocks",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/articles/{id}/corrections": {
+      "post": {
+        "summary": "POST /articles/{id}/corrections",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/articles/{id}": {
+      "get": {
+        "summary": "GET /articles/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "PATCH /articles/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/articles/{id}/sources": {
+      "get": {
+        "summary": "GET /articles/{id}/sources",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /articles/{id}/sources",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/articles/{id}/status": {
+      "post": {
+        "summary": "POST /articles/{id}/status",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "put": {
+        "summary": "PUT /articles/{id}/status",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/articles": {
+      "get": {
+        "summary": "GET /articles",
+        "parameters": [
+          {
+            "name": "accessLevel",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taxonomyNodeId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /articles",
+        "parameters": [
+          {
+            "name": "accessLevel",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taxonomyNodeId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/auth/2fa/email": {
+      "post": {
+        "summary": "POST /auth/2fa/email",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "POST /auth/login",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "POST /auth/logout",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/auth/mfa/verify": {
+      "post": {
+        "summary": "POST /auth/mfa/verify",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "POST /auth/refresh",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "POST /auth/register",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/auth/trial-consent": {
+      "post": {
+        "summary": "POST /auth/trial-consent",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/auth/verify-contact": {
+      "post": {
+        "summary": "POST /auth/verify-contact",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/certificates/{number}": {
+      "get": {
+        "summary": "GET /certificates/{number}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "PATCH /certificates/{number}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/certificates": {
+      "post": {
+        "summary": "POST /certificates",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ebelanja/partners/request": {
+      "post": {
+        "summary": "POST /ebelanja/partners/request",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ebelanja/products/{id}/buy": {
+      "post": {
+        "summary": "POST /ebelanja/products/{id}/buy",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ebelanja/products/{id}": {
+      "get": {
+        "summary": "GET /ebelanja/products/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ebelanja/products/{id}/track-click": {
+      "post": {
+        "summary": "POST /ebelanja/products/{id}/track-click",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ebelanja/products": {
+      "get": {
+        "summary": "GET /ebelanja/products",
+        "parameters": [
+          {
+            "name": "brand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "condition",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stockStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subcategory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /ebelanja/products",
+        "parameters": [
+          {
+            "name": "brand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "condition",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stockStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subcategory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ebelanja/questions": {
+      "post": {
+        "summary": "POST /ebelanja/questions",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/ebelanja/saved": {
+      "get": {
+        "summary": "GET /ebelanja/saved",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /ebelanja/saved",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "delete": {
+        "summary": "DELETE /ebelanja/saved",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/exams/attempts/{id}/answers": {
+      "patch": {
+        "summary": "PATCH /exams/attempts/{id}/answers",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/exams/attempts/{id}/review": {
+      "post": {
+        "summary": "POST /exams/attempts/{id}/review",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/exams/attempts/{id}": {
+      "get": {
+        "summary": "GET /exams/attempts/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/exams/attempts/{id}/submit": {
+      "post": {
+        "summary": "POST /exams/attempts/{id}/submit",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/exams/attempts": {
+      "post": {
+        "summary": "POST /exams/attempts",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/foundation/records/{id}": {
+      "get": {
+        "summary": "GET /foundation/records/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/foundation/records": {
+      "get": {
+        "summary": "GET /foundation/records",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /foundation/records",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/groups/{id}/appeals": {
+      "post": {
+        "summary": "POST /groups/{id}/appeals",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/groups/{id}/join": {
+      "post": {
+        "summary": "POST /groups/{id}/join",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/groups/{id}/leave": {
+      "post": {
+        "summary": "POST /groups/{id}/leave",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/groups/{id}/members/{principalId}": {
+      "post": {
+        "summary": "POST /groups/{id}/members/{principalId}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/groups/{id}/members": {
+      "get": {
+        "summary": "GET /groups/{id}/members",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/groups/{id}": {
+      "get": {
+        "summary": "GET /groups/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/groups": {
+      "get": {
+        "summary": "GET /groups",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /groups",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/jasa/catalog": {
+      "get": {
+        "summary": "GET /jasa/catalog",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/jasa/custom": {
+      "get": {
+        "summary": "GET /jasa/custom",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /jasa/custom",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/jasa/logo": {
+      "get": {
+        "summary": "GET /jasa/logo",
+        "parameters": [
+          {
+            "name": "gallery",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /jasa/logo",
+        "parameters": [
+          {
+            "name": "gallery",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/jasa/order/{token}": {
+      "get": {
+        "summary": "GET /jasa/order/{token}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/jasa/pcb": {
+      "get": {
+        "summary": "GET /jasa/pcb",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /jasa/pcb",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/jasa/undangan/order/{token}": {
+      "get": {
+        "summary": "GET /jasa/undangan/order/{token}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "PATCH /jasa/undangan/order/{token}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/jasa/undangan/order": {
+      "post": {
+        "summary": "POST /jasa/undangan/order",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/jasa/undangan": {
+      "get": {
+        "summary": "GET /jasa/undangan",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/kontribusi": {
+      "get": {
+        "summary": "GET /kontribusi",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /kontribusi",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/learning-paths/{id}/articles/{articleId}/read": {
+      "post": {
+        "summary": "POST /learning-paths/{id}/articles/{articleId}/read",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/learning-paths/{id}/progress": {
+      "get": {
+        "summary": "GET /learning-paths/{id}/progress",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/learning-paths/{id}/restart": {
+      "post": {
+        "summary": "POST /learning-paths/{id}/restart",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/learning-paths": {
+      "get": {
+        "summary": "GET /learning-paths",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/moderation/appeals": {
+      "get": {
+        "summary": "GET /moderation/appeals",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /moderation/appeals",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/operasi/activity": {
+      "post": {
+        "summary": "POST /operasi/activity",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/operasi/backup": {
+      "post": {
+        "summary": "POST /operasi/backup",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/operasi/email": {
+      "post": {
+        "summary": "POST /operasi/email",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/operasi/health": {
+      "get": {
+        "summary": "GET /operasi/health",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/approvals/{id}": {
+      "post": {
+        "summary": "POST /owner/approvals/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/bootstrap": {
+      "post": {
+        "summary": "POST /owner/bootstrap",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/bootstrap/verify-device": {
+      "post": {
+        "summary": "POST /owner/bootstrap/verify-device",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/challenge": {
+      "post": {
+        "summary": "POST /owner/challenge",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/content-packages": {
+      "get": {
+        "summary": "GET /owner/content-packages",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/data-requests/{id}": {
+      "post": {
+        "summary": "POST /owner/data-requests/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/devices/{id}": {
+      "delete": {
+        "summary": "DELETE /owner/devices/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/exams/attempts/{id}/claim": {
+      "post": {
+        "summary": "POST /owner/exams/attempts/{id}/claim",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/exams/attempts/{id}/grade": {
+      "post": {
+        "summary": "POST /owner/exams/attempts/{id}/grade",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/exams/capacity": {
+      "patch": {
+        "summary": "PATCH /owner/exams/capacity",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/exams/queue": {
+      "get": {
+        "summary": "GET /owner/exams/queue",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/groups/{id}/decision": {
+      "post": {
+        "summary": "POST /owner/groups/{id}/decision",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/groups/{id}/manager": {
+      "patch": {
+        "summary": "PATCH /owner/groups/{id}/manager",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/groups/appeals/{id}": {
+      "post": {
+        "summary": "POST /owner/groups/appeals/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/groups": {
+      "get": {
+        "summary": "GET /owner/groups",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/inbox": {
+      "get": {
+        "summary": "GET /owner/inbox",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /owner/inbox",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/jasa/orders/{id}": {
+      "put": {
+        "summary": "PUT /owner/jasa/orders/{id}",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/jasa/orders": {
+      "get": {
+        "summary": "GET /owner/jasa/orders",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/jasa/queue": {
+      "get": {
+        "summary": "GET /owner/jasa/queue",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "urgency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "waitingOn",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "PATCH /owner/jasa/queue",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "urgency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "waitingOn",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/jasa/templates/{id}": {
+      "put": {
+        "summary": "PUT /owner/jasa/templates/{id}",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "PATCH /owner/jasa/templates/{id}",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/jasa/templates": {
+      "get": {
+        "summary": "GET /owner/jasa/templates",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /owner/jasa/templates",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/learning-paths/{id}/publish": {
+      "post": {
+        "summary": "POST /owner/learning-paths/{id}/publish",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/learning-paths": {
+      "get": {
+        "summary": "GET /owner/learning-paths",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /owner/learning-paths",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/login": {
+      "post": {
+        "summary": "POST /owner/login",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/logout": {
+      "post": {
+        "summary": "POST /owner/logout",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/moderation/appeals/{id}/decision": {
+      "post": {
+        "summary": "POST /owner/moderation/appeals/{id}/decision",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/moderation/appeals": {
+      "get": {
+        "summary": "GET /owner/moderation/appeals",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/moderation/cases/{id}/decision": {
+      "post": {
+        "summary": "POST /owner/moderation/cases/{id}/decision",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/moderation/cases/{id}/evidence": {
+      "post": {
+        "summary": "POST /owner/moderation/cases/{id}/evidence",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/moderation/cases": {
+      "get": {
+        "summary": "GET /owner/moderation/cases",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "risk",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/moderation/engine": {
+      "get": {
+        "summary": "GET /owner/moderation/engine",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/moderation/reset-window": {
+      "post": {
+        "summary": "POST /owner/moderation/reset-window",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/operasi/backup/{backupId}": {
+      "get": {
+        "summary": "GET /owner/operasi/backup/{backupId}",
+        "parameters": [
+          {
+            "name": "targetRoot",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /owner/operasi/backup/{backupId}",
+        "parameters": [
+          {
+            "name": "targetRoot",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/operasi": {
+      "get": {
+        "summary": "GET /owner/operasi",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/payment/chargeback": {
+      "post": {
+        "summary": "POST /owner/payment/chargeback",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/payment/grants": {
+      "post": {
+        "summary": "POST /owner/payment/grants",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/question-banks/{id}/review": {
+      "post": {
+        "summary": "POST /owner/question-banks/{id}/review",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/question-banks": {
+      "get": {
+        "summary": "GET /owner/question-banks",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /owner/question-banks",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/recovery/{id}": {
+      "post": {
+        "summary": "POST /owner/recovery/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/refresh": {
+      "post": {
+        "summary": "POST /owner/refresh",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/site-pages": {
+      "get": {
+        "summary": "GET /owner/site-pages",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /owner/site-pages",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/social/evidence/{id}": {
+      "post": {
+        "summary": "POST /owner/social/evidence/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/social/retention/simulate": {
+      "post": {
+        "summary": "POST /owner/social/retention/simulate",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/storage/reconcile": {
+      "post": {
+        "summary": "POST /owner/storage/reconcile",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/taxonomy/export": {
+      "get": {
+        "summary": "GET /owner/taxonomy/export",
+        "parameters": [
+          {
+            "name": "revision",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/taxonomy/history": {
+      "get": {
+        "summary": "GET /owner/taxonomy/history",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/taxonomy/nodes/{id}/impact": {
+      "get": {
+        "summary": "GET /owner/taxonomy/nodes/{id}/impact",
+        "parameters": [
+          {
+            "name": "targetParentId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/taxonomy/nodes/{id}": {
+      "patch": {
+        "summary": "PATCH /owner/taxonomy/nodes/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/taxonomy/nodes": {
+      "post": {
+        "summary": "POST /owner/taxonomy/nodes",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/taxonomy/packages/{action}": {
+      "post": {
+        "summary": "POST /owner/taxonomy/packages/{action}",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/owner/taxonomy": {
+      "get": {
+        "summary": "GET /owner/taxonomy",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/payment/orders": {
+      "post": {
+        "summary": "POST /payment/orders",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/payment/prices": {
+      "get": {
+        "summary": "GET /payment/prices",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/payment/redeem": {
+      "post": {
+        "summary": "POST /payment/redeem",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/payment/webhook-mock": {
+      "post": {
+        "summary": "POST /payment/webhook-mock",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/pdf/process": {
+      "post": {
+        "summary": "POST /pdf/process",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "summary": "GET /profile",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "patch": {
+        "summary": "PATCH /profile",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/profiles/{username}": {
+      "get": {
+        "summary": "GET /profiles/{username}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/public-feedback": {
+      "post": {
+        "summary": "POST /public-feedback",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/recovery": {
+      "post": {
+        "summary": "POST /recovery",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/runtime-menu": {
+      "get": {
+        "summary": "GET /runtime-menu",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "GET /search",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "space",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "spaces",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/security/inspect": {
+      "post": {
+        "summary": "POST /security/inspect",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/security/quarantine": {
+      "post": {
+        "summary": "POST /security/quarantine",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/security/threats": {
+      "get": {
+        "summary": "GET /security/threats",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /security/threats",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/comments/{id}": {
+      "patch": {
+        "summary": "PATCH /social/comments/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "delete": {
+        "summary": "DELETE /social/comments/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/conversations/{id}/messages": {
+      "get": {
+        "summary": "GET /social/conversations/{id}/messages",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /social/conversations/{id}/messages",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/conversations/{id}/preference": {
+      "put": {
+        "summary": "PUT /social/conversations/{id}/preference",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/conversations": {
+      "get": {
+        "summary": "GET /social/conversations",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/friends": {
+      "get": {
+        "summary": "GET /social/friends",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "delete": {
+        "summary": "DELETE /social/friends",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/me/posts": {
+      "get": {
+        "summary": "GET /social/me/posts",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/message-requests/{id}": {
+      "post": {
+        "summary": "POST /social/message-requests/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/message-requests": {
+      "get": {
+        "summary": "GET /social/message-requests",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /social/message-requests",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/messages/{id}/report": {
+      "post": {
+        "summary": "POST /social/messages/{id}/report",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/messages/{id}": {
+      "delete": {
+        "summary": "DELETE /social/messages/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/mutes": {
+      "get": {
+        "summary": "GET /social/mutes",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/notifications/read": {
+      "post": {
+        "summary": "POST /social/notifications/read",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/notifications": {
+      "get": {
+        "summary": "GET /social/notifications",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/people": {
+      "get": {
+        "summary": "GET /social/people",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/posts/{id}/attachments/{attachmentId}": {
+      "get": {
+        "summary": "GET /social/posts/{id}/attachments/{attachmentId}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/posts/{id}/comments": {
+      "get": {
+        "summary": "GET /social/posts/{id}/comments",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /social/posts/{id}/comments",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/posts/{id}/reaction": {
+      "put": {
+        "summary": "PUT /social/posts/{id}/reaction",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "delete": {
+        "summary": "DELETE /social/posts/{id}/reaction",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/posts/{id}": {
+      "patch": {
+        "summary": "PATCH /social/posts/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "delete": {
+        "summary": "DELETE /social/posts/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/posts": {
+      "get": {
+        "summary": "GET /social/posts",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /social/posts",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "groupId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/quota": {
+      "get": {
+        "summary": "GET /social/quota",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/reports": {
+      "post": {
+        "summary": "POST /social/reports",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/social/uploads": {
+      "post": {
+        "summary": "POST /social/uploads",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/software/{slug}/report": {
+      "post": {
+        "summary": "POST /software/{slug}/report",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/software/{slug}/review": {
+      "post": {
+        "summary": "POST /software/{slug}/review",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/software/{slug}": {
+      "get": {
+        "summary": "GET /software/{slug}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/software/propose": {
+      "post": {
+        "summary": "POST /software/propose",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/software": {
+      "get": {
+        "summary": "GET /software",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/software/versions/{id}/download": {
+      "post": {
+        "summary": "POST /software/versions/{id}/download",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/software/versions/{id}": {
+      "get": {
+        "summary": "GET /software/versions/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/suggestions": {
+      "post": {
+        "summary": "POST /suggestions",
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/taxonomy": {
+      "get": {
+        "summary": "GET /taxonomy",
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/tools-trial/commit": {
+      "post": {
+        "summary": "POST /tools-trial/commit",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/tools-trial/release": {
+      "post": {
+        "summary": "POST /tools-trial/release",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/tools-trial/reserve": {
+      "post": {
+        "summary": "POST /tools-trial/reserve",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/tools/{toolId}/execute": {
+      "get": {
+        "summary": "GET /tools/{toolId}/execute",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /tools/{toolId}/execute",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "429": {
+            "description": "RATE_LIMITED"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/utilities/rumus": {
+      "get": {
+        "summary": "GET /utilities/rumus",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /utilities/rumus",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "409": {
+            "description": "IDEMPOTENCY_CONFLICT"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/utilities/workspace/{id}": {
+      "delete": {
+        "summary": "DELETE /utilities/workspace/{id}",
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "404": {
+            "description": "NOT_FOUND"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    },
+    "/utilities/workspace": {
+      "get": {
+        "summary": "GET /utilities/workspace",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      },
+      "post": {
+        "summary": "POST /utilities/workspace",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Envelope sukses { data, requestId, page? }"
+          },
+          "400": {
+            "description": "VALIDATION_FAILED"
+          },
+          "401": {
+            "description": "AUTHENTICATION_FAILED"
+          },
+          "403": {
+            "description": "ACCESS_DENIED / CSRF"
+          },
+          "413": {
+            "description": "PAYLOAD_TOO_LARGE"
+          },
+          "503": {
+            "description": "DEPENDENCY_UNAVAILABLE"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "memberAccessCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "madevi_access"
+      },
+      "ownerAccessCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "madevi_admin_access"
+      }
+    }
+  }
+}

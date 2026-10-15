@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS __SCHEMA__.software_download_log;
+DROP TABLE IF EXISTS __SCHEMA__.software_installation_threads;
+DROP TABLE IF EXISTS __SCHEMA__.software_reports;
+DROP TABLE IF EXISTS __SCHEMA__.software_reviews;
+DROP TABLE IF EXISTS __SCHEMA__.software_proposed;
+DROP TABLE IF EXISTS __SCHEMA__.software_downloads;
+DROP TABLE IF EXISTS __SCHEMA__.software_versions;
+DROP TABLE IF EXISTS __SCHEMA__.software_platforms;
+DROP TABLE IF EXISTS __SCHEMA__.software_catalog;

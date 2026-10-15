@@ -1,0 +1,475 @@
+/* ===================================================
+   MDV2 — Home + Explore & Learn redesign
+   Token-only. Tidak ada warna hardcoded.
+   Di-load terakhir agar menang atas CSS legacy.
+   =================================================== */
+
+/* ---------- Fondasi halaman ---------- */
+.mdv2-page {
+  max-width: var(--layout-max-w, 1280px);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+  padding-block: clamp(1.5rem, 4vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.mdv2-kicker {
+  font-size: var(--pr-font-size-xs, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+  margin: 0 0 1rem;
+}
+
+.mdv2-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.mdv2-section-head h2 {
+  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.35rem;
+  color: var(--text);
+}
+
+.mdv2-section-head p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  max-width: 42rem;
+}
+
+/* ---------- Grid kartu ruang: dipakai pola .card-grid sistem overhaul ---------- */
+
+/* ---------- EXPLORE: header ---------- */
+.mdv2-explore-head {
+  max-width: 46rem;
+}
+
+.mdv2-explore-head h1 {
+  font: var(--text-h1);
+  color: var(--text);
+  margin: 0 0 0.75rem;
+}
+
+.mdv2-explore-head > p {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ---------- EXPLORE: toolbar ---------- */
+.mdv2-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0.75rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 16px);
+}
+
+.mdv2-search {
+  flex: 1 1 220px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 10px);
+  color: var(--text-muted);
+  transition: border-color var(--transition-fast, 150ms ease-out);
+}
+
+.mdv2-search:focus-within {
+  border-color: var(--accent);
+}
+
+.mdv2-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.9375rem;
+  outline: none;
+}
+
+.mdv2-search input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.mdv2-tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill, 999px);
+}
+
+.mdv2-tabs button {
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill, 999px);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-fast, 150ms ease-out),
+    color var(--transition-fast, 150ms ease-out);
+}
+
+.mdv2-tabs button:hover {
+  color: var(--text);
+}
+
+.mdv2-tabs button[aria-pressed="true"] {
+  background: var(--surface-card);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- EXPLORE: breadcrumb ---------- */
+.mdv2-trail {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.mdv2-trail button {
+  border: 0;
+  background: none;
+  padding: 0.25rem 0.4rem;
+  border-radius: var(--radius-sm, 6px);
+  color: var(--accent-strong);
+  font-size: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mdv2-trail button:hover {
+  background: var(--accent-subtle);
+}
+
+.mdv2-trail__sep {
+  color: var(--text-muted);
+}
+
+.mdv2-trail__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mdv2-trail strong {
+  color: var(--text);
+  font-weight: 700;
+  padding: 0.25rem 0.4rem;
+}
+
+/* ---------- EXPLORE: grid kategori ----------
+   Memakai .card-grid dari sistem overhaul (fluid, tanpa breakpoint manual).
+   .mdv2-cat-list hanya mereset gaya list bawaan browser. */
+.mdv2-cat-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mdv2-cat-list > li {
+  min-width: 0;
+}
+
+/* Skeleton di dalam grid kartu: seukuran kartu */
+.card-grid > .skeleton {
+  min-height: 5.5rem;
+  border-radius: var(--radius-lg, 1rem);
+  border: 1px solid var(--border);
+}
+
+/* Jarak konsisten antara toolbar dan isi browser (pengganti inline style) */
+.mdv2-browser-body {
+  margin-top: var(--pr-space-5, 1.5rem);
+}
+
+.mdv2-cat-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1.1rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 12px);
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast, 150ms ease-out),
+    border-color var(--transition-fast, 150ms ease-out),
+    box-shadow var(--transition-fast, 150ms ease-out);
+}
+
+.mdv2-cat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.mdv2-cat-card:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.mdv2-cat-card__icon {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm, 8px);
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+}
+
+.mdv2-cat-card__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.mdv2-cat-card__copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.mdv2-cat-card__copy strong {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.mdv2-cat-card__copy span {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.mdv2-cat-card__chev {
+  flex: none;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast, 150ms ease-out);
+}
+
+.mdv2-cat-card:hover .mdv2-cat-card__chev {
+  transform: translateX(3px);
+  color: var(--accent-strong);
+}
+
+/* ---------- EXPLORE: contoh artikel ---------- */
+.mdv2-sample {
+  max-width: 40rem;
+  padding: 1.5rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mdv2-sample__label {
+  font-size: var(--pr-font-size-xs, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-strong);
+  margin: 0;
+}
+
+.mdv2-sample h3 {
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0;
+}
+
+.mdv2-sample__cat {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.mdv2-sample > p {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ---------- State: empty / error ----------
+   Skeleton memakai .skeleton dari sistem overhaul (shimmer). */
+
+.mdv2-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 3rem 1.5rem;
+  background: var(--surface-card);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg, 16px);
+}
+
+.mdv2-state__icon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--surface-muted);
+  color: var(--text-muted);
+}
+
+.mdv2-state__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.mdv2-state p {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 28rem;
+}
+
+.mdv2-state--error {
+  border-style: solid;
+  border-color: var(--status-error-border, var(--danger));
+  background: var(--status-error-subtle, var(--surface-card));
+}
+
+.mdv2-state--error .mdv2-state__icon {
+  color: var(--status-error-strong, var(--danger));
+}
+
+.mdv2-load-more {
+  display: flex;
+  justify-content: center;
+  padding-top: 1.25rem;
+}
+
+/* ---------- Fondasi katalog (aside) ---------- */
+.mdv2-foundation {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 16px);
+}
+
+.mdv2-foundation strong {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+
+.mdv2-foundation p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 40rem;
+}
+
+.mdv2-foundation a {
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.mdv2-foundation ol {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.mdv2-foundation ol li {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 0.4rem 0.8rem;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill, 999px);
+  white-space: nowrap;
+}
+
+/* ---------- Madevi On: kepribadian brand ---------- */
+[data-theme='madevi-on'] .mdv2-cat-card:hover {
+  box-shadow: var(--shadow-md), var(--accent-glow, none);
+  border-color: var(--accent);
+}
+
+/* ---------- Responsif ----------
+   Grid kartu fluid (.card-grid) menyusut sendiri ke 1 kolom di HP —
+   tidak perlu breakpoint manual. */
+@media (max-width: 640px) {
+  .mdv2-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mdv2-search {
+    flex-basis: auto;
+  }
+
+  .mdv2-tabs {
+    justify-content: stretch;
+  }
+
+  .mdv2-tabs button {
+    flex: 1;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .mdv2-cat-card,
+  .mdv2-cat-card__chev {
+    transition: none;
+  }
+
+  .mdv2-cat-card:hover {
+    transform: none;
+  }
+}

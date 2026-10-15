@@ -1,0 +1,426 @@
+/* ===================================================
+   DESIGN TOKENS — MADEVI
+   Primitive → Semantic → Component
+   =================================================== */
+
+:root {
+  /* ===================================================
+     1. PRIMITIVE TOKENS
+     =================================================== */
+  /* Colors */
+  --pr-color-blue-900: #0f172a;
+  --pr-color-blue-800: #1e293b;
+  --pr-color-blue-700: #334155;
+  --pr-color-blue-500: #0ea5e9;
+  --pr-color-blue-400: #38bdf8;
+  --pr-color-blue-300: #7dd3fc;
+  --pr-color-blue-100: #e0f2fe;
+
+  --pr-color-gray-900: #111827;
+  --pr-color-gray-800: #1f2937;
+  --pr-color-gray-500: #6b7280;
+  --pr-color-gray-400: #9ca3af;
+  --pr-color-gray-200: #e5e7eb;
+  --pr-color-gray-100: #f3f4f6;
+  --pr-color-gray-50:  #f9fafb;
+
+  --pr-color-white: #ffffff;
+  --pr-color-black: #000000;
+
+  --pr-color-red-500: #ef4444;
+  --pr-color-red-700: #b91c1c;
+  --pr-color-green-500: #10b981;
+  --pr-color-yellow-500: #f59e0b;
+
+  /* Spacing (8pt Grid System) */
+  --pr-space-0: 0px;
+  --pr-space-1: 4px;
+  --pr-space-2: 8px;
+  --pr-space-3: 12px;
+  --pr-space-4: 16px;
+  --pr-space-5: 24px;
+  --pr-space-6: 32px;
+  --pr-space-7: 48px;
+  --pr-space-8: 64px;
+  --pr-space-9: 96px;
+
+  /* Radii */
+  --pr-radius-sm:   4px;
+  --pr-radius-md:   8px;
+  --pr-radius-lg:   16px;
+  --pr-radius-xl:   24px;
+  --pr-radius-full: 9999px;
+
+  /* Typography Primitives (Golden Ratio Scaled) */
+  --pr-font-size-xs:  0.75rem;
+  --pr-font-size-sm:  0.875rem;
+  --pr-font-size-md:  1rem;
+  --pr-font-size-lg:  1.125rem;
+  --pr-font-size-xl:  1.5rem;
+  --pr-font-size-2xl: 2.25rem;
+  --pr-font-size-3xl: 3.375rem;
+
+  /* ===================================================
+     2. SEMANTIC TOKENS
+     =================================================== */
+  /* Basic Light is a warm editorial canvas. Teal is the Madevi identity;
+     blue and amber remain reserved for navigation/info and data/warning. */
+  --accent:        #0d9488;
+  --accent-strong: #0f766e;
+  --accent-subtle: rgb(13 148 136 / 0.11);
+  --accent-hover:  #0f766e;
+
+  /* Basic is a neutral work theme with a small set of structural cues. These
+     tokens colour frames and interaction boundaries; they never replace the
+     reading surface or the primary text colour. */
+  --basic-chrome:  #1d4ed8;
+  --basic-section: #0f766e;
+  --basic-control: #7c3aed;
+  --basic-data:    #b45309;
+  --basic-note:    #a21caf;
+
+  --danger:        var(--pr-color-red-500);
+  --danger-hover:  var(--pr-color-red-700);
+  --status-success:var(--pr-color-green-500);
+  --status-warning:var(--pr-color-yellow-500);
+  --status-error:  var(--danger);
+
+  --surface:         var(--pr-color-white);
+  --surface-muted:   #fbfbf9;
+  --surface-overlay: rgba(0, 0, 0, 0.4);
+  --surface-blur:    rgba(255, 255, 255, 0.6);
+  --surface-card:    var(--pr-color-white);
+  --surface-header:  rgba(255, 255, 255, 0.9);
+  --surface-hover:   #f0f5f3;
+  --background:      #f7f7f4;
+
+  --text:            var(--pr-color-gray-900);
+  --text-muted:      var(--pr-color-gray-500);
+  --text-inverse:    #111827;
+  --text-placeholder:#a3a3a3;
+  --border:          var(--pr-color-gray-200);
+  --border-strong:   var(--pr-color-gray-500);
+  --focus-ring:      #171717;
+
+  /* Layout */
+  --radius-sm:    var(--pr-radius-sm);
+  --radius-md:    var(--pr-radius-md);
+  --radius-lg:    var(--pr-radius-lg);
+  --radius-card:  var(--pr-radius-xl);
+  --radius-pill:  var(--pr-radius-full);
+
+  --ease-out:           cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in:            cubic-bezier(0.55, 0, 0.82, 0.2);
+  --transition-fast:    160ms var(--ease-out);
+  --transition-mid:     320ms var(--ease-out);
+  --transition-spring:  520ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05), 0 4px 12px rgb(0 0 0 / 0.035);
+  --shadow-md: 0 10px 24px rgb(0 0 0 / 0.08), 0 2px 6px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 22px 54px rgb(0 0 0 / 0.13), 0 6px 16px rgb(0 0 0 / 0.06);
+  --shadow-float: 0 28px 70px rgb(0 0 0 / 0.17), 0 10px 24px rgb(0 0 0 / 0.08);
+
+  /* Legacy Maps */
+  --madevi-accent:  var(--accent);
+  --madevi-text:    var(--text);
+  --madevi-muted:   var(--text-muted);
+  --madevi-border:  var(--border);
+  --madevi-surface: var(--surface-card);
+  --madevi-bg:      var(--background);
+  --madevi-danger:  var(--danger);
+
+  /* ===================================================
+     3. COMPONENT TOKENS
+     =================================================== */
+  --btn-bg:        var(--accent);
+  --btn-color:     var(--text-inverse);
+  --btn-padding-x: var(--pr-space-5);
+  --btn-padding-y: var(--pr-space-3);
+  --btn-radius:    var(--radius-pill);
+
+  --card-bg:       var(--surface-card);
+  --card-padding:  var(--pr-space-5);
+  --card-radius:   var(--radius-card);
+
+  --layout-max-w:  1280px;
+  --layout-padding:var(--pr-space-4);
+  --header-height: var(--pr-space-8);
+
+  /* One responsive frame for every public route. These names are also used
+     by older components, so defining them here removes silent invalid CSS. */
+  --content-width: min(100% - 2rem, 72rem);
+  --content-max: 72rem;
+  --content-gap: clamp(1rem, 3vw, 1.5rem);
+  --space-section: clamp(1.5rem, 3.5vw, 2.5rem);
+  --space-cluster: clamp(0.75rem, 1.5vw, 1rem);
+  --panel-padding: clamp(0.75rem, 2vw, 1rem);
+  --motion-editorial: 340ms var(--ease-out);
+  /* Separate motion scales keep Basic predictable and Madevi On expressive. */
+  --basic-motion-enter: 300ms;
+  --basic-motion-distance: 6px;
+  --basic-motion-feedback: 150ms;
+  --on-motion-enter: 620ms;
+  --on-motion-distance: 12px;
+  --on-motion-stagger: 75ms;
+  --on-motion-meteor-min: 3500ms;
+  --on-motion-meteor-max: 7000ms;
+
+  /* ===================================================
+     4. TYPE RAMP TOKENS (AC-28)
+     Format: clamp(min, vw, max) / line-height / letter-spacing
+     =================================================== */
+  --text-display: clamp(2.45rem, 5.4vw, 5.1rem) / 0.94 / -0.075em;
+  --text-h1:      clamp(1.65rem, 3.2vw, 2.35rem) / 1.15 / -0.055em;
+  --text-h2:      clamp(1.35rem, 2.3vw, 1.85rem) / 1.30 / -0.045em;
+  --text-h3:      1.125rem / 1.40 / -0.03em;
+  --text-body:    1rem / 1.65 / 0;
+  --text-body-sm: 0.875rem / 1.60 / 0;
+  --text-caption: 0.75rem / 1.50 / 0.01em;
+  --text-micro:   0.68rem / 1.40 / 0.12em; /* uppercase */
+
+  /* ===================================================
+     5. Z-INDEX SCALE (AC-31)
+     =================================================== */
+  --z-skip:     1000;  /* skip-link */
+  --z-header:   200;   /* site header */
+  --z-sidebar:  400;   /* sidebar overlay */
+  --z-modal:    500;   /* dialogs, modals */
+  --z-toast:    600;   /* toasts, notifications */
+  --z-tooltip:  700;   /* tooltips, popovers */
+  --z-max:      9999;  /* absolute max */
+
+  /* ===================================================
+     6. TOUCH TARGET MINIMUM (AC-31)
+     =================================================== */
+  --touch-target-min: 44px; /* 2.75rem */
+
+  /* ===================================================
+     7. MOTION TOKENS
+     =================================================== */
+  --transition-instant: 50ms;
+  --transition-fast:    120ms var(--ease-out);
+  --transition-base:    200ms var(--ease-out);
+  --transition-mid:     320ms var(--ease-out);
+  --transition-slow:    350ms var(--ease-out);
+  --transition-spring:  520ms cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out:           cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in:            cubic-bezier(0.55, 0, 0.82, 0.2);
+  --ease-spring:        cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cinematic:     cubic-bezier(0.5, 0, 0.1, 1);
+
+  /* ===================================================
+     8. COMPONENT TOKENS — BUTTON
+     =================================================== */
+  --btn-height:              var(--touch-target-min);
+  --btn-height-sm:           calc(var(--touch-target-min) * 0.8);
+  --btn-height-lg:           calc(var(--touch-target-min) * 1.2);
+  --btn-padding-x:           var(--pr-space-5);
+  --btn-padding-y:           var(--pr-space-2);
+  --btn-radius:              calc(var(--radius-md) + 2px);
+  --btn-radius-pill:         var(--radius-pill);
+  --btn-font-weight:         760;
+  --btn-font-size:           var(--pr-font-size-sm);
+  --btn-font-size-sm:        var(--pr-font-size-xs);
+  --btn-font-size-lg:        var(--pr-font-size-sm);
+  --btn-transition:          var(--transition-fast);
+  --btn-bg-primary:          var(--accent);
+  --btn-bg-secondary:        var(--surface-muted);
+  --btn-bg-outline:          transparent;
+  --btn-bg-ghost:            transparent;
+  --btn-bg-destructive:      var(--danger);
+  --btn-border-primary:      var(--accent);
+  --btn-border-secondary:    var(--border);
+  --btn-border-outline:      var(--border-strong);
+  --btn-border-ghost:        transparent;
+  --btn-border-destructive:  var(--danger);
+  --btn-color-primary:       var(--text-inverse);
+  --btn-color-secondary:     var(--text);
+  --btn-color-outline:       var(--text);
+  --btn-color-ghost:         var(--accent-strong);
+  --btn-color-destructive:   #fff;
+
+  /* ===================================================
+     9. COMPONENT TOKENS — INPUT
+     =================================================== */
+  --input-height:            calc(var(--touch-target-min) + 8px);
+  --input-height-sm:         calc(var(--touch-target-min) - 4px);
+  --input-height-lg:         calc(var(--touch-target-min) + 12px);
+  --input-padding-x:         var(--pr-space-4);
+  --input-padding-y:         var(--pr-space-2);
+  --input-radius:            calc(var(--radius-md) + 2px);
+  --input-font-size:         var(--pr-font-size-sm);
+  --input-font-size-sm:      var(--pr-font-size-xs);
+  --input-font-size-lg:      var(--pr-font-size-sm);
+  --input-bg:                var(--surface);
+  --input-border:            var(--border);
+  --input-border-hover:      color-mix(in srgb, var(--accent) 38%, var(--border));
+  --input-border-focus:      var(--accent);
+  --input-color:             var(--text);
+  --input-placeholder-color: var(--text-placeholder);
+  --input-shadow:            inset 0 1px 0 rgb(255 255 255 / 0.36);
+  --input-shadow-focus:      0 0 0 4px color-mix(in srgb, var(--focus-ring) 18%, transparent), inset 0 1px 0 rgb(255 255 255 / 0.42);
+  --input-transition:        var(--transition-fast);
+
+  /* ===================================================
+     10. COMPONENT TOKENS — CARD
+     =================================================== */
+  --card-radius:             var(--radius-card);
+  --card-border:             var(--line-soft);
+  --card-bg:                 var(--surface-card);
+  --card-shadow-sm:          var(--shadow-sm);
+  --card-shadow-md:          var(--shadow-md);
+  --card-shadow-lg:          var(--shadow-lg);
+  --card-padding:            var(--pr-space-5);
+  --card-transition:         var(--transition-mid);
+
+  /* ===================================================
+     11. COMPONENT TOKENS — DIALOG
+     =================================================== */
+  --dialog-radius:           calc(var(--radius-card) + 4px);
+  --dialog-bg:               var(--surface-card);
+  --dialog-border:           var(--border);
+  --dialog-shadow:           var(--shadow-lg);
+  --dialog-backdrop-bg:      var(--surface-overlay);
+  --dialog-padding:          var(--pr-space-6);
+  --dialog-max-width:        420px;
+  --dialog-max-width-sm:     320px;
+  --dialog-max-width-lg:     560px;
+  --dialog-max-width-xl:     720px;
+  --dialog-max-height:       80dvh;
+  --dialog-transition:       var(--transition-mid);
+  --dialog-enter-duration:   var(--transition-mid);
+  --dialog-enter-easing:     var(--ease-out);
+
+  /* ===================================================
+     12. COMPONENT TOKENS — DROPDOWN
+     =================================================== */
+  --dropdown-trigger-height: var(--touch-target-min);
+  --dropdown-trigger-padding-x: var(--pr-space-4);
+  --dropdown-trigger-padding-y: var(--pr-space-2);
+  --dropdown-trigger-radius: calc(var(--radius-md) + 2px);
+  --dropdown-trigger-bg:     var(--surface);
+  --dropdown-trigger-border: var(--border);
+  --dropdown-trigger-color:  var(--text);
+  --dropdown-content-radius: var(--radius-card);
+  --dropdown-content-bg:     var(--surface-card);
+  --dropdown-content-border: var(--border);
+  --dropdown-content-shadow: var(--shadow-md);
+  --dropdown-item-height:    calc(var(--touch-target-min) - 4px);
+  --dropdown-item-padding-x: var(--pr-space-3);
+  --dropdown-item-padding-y: var(--pr-space-2);
+  --dropdown-item-hover-bg:  var(--accent-subtle);
+  --dropdown-item-hover-color: var(--accent-strong);
+  --dropdown-transition:     var(--transition-fast);
+
+  /* ===================================================
+     13. COMPONENT TOKENS — SKELETON / EMPTY / ERROR / ORIENTATION
+     =================================================== */
+  --skeleton-bg:             color-mix(in srgb, var(--border) 40%, transparent);
+  --skeleton-animation:      pulse 1.5s ease-in-out infinite;
+  --empty-icon-size:         48px;
+  --empty-title-size:        var(--pr-font-size-lg);
+  --empty-hint-size:         var(--pr-font-size-sm);
+  --empty-padding:           var(--pr-space-6);
+  --empty-border:            1px dashed var(--border);
+  --empty-radius:            var(--radius-card);
+  --empty-bg:                var(--surface);
+  --error-border:            var(--danger);
+  --error-bg:                color-mix(in srgb, var(--danger) 10%, var(--surface));
+  --error-color:             var(--danger);
+  --error-radius:            var(--radius-md);
+  --error-padding:           var(--pr-space-4);
+  --orientation-gap:         var(--pr-space-4);
+  --orientation-padding:     var(--pr-space-5);
+  --orientation-radius:      var(--radius-card);
+  --orientation-bg:          var(--surface-card);
+  --orientation-border:      var(--border);
+}
+
+/* ===== TEMA GELAP ===== */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Basic Dark keeps the same teal identity at a brighter, quieter tone. */
+  --accent:        #5eead4;
+  --accent-strong: #99f6e4;
+  --accent-subtle: rgb(94 234 212 / 0.14);
+  --accent-hover:  #99f6e4;
+
+  /* The same Basic roles use lighter, desaturated values against black-on-
+     black surfaces so a border or focus ring remains legible in Dark. */
+  --basic-chrome:  #93c5fd;
+  --basic-section: #5eead4;
+  --basic-control: #c4b5fd;
+  --basic-data:    #fdba74;
+  --basic-note:    #f0abfc;
+
+  /* Charcoal layers keep depth readable without a white-tile effect. */
+  --surface:         #101312;
+  --surface-muted:   #0b0e0d;
+  --surface-card:    #151a18;
+  --surface-overlay: rgba(0, 0, 0, 0.7);
+  --surface-blur:    rgb(12 12 14 / 0.82);
+  --surface-header:  rgb(7 10 9 / 0.92);
+  --surface-hover:   #1c2420;
+  --background:      #070908;
+
+  --text:            #e4e4e7;
+  --text-muted:      #a1a1aa;
+  --text-inverse:    #042f2e;
+  --text-placeholder:#71717a;
+  --border:          rgb(228 228 231 / 0.14);
+  --border-strong:   rgb(228 228 231 / 0.34);
+  --focus-ring:      #5eead4;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.72), 0 6px 18px rgb(0 0 0 / 0.32);
+  --shadow-md: 0 14px 34px rgb(0 0 0 / 0.55), 0 2px 8px rgb(0 0 0 / 0.72);
+  --shadow-lg: 0 28px 64px rgb(0 0 0 / 0.72), 0 8px 20px rgb(0 0 0 / 0.82);
+  --shadow-float: 0 34px 82px rgb(0 0 0 / 0.82), 0 12px 28px rgb(0 0 0 / 0.75);
+
+  /* Type ramp adjusts for dark (slightly larger for readability) */
+  --text-display: clamp(2.6rem, 5.6vw, 5.3rem) / 0.92 / -0.07em;
+  --text-h1:      clamp(1.75rem, 3.4vw, 2.5rem) / 1.12 / -0.05em;
+}
+
+/* ===== MADEVI ON THEME TOKENS ===== */
+[data-theme='madevi-on'] {
+  color-scheme: dark;
+
+  /* Madevi On expressive tokens */
+  --accent:        #a487ff;
+  --accent-strong: #d9c9ff;
+  --accent-subtle: rgb(164 135 255 / 0.16);
+  --accent-hover:  #c8b8ff;
+
+  --basic-chrome:  #67c5ff;
+  --basic-section: #a487ff;
+  --basic-control: #f0ad63;
+  --basic-data:    #f5c15c;
+  --basic-note:    #f0abfc;
+
+  --surface:         #02050c;
+  --surface-muted:   #07111d;
+  --surface-card:    #07111d;
+  --surface-overlay: rgba(0, 0, 0, 0.8);
+  --surface-blur:    rgb(7 17 32 / 0.7);
+  --surface-header:  rgb(5 14 27 / 0.9);
+  --surface-hover:   #0d1a2e;
+  --background:      #02050c;
+
+  --text:            #faf8ff;
+  --text-muted:      #d9c9ff;
+  --text-inverse:    #03101d;
+  --text-placeholder:#7c6d9e;
+  --border:          rgb(165 216 255 / 0.2);
+  --border-strong:   rgb(165 216 255 / 0.4);
+  --focus-ring:      #8ad7ff;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.8), 0 4px 12px rgb(0 0 0 / 0.5);
+  --shadow-md: 0 10px 24px rgb(0 0 0 / 0.6), 0 2px 6px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 22px 54px rgb(0 0 0 / 0.7), 0 6px 16px rgb(0 0 0 / 0.5);
+  --shadow-float: 0 28px 70px rgb(0 0 0 / 0.8), 0 10px 24px rgb(0 0 0 / 0.6);
+
+  /* Type ramp for Madevi On */
+  --text-display: clamp(2.45rem, 5.4vw, 5.1rem) / 0.94 / -0.075em;
+  --text-h1:      clamp(1.65rem, 3.2vw, 2.35rem) / 1.15 / -0.055em;
+}

@@ -1,0 +1,409 @@
+{
+  "manifest": {
+    "packageId": "madevi-explore-pilot-v1",
+    "schemaVersion": "madevi.domain-package.v1",
+    "kind": "MENU",
+    "version": "1.0.0",
+    "status": "ADMIN_REVIEW",
+    "accessLevel": "PUBLIC",
+    "sourceRef": "Menu/Export/menu-pilot-explore-import-v1.json",
+    "licenseRef": "MADEVI_ORIGINAL_TAXONOMY",
+    "checksum": "0384683d22a54e7c0da9933c1818f95a3a363a0203ac0270a7de79ba4d07cac3",
+    "rollbackReference": "Admin snapshot taxonomy revision sebelum promote (wajib diisi saat stage)",
+    "approvedBy": "",
+    "approvedAt": ""
+  },
+  "nodes": [
+    {
+      "id": "a0000000-0000-4000-8000-000000000001",
+      "parentId": null,
+      "level": "R",
+      "slug": "jelajahi-pengetahuan",
+      "label": "Jelajahi Pengetahuan",
+      "name": "Jelajahi Pengetahuan",
+      "kind": "SPACE",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 0,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000001"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000011",
+      "parentId": "a0000000-0000-4000-8000-000000000001",
+      "level": "D",
+      "slug": "sains-alam",
+      "label": "Sains Alam",
+      "name": "Sains Alam",
+      "kind": "DOMAIN",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/sains-alam"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000011"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000012",
+      "parentId": "a0000000-0000-4000-8000-000000000011",
+      "level": "K",
+      "slug": "pengamatan",
+      "label": "Pengamatan",
+      "name": "Pengamatan",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/sains-alam/pengamatan"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000012"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000013",
+      "parentId": "a0000000-0000-4000-8000-000000000012",
+      "level": "M",
+      "slug": "cuaca",
+      "label": "Cuaca",
+      "name": "Cuaca",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/sains-alam/pengamatan/cuaca"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000013"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000014",
+      "parentId": "a0000000-0000-4000-8000-000000000013",
+      "level": "T",
+      "slug": "catatan-harian",
+      "label": "Catatan Harian",
+      "name": "Catatan Harian",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/sains-alam/pengamatan/cuaca/catatan-harian"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000014"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000015",
+      "parentId": "a0000000-0000-4000-8000-000000000014",
+      "level": "J",
+      "slug": "observasi-cuaca-harian",
+      "label": "Observasi Cuaca Harian",
+      "name": "Observasi Cuaca Harian",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/sains-alam/pengamatan/cuaca/catatan-harian/observasi-cuaca-harian"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000015"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000021",
+      "parentId": "a0000000-0000-4000-8000-000000000001",
+      "level": "D",
+      "slug": "teknologi-digital",
+      "label": "Teknologi Digital",
+      "name": "Teknologi Digital",
+      "kind": "DOMAIN",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 20,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/teknologi-digital"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000021"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000022",
+      "parentId": "a0000000-0000-4000-8000-000000000021",
+      "level": "K",
+      "slug": "keamanan-dasar",
+      "label": "Keamanan Dasar",
+      "name": "Keamanan Dasar",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/teknologi-digital/keamanan-dasar"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000022"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000023",
+      "parentId": "a0000000-0000-4000-8000-000000000022",
+      "level": "M",
+      "slug": "akun-pribadi",
+      "label": "Akun Pribadi",
+      "name": "Akun Pribadi",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/teknologi-digital/keamanan-dasar/akun-pribadi"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000023"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000024",
+      "parentId": "a0000000-0000-4000-8000-000000000023",
+      "level": "T",
+      "slug": "kata-sandi",
+      "label": "Kata Sandi",
+      "name": "Kata Sandi",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/teknologi-digital/keamanan-dasar/akun-pribadi/kata-sandi"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000024"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000025",
+      "parentId": "a0000000-0000-4000-8000-000000000024",
+      "level": "J",
+      "slug": "membuat-kata-sandi-kuat",
+      "label": "Membuat Kata Sandi yang Kuat",
+      "name": "Membuat Kata Sandi yang Kuat",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/teknologi-digital/keamanan-dasar/akun-pribadi/kata-sandi/membuat-kata-sandi-kuat"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000025"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000031",
+      "parentId": "a0000000-0000-4000-8000-000000000001",
+      "level": "D",
+      "slug": "bahasa-komunikasi",
+      "label": "Bahasa Komunikasi",
+      "name": "Bahasa Komunikasi",
+      "kind": "DOMAIN",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 30,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/bahasa-komunikasi"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000031"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000032",
+      "parentId": "a0000000-0000-4000-8000-000000000031",
+      "level": "K",
+      "slug": "membaca-aktif",
+      "label": "Membaca Aktif",
+      "name": "Membaca Aktif",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/bahasa-komunikasi/membaca-aktif"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000032"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000033",
+      "parentId": "a0000000-0000-4000-8000-000000000032",
+      "level": "M",
+      "slug": "ringkasan",
+      "label": "Ringkasan",
+      "name": "Ringkasan",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/bahasa-komunikasi/membaca-aktif/ringkasan"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000033"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000034",
+      "parentId": "a0000000-0000-4000-8000-000000000033",
+      "level": "T",
+      "slug": "paragraf",
+      "label": "Paragraf",
+      "name": "Paragraf",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/bahasa-komunikasi/membaca-aktif/ringkasan/paragraf"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000034"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000035",
+      "parentId": "a0000000-0000-4000-8000-000000000034",
+      "level": "J",
+      "slug": "merangkum-paragraf",
+      "label": "Merangkum Paragraf",
+      "name": "Merangkum Paragraf",
+      "kind": "MENU",
+      "status": "ACTIVE",
+      "accessLevel": "PUBLIC",
+      "sortOrder": 10,
+      "route": {
+        "href": "/ruang/jelajahi-pengetahuan/bahasa-komunikasi/membaca-aktif/ringkasan/paragraf/merangkum-paragraf"
+      },
+      "registryRef": "L08 sourceNodeKey; UUID runtime belum diklaim",
+      "sourceRef": "Menu/M02-pilot-explore-v1",
+      "sourceNodeKey": "a0000000-0000-4000-8000-000000000035"
+    }
+  ],
+  "relations": [
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000001",
+      "targetId": "a0000000-0000-4000-8000-000000000011",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000011",
+      "targetId": "a0000000-0000-4000-8000-000000000012",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000012",
+      "targetId": "a0000000-0000-4000-8000-000000000013",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000013",
+      "targetId": "a0000000-0000-4000-8000-000000000014",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000014",
+      "targetId": "a0000000-0000-4000-8000-000000000015",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000001",
+      "targetId": "a0000000-0000-4000-8000-000000000021",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000021",
+      "targetId": "a0000000-0000-4000-8000-000000000022",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000022",
+      "targetId": "a0000000-0000-4000-8000-000000000023",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000023",
+      "targetId": "a0000000-0000-4000-8000-000000000024",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000024",
+      "targetId": "a0000000-0000-4000-8000-000000000025",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000001",
+      "targetId": "a0000000-0000-4000-8000-000000000031",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000031",
+      "targetId": "a0000000-0000-4000-8000-000000000032",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000032",
+      "targetId": "a0000000-0000-4000-8000-000000000033",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000033",
+      "targetId": "a0000000-0000-4000-8000-000000000034",
+      "type": "PARENT_OF"
+    },
+    {
+      "sourceId": "a0000000-0000-4000-8000-000000000034",
+      "targetId": "a0000000-0000-4000-8000-000000000035",
+      "type": "PARENT_OF"
+    }
+  ],
+  "redirects": [],
+  "assets": [],
+  "dependencies": {
+    "menuPilotStaticAudit": "PASS",
+    "runtimeStageDiffPromote": "PENDING_ADMIN"
+  },
+  "unresolvedDependencies": [
+    "Admin runtime UUID/stage audit",
+    "Admin approval",
+    "Admin rollback snapshot reference"
+  ],
+  "changelog": [
+    "1.0.0: canonical Menu payload; source fixture IDs are sourceNodeKey only; no live UUID claim"
+  ],
+  "validation": {
+    "validatorVersion": "M08-offline-v1",
+    "reportChecksum": "0384683d22a54e7c0da9933c1818f95a3a363a0203ac0270a7de79ba4d07cac3"
+  },
+  "approval": {
+    "approvedBy": "",
+    "approvedAt": ""
+  },
+  "rollback": {
+    "strategy": "atomic revision pointer rollback",
+    "snapshotRef": "PENDING_ADMIN_STAGE_SNAPSHOT"
+  }
+}

@@ -1,0 +1,1429 @@
+/* ============================================================
+   ROOM REDESIGN — Tutorial & Problem Solve + Madevi School
+   13 Okt 2026 · Fase Redesign Total
+
+   Prinsip:
+   - SEMUA warna via token tema (var(--...)). TIDAK ADA hex hardcoded.
+   - Animasi hanya hover/focus 120-150ms. TIDAK ADA popup/animasi otomatis.
+   - Gradient hanya diizinkan dalam [data-theme='madevi-on'].
+   - File ini di-load TERAKHIR → preseden atas CSS legacy.
+   ============================================================ */
+
+/* Definisikan token yang dipakai tapi belum ada (bug legacy). */
+:root {
+  --article-max: 76rem;
+}
+
+/* ============================================================
+   1. BADGE SYSTEM (dipakai kedua ruang)
+   ============================================================ */
+.tps-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.tps-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.18rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-muted);
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.tps-badge--path {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+}
+
+.tps-badge--guide {
+  border-color: color-mix(in srgb, var(--basic-data) 30%, var(--border));
+  background: color-mix(in srgb, var(--basic-data) 10%, var(--surface));
+  color: var(--basic-data);
+}
+
+.tps-badge--time {
+  color: var(--text-muted);
+}
+
+.tps-badge--jenjang {
+  border-color: color-mix(in srgb, var(--basic-chrome) 30%, var(--border));
+  background: color-mix(in srgb, var(--basic-chrome) 10%, var(--surface));
+  color: var(--basic-chrome);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tps-section-label {
+  margin: 0;
+  color: var(--accent-strong);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   2. TUTORIAL & PROBLEM SOLVE
+   ============================================================ */
+
+/* Header: lebih editorial */
+.tutorial-problem__header {
+  gap: 0.6rem;
+  max-width: 56rem;
+}
+
+.tutorial-problem__header .eyebrow {
+  color: var(--accent-strong);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.tutorial-problem__header h1 {
+  font-size: clamp(1.9rem, 4.5vw, 2.9rem);
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+}
+
+.tutorial-problem__header > p:last-child {
+  max-width: 44rem;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+/* Browser panel: lebih bersih */
+.tutorial-problem__browser {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+}
+
+.tutorial-problem__browser-heading {
+  padding: clamp(1.1rem, 2.5vw, 1.6rem);
+  background: var(--surface-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.tutorial-problem__browser-heading h2 {
+  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  letter-spacing: -0.03em;
+  font-weight: 750;
+}
+
+/* Search: lebih modern */
+.tutorial-problem__search {
+  min-height: 3rem;
+  padding: 0 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.tutorial-problem__search:hover {
+  border-color: var(--border-strong);
+}
+
+/* Safety banner: elegan, tidak berteriak */
+.tutorial-problem__safety {
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem clamp(1rem, 2.5vw, 1.5rem);
+  background: color-mix(in srgb, var(--status-warning) 7%, var(--surface-card));
+  border-bottom: 1px solid color-mix(in srgb, var(--status-warning) 22%, var(--border));
+  color: var(--text);
+}
+
+.tutorial-problem__safety svg {
+  flex-shrink: 0;
+  color: var(--status-warning);
+}
+
+.tutorial-problem__safety strong {
+  font-size: 0.85rem;
+  font-weight: 750;
+}
+
+.tutorial-problem__safety p {
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+/* --- Kategori sebagai kartu modern --- */
+.tps-category-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: 0.9rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.tps-category-grid > li + li {
+  border-top: 0 !important;
+}
+
+.tutorial-problem__menu-item.tps-category-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  gap: 0.15rem 0.8rem;
+  align-items: start;
+  min-height: 0;
+  height: 100%;
+  padding: 1.1rem 1.15rem;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.tutorial-problem__menu-item.tps-category-card:hover,
+.tutorial-problem__menu-item.tps-category-card:focus-visible {
+  background: var(--surface-card);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border)) !important;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  color: var(--text);
+}
+
+.tps-category-card__index {
+  grid-row: 1 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: var(--radius-md);
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.tps-category-card__copy {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.tps-category-card__copy strong {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.tps-category-card__meta {
+  color: var(--text-muted) !important;
+  font-size: 0.78rem;
+}
+
+.tps-category-card__arrow {
+  grid-row: 1 / 3;
+  align-self: center;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.tps-category-card:hover .tps-category-card__arrow {
+  transform: translateX(3px);
+  color: var(--accent-strong);
+}
+
+/* --- Timeline untuk path view --- */
+.tps-timeline {
+  counter-reset: tps-step;
+  padding: clamp(1.2rem, 2.5vw, 1.6rem) !important;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.tps-timeline__item {
+  position: relative;
+  counter-increment: tps-step;
+  padding-left: 3.1rem;
+}
+
+.tps-timeline__item + .tps-timeline__item {
+  border-top: 0 !important;
+}
+
+/* Nomor langkah sebagai dot pada garis timeline */
+.tps-timeline__item::before {
+  content: counter(tps-step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--accent);
+  background: var(--surface-card);
+  color: var(--accent-strong);
+  font-size: 0.68rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Garis vertikal penghubung */
+.tps-timeline__item::after {
+  content: "";
+  position: absolute;
+  left: 1.02rem;
+  top: 3.15rem;
+  bottom: -0.75rem;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+.tps-timeline__item:last-child::after {
+  display: none;
+}
+
+.tutorial-problem__menu-item.tps-timeline__node {
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 3.6rem;
+  padding: 0.9rem 1.05rem;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.tutorial-problem__menu-item.tps-timeline__node:hover,
+.tutorial-problem__menu-item.tps-timeline__node:focus-visible {
+  background: var(--surface-card);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border)) !important;
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  transform: translateX(2px);
+}
+
+/* Sembunyikan index dalam tombol (sudah tampil sebagai dot via counter) */
+.tps-timeline__index {
+  display: none;
+}
+
+/* --- Kartu panduan (artikel) --- */
+.tps-guide-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: 0.9rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.tps-guide-grid > li + li {
+  border-top: 0 !important;
+}
+
+.tutorial-problem__guide-item.tps-guide-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: start;
+  height: 100%;
+  min-height: 0;
+  padding: 1.15rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.tutorial-problem__guide-item.tps-guide-card:hover,
+.tutorial-problem__guide-item.tps-guide-card:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.tps-guide-card__copy {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.tps-guide-card__copy strong {
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.tps-guide-card__summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--text-muted) !important;
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+
+.tps-guide-card__arrow {
+  align-self: center;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.tps-guide-card:hover .tps-guide-card__arrow {
+  transform: translateX(3px);
+  color: var(--accent-strong);
+}
+
+/* Trail sebagai stepper */
+.tutorial-problem__trail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.9rem clamp(1rem, 2.5vw, 1.5rem);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-muted);
+  font-size: 0.83rem;
+}
+
+.tutorial-problem__trail button {
+  border: 0;
+  background: transparent;
+  color: var(--accent-strong);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.25rem 0.4rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.tutorial-problem__trail button:hover {
+  background: var(--accent-subtle);
+}
+
+.tutorial-problem__trail > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-muted);
+}
+
+.tutorial-problem__trail strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Foundation section di bawah */
+.tutorial-problem__foundation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem clamp(1rem, 2.5vw, 1.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface-muted);
+}
+
+.tutorial-problem__foundation strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+
+.tutorial-problem__foundation p {
+  margin: 0;
+  max-width: 46rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.tutorial-problem__explore-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.tutorial-problem__explore-link:hover {
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+  transform: translateY(-1px);
+}
+
+/* Status & empty states */
+
+.tutorial-problem__state {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.tutorial-problem__state p {
+  max-width: 30rem;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.tutorial-problem__state-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.tutorial-problem__load-more {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  padding: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ============================================================
+   3. MADEVI SCHOOL
+   ============================================================ */
+
+.r1-navigator {
+  display: grid;
+  gap: clamp(1rem, 2.4vw, 1.6rem);
+  width: min(100%, 76rem);
+  min-width: 0;
+}
+
+/* Nav bar: hero mini */
+.r1-nav-bar {
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 20rem);
+  padding: clamp(1.2rem, 3vw, 1.8rem);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.r1-nav-bar__title {
+  font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+.r1-search-input {
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.r1-search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+  outline: none;
+}
+
+/* Kapsul utama: pilihan jalur yang tegas */
+.r1-main-capsules {
+  gap: 0.9rem;
+}
+
+.r1-main-capsule {
+  flex: 1 1 14rem;
+  min-height: 4.2rem;
+  padding: 1rem 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  color: var(--text);
+  font-size: 1.02rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.r1-main-capsule:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+}
+
+/* Brochure teaser: kartu undangan */
+.r1-brochure-teaser {
+  padding: clamp(1.2rem, 3vw, 1.7rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface-muted);
+}
+
+.r1-brochure-teaser__title {
+  margin: 0 0 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.r1-brochure-teaser__text {
+  margin: 0;
+  max-width: 44rem;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.r1-brochure-teaser__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+  padding: 0.65rem 1.2rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--text-inverse);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+.r1-brochure-teaser__link:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  background: var(--accent-hover);
+}
+
+/* --- Dashboard jenjang --- */
+.tps-jenjang-dashboard {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.tps-jenjang-dashboard__heading h2 {
+  margin: 0.3rem 0 0;
+  font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+  font-weight: 780;
+  letter-spacing: -0.035em;
+}
+
+.tps-jenjang-dashboard__desc {
+  margin: 0.4rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.tps-jenjang-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 0.9rem;
+}
+
+.tps-jenjang-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.tps-jenjang-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.tps-jenjang-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  border-radius: var(--radius-md);
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+  flex-shrink: 0;
+}
+
+.tps-jenjang-card__copy {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.tps-jenjang-card__copy strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+}
+
+.tps-jenjang-card__meta {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.tps-jenjang-card__arrow {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.tps-jenjang-card:hover .tps-jenjang-card__arrow {
+  transform: translateX(4px);
+  color: var(--accent-strong);
+}
+
+/* Context bar: penanda jalur aktif */
+.r1-context-bar {
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-lg);
+  background: var(--accent-subtle);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+}
+
+.r1-context-bar__label {
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.r1-context-bar__label strong {
+  color: var(--accent-strong);
+}
+
+.r1-context-bar__change {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 650;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.r1-context-bar__change:hover {
+  border-color: var(--accent);
+  background: var(--surface-hover);
+}
+
+/* Section label */
+.r1-section-label {
+  margin: 0 0 0.9rem;
+  color: var(--accent-strong);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.r1-school-section {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+}
+
+/* --- Kartu unit --- */
+.r1-unit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: 0.9rem;
+}
+
+.r1-unit-card.tps-unit-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.r1-unit-card.tps-unit-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow: var(--shadow-md);
+}
+
+.tps-unit-card--open {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border)) !important;
+  box-shadow: var(--shadow-md);
+}
+
+.tps-unit-card__btn {
+  display: grid !important;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 1.05rem 1.15rem !important;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  min-height: 0 !important;
+}
+
+.tps-unit-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.tps-unit-card__count {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tps-unit-card__main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.tps-unit-card__label {
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.tps-unit-card__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: var(--radius-full);
+  background: var(--surface-muted);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+}
+
+.tps-unit-card--open .tps-unit-card__chevron {
+  transform: rotate(90deg);
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+}
+
+/* Panel accordion */
+.r1-unit-card__panel {
+  border-top: 1px solid var(--border);
+  padding: 1rem 1.15rem 1.15rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+/* Panels sebagai segmented tabs */
+.r1-panels-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-muted);
+  padding: 0.25rem;
+}
+
+.r1-panel-btn {
+  min-height: 2.6rem !important;
+  flex: none !important;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.r1-panel-btn:hover {
+  color: var(--text);
+}
+
+.r1-panel-btn--active {
+  background: var(--surface-card) !important;
+  color: var(--accent-strong) !important;
+  box-shadow: var(--shadow-sm);
+  font-weight: 750;
+}
+
+.r1-panel-detail {
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+}
+
+.r1-panel-detail__text {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+/* --- Kartu kelas dengan progress --- */
+.r1-kelas-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.r1-list-row.tps-class-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  gap: 0.9rem;
+  align-items: center;
+  min-height: 4rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.r1-list-row.tps-class-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.tps-class-card__index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.tps-class-card:hover .tps-class-card__index {
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+}
+
+.tps-class-card__copy {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.tps-class-card__copy strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.tps-class-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* Progress bar halus */
+.tps-progress {
+  display: grid;
+  gap: 0.3rem;
+  justify-items: end;
+  min-width: 5.5rem;
+}
+
+.tps-progress__track {
+  display: block;
+  width: 5.5rem;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.tps-progress__fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--accent);
+  transition: width 300ms var(--ease-out);
+}
+
+.tps-progress__label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.tps-class-card__chevron {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.tps-class-card:hover .tps-class-card__chevron {
+  transform: translateX(3px);
+  color: var(--accent-strong);
+}
+
+/* Empty states school */
+.r1-empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+.r1-empty-icon {
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
+.r1-empty-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.r1-empty-hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+}
+
+/* Access gate */
+.r1-access-gate {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+}
+
+/* Popup modern */
+.r1-popup-backdrop {
+  background: color-mix(in srgb, var(--surface-overlay) 75%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.r1-popup {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-float);
+  max-width: min(92vw, 30rem);
+}
+
+.r1-popup--wide {
+  max-width: min(94vw, 44rem);
+}
+
+.r1-popup__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.r1-popup__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.r1-popup__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.r1-popup__close:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.r1-popup__body {
+  padding: 1.3rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+/* Tombol pilihan di popup (jenjang, semester, mapel) */
+.r1-jenjang-card-btn,
+.r1-semester-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  width: 100%;
+  min-height: 3.4rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 650;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.r1-jenjang-card-btn:hover,
+.r1-semester-btn:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  background: var(--accent-subtle);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   4. ARTICLE READER — tipografi editorial
+   ============================================================ */
+
+.article-detail-container {
+  gap: 1.25rem;
+}
+
+.article-header {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.article-header h1 {
+  max-width: 22ch;
+  font-size: clamp(1.7rem, 4.2vw, 2.7rem);
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+  text-wrap: balance;
+}
+
+.article-summary {
+  max-width: 62ch;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.article-body-wrapper {
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+}
+
+.article-blocks {
+  gap: 1.35rem;
+  font-size: 1.02rem;
+}
+
+.article-paragraph {
+  max-width: 70ch;
+  line-height: 1.8;
+  color: var(--text);
+  margin: 0;
+}
+
+.article-paragraph + .article-paragraph {
+  margin-top: 0.2rem;
+}
+
+.article-heading {
+  max-width: 40ch;
+  margin: 1.6rem 0 0;
+  font-size: clamp(1.2rem, 2.6vw, 1.55rem);
+  font-weight: 780;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+  scroll-margin-top: 5rem;
+}
+
+.article-list-block {
+  max-width: 68ch;
+  display: grid;
+  gap: 0.55rem;
+  padding-left: 1.3rem;
+  line-height: 1.7;
+}
+
+.article-list-block li::marker {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.article-quote {
+  max-width: 66ch;
+  margin: 0;
+  padding: 1.1rem 1.3rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--accent-subtle);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  font-style: italic;
+  color: var(--text);
+}
+
+.article-callout {
+  max-width: 70ch;
+  border-radius: var(--radius-md);
+  padding: 1.05rem 1.25rem;
+}
+
+.article-callout--warning {
+  border: 1px solid color-mix(in srgb, var(--status-warning) 35%, var(--border));
+  background: color-mix(in srgb, var(--status-warning) 8%, var(--surface-card));
+}
+
+.article-callout--note {
+  border: 1px solid color-mix(in srgb, var(--basic-chrome) 30%, var(--border));
+  background: color-mix(in srgb, var(--basic-chrome) 7%, var(--surface-card));
+}
+
+.article-callout--example {
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  background: var(--accent-subtle);
+}
+
+/* Step card sebagai timeline langkah */
+.article-step-card {
+  position: relative;
+  max-width: 70ch;
+  margin: 0;
+  padding: 1.15rem 1.3rem 1.15rem 3.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+}
+
+.article-step-card__label {
+  position: absolute;
+  left: 1.1rem;
+  top: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--text-inverse);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.article-table-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.article-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.article-table th {
+  background: var(--surface-muted);
+  font-weight: 700;
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.article-table td {
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.6;
+}
+
+.article-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.article-code {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  padding: 1.1rem 1.25rem;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  overflow-x: auto;
+}
+
+.article-figure {
+  margin: 0;
+  max-width: 70ch;
+}
+
+.article-figure img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+/* ============================================================
+   5. MADEVI ON — aksen identitas (satu-satunya tema ber-gradient)
+   ============================================================ */
+[data-theme='madevi-on'] .tps-jenjang-card__icon,
+[data-theme='madevi-on'] .tps-category-card__index,
+[data-theme='madevi-on'] .tps-timeline__index {
+  border-color: transparent;
+}
+
+[data-theme='madevi-on'] .tps-jenjang-card:hover,
+[data-theme='madevi-on'] .tps-category-card:hover,
+[data-theme='madevi-on'] .tps-guide-card:hover,
+[data-theme='madevi-on'] .tps-class-card:hover {
+  box-shadow: var(--shadow-md), 0 0 24px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+[data-theme='madevi-on'] .r1-brochure-teaser__link {
+  background: var(--accent-gradient);
+}
+
+[data-theme='madevi-on'] .article-step-card__label {
+  background: var(--accent-gradient);
+}
+
+/* ============================================================
+   6. RESPONSIVE
+   ============================================================ */
+@media (max-width: 720px) {
+  .tutorial-problem__browser-heading {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .r1-nav-bar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .r1-panels-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-radius: var(--radius-md);
+  }
+
+  .r1-list-row.tps-class-card {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .tps-progress {
+    display: none;
+  }
+
+  .tps-jenjang-grid,
+  .tps-category-grid,
+  .tps-guide-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .article-body-wrapper,
+  .article-header {
+    padding: 1.25rem;
+  }
+}
+
+/* ============================================================
+   7. REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .tps-jenjang-card,
+  .tps-category-card,
+  .tps-guide-card,
+  .tps-class-card,
+  .r1-main-capsule,
+  .r1-jenjang-card-btn,
+  .r1-semester-btn,
+  .tutorial-problem__explore-link,
+  .r1-brochure-teaser__link,
+  .tps-progress__fill {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .tps-jenjang-card:hover,
+  .tps-category-card:hover,
+  .tps-guide-card:hover,
+  .tps-class-card:hover {
+    transform: none !important;
+  }
+}

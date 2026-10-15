@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi multimeter digital</title><desc id="desc">Perangkat ukur listrik dengan dua probe.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#15385b"/><stop offset="1" stop-color="#0b1728"/></linearGradient><linearGradient id="meter" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f6c75f"/><stop offset="1" stop-color="#d69728"/></linearGradient></defs>
+  <rect width="720" height="720" rx="72" fill="url(#bg)"/><circle cx="620" cy="116" r="128" fill="#48b7a940"/><circle cx="92" cy="652" r="152" fill="#f6c75f22"/>
+  <path d="M205 523c-38 28-75 64-100 112M517 520c42 31 77 69 101 115" fill="none" stroke="#d8e5ed" stroke-width="16" stroke-linecap="round"/>
+  <path d="m97 632 15-55 44 37M620 632l-18-55-42 39" fill="none" stroke="#d8e5ed" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="210" y="128" width="300" height="415" rx="42" fill="url(#meter)" stroke="#fff3cd" stroke-width="8"/>
+  <rect x="252" y="176" width="216" height="107" rx="14" fill="#183344"/><text x="360" y="244" fill="#9af7c8" font-family="monospace" font-size="56" text-anchor="middle">12.60</text>
+  <circle cx="360" cy="394" r="76" fill="#1d3543" stroke="#fef0c2" stroke-width="12"/><circle cx="360" cy="394" r="24" fill="#f6c75f"/><path d="M360 332v28M416 351l-22 20M428 403h-30M404 448l-21-19M360 456v-28M315 448l21-19M292 403h30M305 351l22 20" stroke="#f7e2a5" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="276" cy="493" r="12" fill="#233746"/><circle cx="444" cy="493" r="12" fill="#bf3d45"/>
+</svg>

@@ -1,0 +1,1867 @@
+/* ===================================================
+   MADEVI LINE REDESIGN — 13 Okt 2026
+   Token-based. Tanpa warna hardcoded. Tanpa AI slop.
+   Animasi: hover/focus 120-150ms. Hormati prefers-reduced-motion.
+   =================================================== */
+
+/* ---------- Layout dasar Line ---------- */
+.line-shell {
+  max-width: 42rem;
+  margin-inline: auto;
+  display: grid;
+  gap: var(--space-cluster);
+}
+
+.line-dashboard {
+  display: grid;
+  gap: var(--space-section);
+}
+
+.line-dashboard__header {
+  max-width: 42rem;
+}
+
+.line-dashboard__header .eyebrow {
+  font: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent-strong);
+  margin: 0 0 0.5rem;
+}
+
+.line-dashboard__header h1 {
+  font: var(--text-h1);
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.line-dashboard__header > p {
+  font: var(--text-body-sm);
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 38rem;
+}
+
+/* ---------- Tab strip: underline indicator beranimasi ---------- */
+.line-tabs {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.line-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.line-tabs__btn {
+  position: relative;
+  flex: 0 0 auto;
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0.75rem 1rem;
+  font-size: var(--pr-font-size-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+  min-height: var(--touch-target-min);
+}
+
+.line-tabs__btn:hover {
+  color: var(--text);
+}
+
+.line-tabs__btn::after {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition-mid);
+}
+
+.line-tabs__btn[aria-selected='true'] {
+  color: var(--text);
+}
+
+.line-tabs__btn[aria-selected='true']::after {
+  transform: scaleX(1);
+}
+
+.line-tabs__btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Composer ---------- */
+.line-composer {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  padding: clamp(1rem, 2.5vw, 1.25rem);
+  display: grid;
+  gap: 0.875rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.line-composer__types {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.line-composer__type {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  min-height: var(--touch-target-min);
+}
+
+.line-composer__type:hover {
+  border-color: var(--border-strong);
+}
+
+.line-composer__type:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.line-composer__type input {
+  accent-color: var(--accent);
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.line-composer__type svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: 0 0 auto;
+  color: var(--accent-strong);
+}
+
+.line-composer__type-text {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.line-composer__type-text strong {
+  font-size: var(--pr-font-size-sm);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.line-composer__type-text small {
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.line-composer textarea {
+  width: 100%;
+  min-height: 5.5rem;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.75rem 0.875rem;
+  font: var(--text-body-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.line-composer textarea::placeholder {
+  color: var(--text-placeholder);
+}
+
+.line-composer textarea:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-shadow-focus);
+}
+
+.line-composer__foot {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.line-composer__attach {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.375rem 0.625rem;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border);
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.line-composer__attach:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+.line-composer__attach input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.line-composer__quota {
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+  margin: 0;
+  margin-inline-end: auto;
+}
+
+.line-composer__submit {
+  margin-inline-start: auto;
+}
+
+/* ---------- Post card ---------- */
+.line-post {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  padding: clamp(1rem, 2.5vw, 1.25rem);
+  display: grid;
+  gap: 0.75rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.line-post:hover {
+  border-color: var(--border-strong);
+}
+
+.line-post__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.line-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--pr-font-size-sm);
+  font-weight: 700;
+  color: var(--accent-strong);
+  background: var(--accent-subtle);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  user-select: none;
+}
+
+.line-avatar--sm {
+  width: 2rem;
+  height: 2rem;
+  font-size: var(--pr-font-size-xs);
+}
+
+.line-post__meta {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.line-post__author {
+  font-size: var(--pr-font-size-sm);
+  font-weight: 700;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-post__time {
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.line-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.625rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--pr-font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex: 0 0 auto;
+}
+
+.line-badge svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.line-badge--karya {
+  color: var(--accent-strong);
+  background: var(--accent-subtle);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.line-badge--curhat {
+  color: var(--status-warning);
+  background: color-mix(in srgb, var(--status-warning) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--status-warning) 35%, transparent);
+}
+
+.line-badge--safe {
+  color: var(--status-success);
+  background: color-mix(in srgb, var(--status-success) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--status-success) 30%, transparent);
+}
+
+.line-badge--muted {
+  color: var(--text-muted);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+}
+
+.line-post__body {
+  font: var(--text-body-sm);
+  color: var(--text);
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* ======================================================================
+   Zona Tenang (INOVASI-20261014-0841 IDE 1)
+   Varian kartu postingan anti-engagement: blok teks bersih, spasi lega,
+   tanpa bar aksi berikon, tanpa angka. Ketenangan dari ketiadaan elemen.
+   ====================================================================== */
+.line-post--calm {
+  padding-block: 1.25rem;
+  border: 0;
+  border-block-end: 1px solid var(--border);
+  background: transparent;
+}
+
+.line-post--calm .line-post__head {
+  margin-block-end: 0.75rem;
+}
+
+.line-post--calm .line-post__body {
+  font-size: var(--pr-font-size-base);
+  line-height: 1.75;
+}
+
+.line-calm__support {
+  margin: 0.5rem 0 0;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.line-calm__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+  margin-top: 0.75rem;
+}
+
+.line-calm__action {
+  font: inherit;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+  background: transparent;
+  border: 0;
+  padding: 0.25rem 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.line-calm__action:hover,
+.line-calm__action:focus-visible {
+  color: var(--text);
+}
+
+.line-calm__action[aria-pressed='true'] {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.line-calm__report {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+}
+
+/* Toggle Zona Tenang di header dashboard. */
+.line-calm-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.line-calm-toggle__note {
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.line-post__crisis {
+  display: flex;
+  gap: 0.625rem;
+  align-items: flex-start;
+  padding: 0.625rem 0.875rem;
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--status-warning) 35%, transparent);
+  border-inline-start-width: 3px;
+  border-inline-start-color: var(--status-warning);
+  background: color-mix(in srgb, var(--status-warning) 8%, var(--surface-card));
+  font-size: var(--pr-font-size-xs);
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.line-post__crisis svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: var(--status-warning);
+  margin-top: 0.125rem;
+}
+
+/* Kartu bantuan krisis Sosial Curhat (INSTRUKSI-03 item #4) */
+.line-crisis-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--status-danger) 30%, transparent);
+  border-inline-start-width: 3px;
+  border-inline-start-color: var(--status-danger);
+  background: color-mix(in srgb, var(--status-danger) 7%, var(--surface-card));
+  font-size: var(--pr-font-size-sm);
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.line-crisis-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--pr-font-size-sm);
+}
+
+.line-crisis-card__icon {
+  display: inline-flex;
+  color: var(--status-danger);
+  flex: 0 0 auto;
+}
+
+.line-crisis-card__message {
+  margin: 0;
+  color: var(--text);
+}
+
+.line-crisis-card__hotline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.5rem 0.625rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--status-danger) 10%, transparent);
+}
+
+.line-crisis-card__hotline svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex: 0 0 auto;
+  color: var(--status-danger);
+}
+
+.line-crisis-card__hotline a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.0625rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.line-crisis-card__hotline a:hover {
+  text-decoration: underline;
+}
+
+.line-crisis-card__hotline span {
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.line-crisis-card__note {
+  margin: 0;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+/* ---------- Action row: subtle text buttons ---------- */
+.line-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  padding-top: 0.625rem;
+  margin-top: 0.125rem;
+}
+
+.line-action {
+  appearance: none;
+  background: none;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: var(--radius-md);
+  font-size: var(--pr-font-size-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-height: 2.25rem;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.line-action svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.line-action:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+.line-action:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.line-action--active {
+  color: var(--accent-strong);
+}
+
+.line-action--active svg {
+  fill: currentColor;
+}
+
+.line-action--danger:hover {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+}
+
+.line-action__count {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Comments: threading jelas ---------- */
+.line-comments {
+  display: grid;
+  gap: 0.625rem;
+  padding-top: 0.25rem;
+}
+
+.line-comment {
+  display: flex;
+  gap: 0.625rem;
+  padding-inline-start: 0.875rem;
+  border-inline-start: 2px solid var(--border);
+  transition: border-color var(--transition-fast);
+}
+
+.line-comment:hover {
+  border-inline-start-color: var(--accent);
+}
+
+.line-comment__body {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  padding-block: 0.125rem;
+}
+
+.line-comment__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.line-comment__author {
+  font-size: var(--pr-font-size-xs);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.line-comment__time {
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.line-comment__text {
+  font-size: var(--pr-font-size-sm);
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.line-comment__form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding-inline-start: 0.875rem;
+  border-inline-start: 2px solid var(--border);
+}
+
+.line-comment__form input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: var(--input-height-sm);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text);
+  padding-inline: 0.875rem;
+  font-size: var(--pr-font-size-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.line-comment__form input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.line-comment__form input:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-shadow-focus);
+}
+
+/* ---------- Report form inline ---------- */
+.line-report {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+}
+
+.line-report__field {
+  display: grid;
+  gap: 0.3125rem;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.line-report__field select {
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.5rem 0.625rem;
+  font: var(--text-body-sm);
+}
+
+.line-report__field select:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+}
+
+.line-report textarea {
+  width: 100%;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.625rem 0.75rem;
+  font: var(--text-body-sm);
+  resize: vertical;
+}
+
+.line-report textarea:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+}
+
+/* ---------- Status / feedback ---------- */
+.line-status {
+  font-size: var(--pr-font-size-sm);
+  color: var(--text-muted);
+  padding: 0.625rem 0.875rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  margin: 0;
+}
+
+.line-status--error {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 40%, transparent);
+  background: color-mix(in srgb, var(--danger) 8%, var(--surface-card));
+}
+
+/* ---------- Skeleton loading ---------- */
+.line-skeleton {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  padding: 1.25rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.line-skeleton__line {
+  height: 0.875rem;
+  border-radius: var(--radius-sm);
+  background: var(--skeleton-bg);
+  animation: var(--skeleton-animation);
+}
+
+.line-skeleton__line--head {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.line-skeleton__avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--skeleton-bg);
+  animation: var(--skeleton-animation);
+  flex: 0 0 auto;
+}
+
+@keyframes line-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+/* ---------- Empty state ---------- */
+.line-empty {
+  text-align: center;
+  padding: clamp(2rem, 6vw, 3.5rem) 1.5rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  display: grid;
+  gap: 0.625rem;
+  justify-items: center;
+}
+
+.line-empty__art {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+  margin-bottom: 0.25rem;
+}
+
+.line-empty__art svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.line-empty__title {
+  font-size: var(--pr-font-size-lg);
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.line-empty__hint {
+  font-size: var(--pr-font-size-sm);
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 26rem;
+  line-height: 1.6;
+}
+
+/* ---------- List rows (teman, grup, notifikasi) ---------- */
+.line-row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  transition: border-color var(--transition-fast);
+}
+
+.line-row:hover {
+  border-color: var(--border-strong);
+}
+
+.line-row__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  gap: 0.125rem;
+}
+
+.line-row__title {
+  font-size: var(--pr-font-size-sm);
+  font-weight: 700;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-row__sub {
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.line-row__actions {
+  display: flex;
+  gap: 0.375rem;
+  flex: 0 0 auto;
+}
+
+.line-list {
+  display: grid;
+  gap: 0.625rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.line-row--unread {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface-card));
+}
+
+/* ---------- Guest view: mengundang, bukan menolak ---------- */
+.line-guest {
+  max-width: 46rem;
+  margin-inline: auto;
+  display: grid;
+  gap: var(--space-section);
+  padding-block: clamp(1.5rem, 5vw, 3rem);
+}
+
+.line-guest__hero {
+  text-align: center;
+  display: grid;
+  gap: 0.875rem;
+  justify-items: center;
+}
+
+.line-guest__mark {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.line-guest__mark svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.line-guest__hero h1 {
+  font: var(--text-h1);
+  margin: 0;
+  color: var(--text);
+}
+
+.line-guest__hero > p {
+  font: var(--text-body);
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 32rem;
+}
+
+.line-guest__cta {
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+.line-guest__features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.75rem;
+}
+
+.line-guest__feature {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  padding: 1.125rem;
+  display: grid;
+  gap: 0.5rem;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.line-guest__feature:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.line-guest__feature-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-subtle);
+  color: var(--accent-strong);
+}
+
+.line-guest__feature-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.line-guest__feature h2 {
+  font-size: var(--pr-font-size-md);
+  margin: 0;
+  color: var(--text);
+}
+
+.line-guest__feature p {
+  font-size: var(--pr-font-size-sm);
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ---------- Madevi On: sentuhan ekspresif ---------- */
+[data-theme='madevi-on'] .line-post:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent),
+    0 8px 28px rgb(0 0 0 / 0.35);
+}
+
+[data-theme='madevi-on'] .line-composer {
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+[data-theme='madevi-on'] .line-tabs__btn[aria-selected='true']::after {
+  box-shadow: 0 0 12px var(--accent);
+}
+
+[data-theme='madevi-on'] .line-guest__mark,
+[data-theme='madevi-on'] .line-empty__art {
+  box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.line-center {
+  justify-self: center;
+}
+
+/* ---------- Responsif ---------- */@media (max-width: 40rem) {
+  .line-composer__types {
+    grid-template-columns: 1fr;
+  }
+
+  .line-post__head {
+    flex-wrap: wrap;
+  }
+
+  .line-badge {
+    margin-inline-start: auto;
+  }
+
+  .line-row {
+    flex-wrap: wrap;
+  }
+
+  .line-row__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .line-tabs__btn::after,
+  .line-action,
+  .line-post,
+  .line-row,
+  .line-composer__type,
+  .line-guest__feature {
+    transition: none;
+  }
+
+  .line-skeleton__line,
+  .line-skeleton__avatar {
+    animation: none;
+  }
+
+  .line-guest__feature:hover {
+    transform: none;
+  }
+}
+
+/* ======================================================================
+   Peta Kebaikan (INOVASI-20261014-0841 IDE 2) + Dongeng Bareng (0940 IDE 1)
+   Semua inline: form, filter, pin, vote — tanpa popup/modal.
+   ====================================================================== */
+.kindness__intro,
+.story__intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-block-end: 1rem;
+}
+
+.kindness__intro p,
+.story__intro p {
+  margin: 0;
+  flex: 1 1 24rem;
+  color: var(--text-muted);
+}
+
+.kindness__form,
+.story__new-form,
+.story__submit-form {
+  display: grid;
+  gap: 0.75rem;
+  margin-block-end: 1.25rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+
+.kindness__form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+}
+
+.kindness__field,
+.story__field {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.kindness__field span,
+.story__field span {
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.kindness__field input,
+.kindness__field select,
+.kindness__field textarea,
+.story__field input,
+.story__field select,
+.story__field textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.625rem;
+}
+
+.kindness__check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kindness__message,
+.story__message {
+  margin: 0;
+  font-size: var(--pr-font-size-sm);
+  color: var(--text-muted);
+}
+
+.kindness__filter,
+.story__filter {
+  margin-block-end: 1rem;
+}
+
+.kindness__filter label,
+.story__filter label {
+  display: inline-grid;
+  gap: 0.25rem;
+}
+
+.kindness__filter select,
+.story__filter select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.625rem;
+}
+
+.kindness__layout {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1fr) minmax(20rem, 1.5fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 56rem) {
+  .kindness__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kindness__map {
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--surface-muted) 60%, transparent);
+}
+
+.kindness__map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1.4;
+}
+
+.kindness__pin {
+  fill: color-mix(in srgb, var(--status-success) 75%, transparent);
+  stroke: var(--surface);
+  stroke-width: 0.4;
+}
+
+.kindness__city-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.kindness__city-btn {
+  font: inherit;
+  font-size: var(--pr-font-size-sm);
+  text-align: start;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+.kindness__city-btn[aria-pressed='true'] {
+  font-weight: 600;
+}
+
+.kindness__list {
+  display: grid;
+  gap: 0.875rem;
+}
+
+.kindness__empty,
+.story__empty {
+  color: var(--text-muted);
+}
+
+.kindness__card {
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+
+.kindness__card h3 {
+  margin: 0 0 0.375rem;
+  font-size: var(--pr-font-size-base);
+}
+
+.kindness__card p {
+  margin: 0.375rem 0 0;
+  color: var(--text);
+}
+
+.kindness__card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 0.75rem;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+/* ---------- Dongeng Bareng (buku digital) ---------- */
+.story__book {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+
+.story__book-head h2 {
+  margin: 0.375rem 0 0.25rem;
+}
+
+.story__synopsis {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.story__byline {
+  margin: 0.375rem 0 0;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.story__chapter {
+  margin-block-start: 1.25rem;
+  padding-block-start: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.story__chapter-num {
+  margin: 0 0 0.5rem;
+  font-size: var(--pr-font-size-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Isi cerita: serif, gaya buku digital sederhana. */
+.story__chapter-body {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: var(--pr-font-size-base);
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.story__chapter-byline {
+  margin: 0.5rem 0 0;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.story__pending-head {
+  margin: 1.5rem 0 0.75rem;
+  font-size: var(--pr-font-size-base);
+}
+
+.story__chapter--pending {
+  padding: 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  margin-block-start: 0.75rem;
+}
+
+.story__vote-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.story__back {
+  font: inherit;
+  font-size: var(--pr-font-size-sm);
+  margin-block-end: 0.75rem;
+  color: var(--text-muted);
+  background: transparent;
+  border: 0;
+  padding: 0.25rem 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.story__note {
+  margin: 0.75rem 0 0;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.story__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 0.875rem;
+}
+
+.story__card {
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  cursor: pointer;
+}
+
+.story__card h3 {
+  margin: 0.375rem 0 0.25rem;
+  font-size: var(--pr-font-size-base);
+}
+
+.story__card p {
+  margin: 0.25rem 0 0;
+  color: var(--text-muted);
+  font-size: var(--pr-font-size-sm);
+}
+
+/* ======================================================================
+   Bundel Ongkir Tetangga (INOVASI-20261014-0940 IDE 2) — Shop
+   ====================================================================== */
+.bundle {
+  margin-top: 2rem;
+}
+
+.bundle__intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-block-end: 1rem;
+}
+
+.bundle__intro p {
+  margin: 0;
+  flex: 1 1 24rem;
+  color: var(--text-muted);
+}
+
+.bundle__form,
+.bundle__join-form {
+  display: grid;
+  gap: 0.75rem;
+  margin-block-end: 1.25rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+
+.bundle__form {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.bundle__join-form {
+  margin-top: 0.75rem;
+  background: var(--surface-muted);
+}
+
+.bundle__field {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.bundle__field span {
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.bundle__field input,
+.bundle__field select {
+  width: 100%;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.625rem;
+}
+
+.bundle__message {
+  margin: 0;
+  font-size: var(--pr-font-size-sm);
+  color: var(--text-muted);
+}
+
+.bundle__filter {
+  margin-block-end: 1rem;
+}
+
+.bundle__filter label {
+  display: inline-grid;
+  gap: 0.25rem;
+}
+
+.bundle__filter select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.625rem;
+}
+
+.bundle__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 0.875rem;
+}
+
+.bundle__card {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+
+.bundle__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.bundle__card-head h3 {
+  margin: 0;
+  font-size: var(--pr-font-size-base);
+}
+
+.bundle__slots {
+  margin: 0;
+  font-size: var(--pr-font-size-sm);
+  color: var(--text-muted);
+}
+
+.bundle__saving {
+  margin: 0;
+  font-size: var(--pr-font-size-sm);
+  color: var(--text);
+}
+
+.bundle__saving strong {
+  font-size: var(--pr-font-size-lg);
+}
+
+.bundle__saving-note {
+  display: block;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.bundle__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.375rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.5rem;
+}
+
+.bundle__items a {
+  font-size: var(--pr-font-size-sm);
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.bundle__item-meta {
+  display: block;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.bundle__note {
+  margin: 0;
+  font-size: var(--pr-font-size-xs);
+  color: var(--text-muted);
+}
+
+.bundle__empty {
+  color: var(--text-muted);
+}
+
+/* =========================================================================
+   INOVASI-1045/1145/1245 — Giliran Dengar, Duel Produk, Sidang Warga,
+   Klinik Ide, Silsilah Karya, Petisi Katalog
+   ========================================================================= */
+
+.listen-turn,
+.duel-compare,
+.sidang-warga,
+.klinik-ide,
+.silsilah,
+.petisi {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.listen-turn__hint,
+.duel-compare__hint,
+.sidang-warga__hint,
+.klinik-ide__hint,
+.silsilah__hint,
+.petisi__hint {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0.75rem;
+}
+
+.listen-turn__error,
+.duel-compare__error,
+.sidang-warga__error,
+.klinik-ide__error,
+.silsilah__error,
+.petisi__error {
+  color: var(--danger);
+  font-size: 0.875rem;
+}
+
+.listen-turn__compose,
+.duel-compare__compose,
+.sidang-warga__compose,
+.klinik-ide__compose,
+.silsilah__remix-form,
+.petisi__compose {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.listen-turn__compose input,
+.listen-turn__compose select,
+.duel-compare__compose input,
+.duel-compare__compose select,
+.sidang-warga__compose input,
+.sidang-warga__compose select,
+.klinik-ide__compose input,
+.silsilah__remix-form input,
+.petisi__compose input,
+.petisi__compose textarea {
+  flex: 1 1 12rem;
+  min-width: 12rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.listen-turn__list,
+.duel-compare__list,
+.sidang-warga__list,
+.klinik-ide__list,
+.silsilah__list,
+.petisi__list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.listen-turn__item,
+.duel-compare__item,
+.sidang-warga__item,
+.klinik-ide__item,
+.silsilah__item,
+.petisi__item {
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: var(--surface);
+}
+
+.listen-turn__item-btn,
+.sidang-warga__item button,
+.klinik-ide__item button,
+.silsilah__item > button {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text);
+}
+
+.listen-turn__topic,
+.duel-compare__title,
+.sidang-warga__title,
+.klinik-ide__title,
+.silsilah__title,
+.petisi__head strong {
+  font-weight: 600;
+}
+
+.listen-turn__meta,
+.duel-compare__meta,
+.sidang-warga__meta,
+.klinik-ide__meta,
+.silsilah__meta,
+.petisi__meta {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.listen-turn__badge,
+.listen-turn__advice-toggle[aria-pressed='true'],
+.sidang-warga__advance,
+.klinik-ide__advance {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.listen-turn__join {
+  margin-top: 0.5rem;
+}
+
+.listen-turn__detail,
+.duel-compare__detail,
+.sidang-warga__detail,
+.klinik-ide__detail,
+.silsilah__detail,
+.petisi__item {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.listen-turn__responses,
+.sidang-warga__arguments,
+.klinik-ide__feedback {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.listen-turn__response,
+.sidang-warga__argument,
+.klinik-ide__feedback-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-muted);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.listen-turn__kind,
+.sidang-warga__kind,
+.klinik-ide__kind {
+  grid-row: 1 / 3;
+  align-self: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.listen-turn__author,
+.sidang-warga__author,
+.klinik-ide__author {
+  grid-column: 2;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.listen-turn__empty,
+.duel-compare__empty,
+.sidang-warga__empty,
+.klinik-ide__empty,
+.silsilah__empty,
+.petisi__empty {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  padding: 0.5rem 0;
+}
+
+/* Duel Produk */
+.duel-compare__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.duel-compare__card {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.duel-compare__card--winner {
+  border-color: var(--accent);
+}
+
+.duel-compare__winner-badge,
+.petisi__status {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.duel-compare__cta,
+.petisi__link {
+  justify-self: start;
+  font-size: 0.8125rem;
+}
+
+.duel-compare__vote-btn,
+.petisi__vote-btn,
+.sidang-warga__advance,
+.klinik-ide__advance,
+.klinik-ide__vote {
+  justify-self: start;
+  margin-top: 0.25rem;
+}
+
+/* Sidang Warga */
+.sidang-warga__result {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-muted);
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+
+/* Klinik Ide */
+.klinik-ide__templates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+
+.klinik-ide__template {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px dashed var(--border-subtle);
+  border-radius: 999px;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+/* Silsilah Karya */
+.silsilah__badges {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.silsilah__tree-list {
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0.25rem 0;
+  border-left: 2px solid var(--border-subtle);
+}
+
+.silsilah__tree-node {
+  padding: 0.2rem 0 0.2rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.silsilah__node-author {
+  font-weight: 600;
+  margin-right: 0.4rem;
+}
+
+/* Petisi Katalog */
+.petisi__reason {
+  font-size: 0.875rem;
+  margin: 0.4rem 0;
+}
+
+.petisi__votes {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.petisi__bar {
+  height: 0.4rem;
+  margin: 0.4rem 0;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.petisi__bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
