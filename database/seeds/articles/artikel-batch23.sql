@@ -2,7 +2,6 @@
 -- 6 artikel baru: 2 Tutorial, 2 Explore, 2 School
 -- Node taksonomi dipilih dari query langsung (48+ node tersedia)
 
-\set ON_ERROR_STOP on
 BEGIN;
 
 -- ================= ARTIKEL 1: TUT-KEBERSIHAN-001 =================

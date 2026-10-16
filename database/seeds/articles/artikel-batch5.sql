@@ -1,7 +1,6 @@
 -- Artikel Batch 5 — 2026-10-13
 -- 4 artikel baru: Tutorial Keuangan, Explore Astronomi, Explore Teknologi, School Fisika SMA
 
-\set ON_ERROR_STOP on
 BEGIN;
 
 -- ================= ARTIKEL 1: TUT-KEUANGAN-001 =================

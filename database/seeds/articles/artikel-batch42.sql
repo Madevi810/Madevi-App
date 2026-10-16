@@ -1,6 +1,5 @@
 -- Batch 42: 6 artikel konten Madevi (DRAFT, id)
 -- Idempotent: re-run aman (ON CONFLICT DO NOTHING + hapus block lama sebelum insert)
-\set ON_ERROR_STOP on
 BEGIN;
 
 INSERT INTO madevi.articles (id, business_code, taxonomy_node_id, title, slug, summary, language, reading_minutes, created_by, updated_by, status)
