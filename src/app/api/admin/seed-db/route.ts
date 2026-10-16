@@ -61,6 +61,26 @@ export async function GET(req: NextRequest) {
     const nodes = await client.query('SELECT COUNT(*) as c FROM madevi.taxonomy_nodes');
     const articles = await client.query('SELECT COUNT(*) as c FROM madevi.articles');
 
+    // Activate taxonomy revision (required for API to work)
+    await client.query(`
+      UPDATE madevi.taxonomy_state
+      SET active_revision_id = (
+        SELECT id FROM madevi.taxonomy_revisions
+        WHERE status = 'ACTIVE'
+        ORDER BY promoted_at DESC NULLS LAST, id
+        LIMIT 1
+      ),
+      updated_at = NOW()
+      WHERE singleton = true
+    `).catch(() => {});
+
+    // Fix path_slug for Indonesian routes
+    await client.query(`
+      UPDATE madevi.taxonomy_nodes SET path_slug='jelajahi-pengetahuan' WHERE path_code='R2';
+      UPDATE madevi.taxonomy_nodes SET path_slug='tutorial-problem-solve' WHERE path_code='R1';
+      UPDATE madevi.taxonomy_nodes SET path_slug='pendidikan-sekolah' WHERE path_code='R3';
+    `).catch(() => {});
+
     await client.end();
 
     return NextResponse.json({
