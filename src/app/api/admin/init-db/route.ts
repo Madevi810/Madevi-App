@@ -7,7 +7,8 @@ const INIT_SECRET = process.env.DB_INIT_SECRET || 'madevi-init-2026';
 
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get('secret');
-  
+  const force = req.nextUrl.searchParams.get('force') === 'true';
+
   if (secret !== INIT_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -19,7 +20,7 @@ export async function GET(req: NextRequest) {
 
   try {
     await client.connect();
-    
+
     // Create migrations tracking table
     await client.query(`
       CREATE TABLE IF NOT EXISTS _migrations (
@@ -28,6 +29,11 @@ export async function GET(req: NextRequest) {
         applied_at TIMESTAMP DEFAULT NOW()
       )
     `);
+
+    // Force mode: clear tracking to re-run all migrations
+    if (force) {
+      await client.query('DELETE FROM _migrations');
+    }
 
     // Get applied migrations
     const applied = await client.query('SELECT name FROM _migrations');
@@ -49,7 +55,10 @@ export async function GET(req: NextRequest) {
       }
 
       try {
-        const sql = await readFile(join(migDir, file), 'utf-8');
+        const rawSql = await readFile(join(migDir, file), 'utf-8');
+        // Replace __SCHEMA__ placeholder with actual schema name
+        const schemaName = process.env.MADEVI_DB_SCHEMA || 'madevi';
+        const sql = rawSql.replaceAll('__SCHEMA__', `"${schemaName}"`);
         await client.query('BEGIN');
         await client.query(sql);
         await client.query('INSERT INTO _migrations (name) VALUES ($1)', [file]);
