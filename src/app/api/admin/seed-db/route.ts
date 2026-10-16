@@ -50,6 +50,8 @@ export async function GET(req: NextRequest) {
         results.push({ file, status: 'ok' });
         successCount++;
       } catch (err: any) {
+        // Clean up aborted transaction state
+        await client.query('ROLLBACK').catch(() => {});
         results.push({ file, status: 'error', error: err.message?.substring(0, 200) });
         failCount++;
       }
