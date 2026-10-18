@@ -1,0 +1,64 @@
+/* ===================================================
+   MADEVI UI COMPONENTS — Design System Tunggal
+   Fase 0 rebuild (18 Okt 2026). Satu definisi per komponen,
+   varian via modifier class. Ukuran proporsional.
+   =================================================== */
+
+/* ---------- Badge ---------- */
+.mdv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: var(--pr-radius-full, 9999px);
+  font-size: var(--pr-font-size-xs, 0.75rem);
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.mdv-badge--sm { padding: 1px 8px; font-size: 0.7rem; }
+.mdv-badge--lg { padding: 4px 14px; font-size: var(--pr-font-size-sm, 0.875rem); }
+.mdv-badge--default { background: var(--accent, #0ea5e9); color: #fff; }
+.mdv-badge--success { background: #dcfce7; color: #166534; }
+.mdv-badge--warning { background: #fef3c7; color: #92400e; }
+.mdv-badge--danger { background: #fee2e2; color: #991b1b; }
+.mdv-badge--info { background: #e0f2fe; color: #075985; }
+.mdv-badge--neutral { background: var(--surface-muted, #f3f4f6); color: var(--text, #111827); }
+
+/* ---------- ParamSlider (pola PhET) ---------- */
+.mdv-param-slider { display: flex; flex-direction: column; gap: 6px; min-width: 180px; }
+.mdv-param-slider__header { display: flex; justify-content: space-between; align-items: baseline; }
+.mdv-param-slider__label { font-size: var(--pr-font-size-sm, 0.875rem); font-weight: 500; color: var(--text, #111827); }
+.mdv-param-slider__value {
+  font-size: var(--pr-font-size-sm, 0.875rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-strong, #0284c7);
+  background: var(--surface-muted, #f3f4f6);
+  padding: 2px 8px;
+  border-radius: var(--pr-radius-sm, 4px);
+}
+.mdv-param-slider__input { width: 100%; accent-color: var(--accent, #0ea5e9); cursor: pointer; }
+
+/* ---------- SimControls ---------- */
+.mdv-sim-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+/* ---------- EmptyState ---------- */
+.mdv-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: var(--pr-space-6, 32px);
+  color: var(--text-muted, #6b7280);
+}
+.mdv-empty-state--sm { padding: var(--pr-space-4, 16px); }
+.mdv-empty-state--lg { padding: var(--pr-space-8, 64px); }
+.mdv-empty-state__icon { font-size: 2rem; line-height: 1; }
+.mdv-empty-state--sm .mdv-empty-state__icon { font-size: 1.5rem; }
+.mdv-empty-state--lg .mdv-empty-state__icon { font-size: 3rem; }
+.mdv-empty-state__title { font-size: var(--pr-font-size-md, 1rem); font-weight: 600; color: var(--text, #111827); margin: 0; }
+.mdv-empty-state--lg .mdv-empty-state__title { font-size: var(--pr-font-size-lg, 1.125rem); }
+.mdv-empty-state__description { font-size: var(--pr-font-size-sm, 0.875rem); margin: 0; max-width: 36ch; }
+.mdv-empty-state__action { margin-top: 4px; }

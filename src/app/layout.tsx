@@ -13,6 +13,7 @@ import '@/styles/social-redesign.css';
 import '@/styles/shop-redesign.css';
 import '@/styles/madevi-overhaul.css';
 import '@/styles/desain-terkunci.css';
+import '@/styles/ui-components.css';
 
 import { RootLayoutClient } from '@/components/root-layout-client';
 import { THEME_SCRIPT } from '@/components/theme-provider';
