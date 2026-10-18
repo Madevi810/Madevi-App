@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { RsvpPlus } from './rsvp-plus';
 import type { DataUndangan } from '@/services/undangan';
 
 export type UndanganViewProps = {
@@ -161,6 +162,17 @@ export function UndanganView({ data, namaTamu }: UndanganViewProps) {
           ))}
         </section>
       )}
+
+      {/* RSVP+ */}
+      <section style={{ marginTop: 24 }}>
+        <RsvpPlus
+          config={data.rsvp}
+          namaTamu={namaTamu}
+          onSubmit={() => {
+            // Disimpan via API di produksi; simulasi: status lokal.
+          }}
+        />
+      </section>
 
       {/* Amplop digital */}
       <section style={{ marginTop: 24 }}>
