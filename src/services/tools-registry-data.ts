@@ -70,6 +70,11 @@ import {
 } from '@/services/generator-password';
 import { hitungBMI, formatBMITeks } from '@/services/kalkulator-bmi';
 import { ZONA_WAKTU, konversiWaktu, formatWaktuTeks } from '@/services/konverter-waktu';
+import { hitungPPN, formatPPNTeks, hitungPPhTahunan } from '@/services/kalkulator-pajak';
+import { konversiSuhu, formatSuhuTeks, SATUAN_SUHU, type SatuanSuhu } from '@/services/konverter-suhu';
+import { hitungKata, formatHitungKataTeks } from '@/services/penghitung-kata';
+import { hitungDiskon, formatDiskonTeks } from '@/services/kalkulator-diskon';
+import { hitungUmur, formatUmurTeks } from '@/services/kalkulator-umur';
 
 /**
  * ============================================================
@@ -1537,6 +1542,204 @@ const batch1Tools: ToolDefinition[] = [
   },
 ];
 
+/**
+ * Batch 2 (18 Okt 2026): 5 tools baru — pajak, suhu, hitung kata, diskon, umur.
+ */
+const batch2Tools: ToolDefinition[] = [
+  {
+    id: 'kalkulator-ppn',
+    version: '1.0.0',
+    category: 'KEUANGAN',
+    nameId: 'Kalkulator PPN — Hitung Pajak Pertambahan Nilai',
+    nameEn: 'VAT Calculator (Indonesia)',
+    descriptionId:
+      'Hitung PPN Indonesia (default 11%): dari harga belum termasuk PPN atau sudah termasuk PPN. ' +
+      'Dapat DPP, nominal PPN, dan total bayar.',
+    descriptionEn: 'Calculate Indonesian VAT (default 11%) from net or gross price.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'hargaRp', labelId: 'Harga (Rp)', labelEn: 'Price (IDR)', type: 'number', required: true, minimum: 0 },
+      { key: 'tarifPersen', labelId: 'Tarif PPN % (default 11)', labelEn: 'VAT rate %', type: 'number', required: false, minimum: 0 },
+      { key: 'termasukPPN', labelId: 'Harga sudah termasuk PPN? (ya/tidak)', labelEn: 'Price includes VAT?', type: 'text', required: false },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const ya = (v: unknown) => ['ya', 'yes', 'true', '1'].includes(String(v ?? '').toLowerCase());
+      const input = {
+        hargaRp: Number(ctx.values['hargaRp'] ?? 0),
+        tarifPersen: Number(ctx.values['tarifPersen'] ?? 11),
+        termasukPPN: ya(ctx.values['termasukPPN']),
+      };
+      const hasil = hitungPPN(input);
+      return {
+        output: { teks: formatPPNTeks(hasil, input), hasil },
+        steps: [`DPP Rp${hasil.dppRp.toLocaleString('id-ID')}, PPN Rp${hasil.ppnRp.toLocaleString('id-ID')}`],
+      };
+    },
+  },
+  {
+    id: 'kalkulator-pph',
+    version: '1.0.0',
+    category: 'KEUANGAN',
+    nameId: 'Kalkulator PPh 21 — Pajak Penghasilan Tahunan',
+    nameEn: 'Income Tax Calculator (Indonesia)',
+    descriptionId:
+      'Hitung PPh 21 tahunan dari Penghasilan Kena Pajak (PKP) dengan tarif progresif UU HPP: ' +
+      '5%, 15%, 25%, 30%, 35%. Dilengkapi rincian per lapisan tarif.',
+    descriptionEn: 'Calculate annual income tax from taxable income with progressive rates.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'pkpRp', labelId: 'Penghasilan Kena Pajak setahun (Rp)', labelEn: 'Annual taxable income (IDR)', type: 'number', required: true, minimum: 0 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const pkpRp = Number(ctx.values['pkpRp'] ?? 0);
+      const { pphRp, rincian } = hitungPPhTahunan(pkpRp);
+      const teks = [
+        '=== KALKULATOR PPh 21 ===',
+        `PKP setahun: Rp${pkpRp.toLocaleString('id-ID')}`,
+        '---',
+        ...rincian,
+        '---',
+        `Total PPh terutang: Rp${pphRp.toLocaleString('id-ID')}`,
+      ].join('\n');
+      return { output: { teks, pphRp, rincian }, steps: rincian };
+    },
+  },
+  {
+    id: 'konverter-suhu',
+    version: '1.0.0',
+    category: 'UTILITAS',
+    nameId: 'Konverter Suhu — Celsius, Fahrenheit, Kelvin, Reamur',
+    nameEn: 'Temperature Converter',
+    descriptionId:
+      'Konversi suhu antar Celsius, Fahrenheit, Kelvin, dan Reamur. ' +
+      'Menampilkan keempat satuan sekaligus.',
+    descriptionEn: 'Convert temperature between Celsius, Fahrenheit, Kelvin, and Reamur.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'nilai', labelId: 'Nilai suhu', labelEn: 'Temperature value', type: 'number', required: true },
+      { key: 'dari', labelId: 'Dari satuan (C/F/K/R)', labelEn: 'From unit', type: 'text', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const dari = String(ctx.values['dari'] ?? 'C').toUpperCase() as SatuanSuhu;
+      if (!SATUAN_SUHU[dari]) throw new Error('Satuan harus salah satu dari: C, F, K, R');
+      const hasil = konversiSuhu(Number(ctx.values['nilai'] ?? 0), dari);
+      return {
+        output: { teks: formatSuhuTeks(hasil), hasil },
+        steps: [`${ctx.values['nilai']} ${SATUAN_SUHU[dari]} dikonversi ke 4 satuan`],
+      };
+    },
+  },
+  {
+    id: 'penghitung-kata',
+    version: '1.0.0',
+    category: 'UTILITAS',
+    nameId: 'Penghitung Kata — Analisis Teks',
+    nameEn: 'Word Counter',
+    descriptionId:
+      'Hitung karakter, kata, kalimat, dan paragraf dari teks. ' +
+      'Dilengkapi estimasi waktu baca. Cocok untuk penulis dan pelajar.',
+    descriptionEn: 'Count characters, words, sentences, paragraphs with reading time estimate.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'teks', labelId: 'Teks yang dianalisis', labelEn: 'Text to analyze', type: 'text', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 64 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const teks = String(ctx.values['teks'] ?? '');
+      if (teks.length === 0) throw new Error('Teks tidak boleh kosong');
+      const hasil = hitungKata(teks);
+      return {
+        output: { teks: formatHitungKataTeks(hasil), hasil },
+        steps: [`${hasil.kata} kata, ${hasil.karakter} karakter`],
+      };
+    },
+  },
+  {
+    id: 'kalkulator-diskon',
+    version: '1.0.0',
+    category: 'KEUANGAN',
+    nameId: 'Kalkulator Diskon Bertingkat',
+    nameEn: 'Discount Calculator',
+    descriptionId:
+      'Hitung harga akhir setelah diskon tunggal atau bertingkat (mis. 50% + 20%). ' +
+      'Menampilkan langkah tiap diskon, total hemat, dan persen efektif.',
+    descriptionEn: 'Calculate final price after single or stacked discounts with step breakdown.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'hargaRp', labelId: 'Harga awal (Rp)', labelEn: 'Original price (IDR)', type: 'number', required: true, minimum: 0 },
+      { key: 'diskon', labelId: 'Diskon, pisahkan koma (contoh: 50,20)', labelEn: 'Discounts, comma-separated', type: 'text', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const diskon = String(ctx.values['diskon'] ?? '')
+        .split(',')
+        .map((s) => Number(s.trim()))
+        .filter((n) => !isNaN(n));
+      const hasil = hitungDiskon(Number(ctx.values['hargaRp'] ?? 0), diskon);
+      return {
+        output: { teks: formatDiskonTeks(hasil), hasil },
+        steps: hasil.langkah,
+      };
+    },
+  },
+  {
+    id: 'kalkulator-umur',
+    version: '1.0.0',
+    category: 'UTILITAS',
+    nameId: 'Kalkulator Umur Tepat',
+    nameEn: 'Age Calculator',
+    descriptionId:
+      'Hitung umur tepat dalam tahun, bulan, dan hari dari tanggal lahir. ' +
+      'Menampilkan total hari dan hitung mundur ke ulang tahun berikutnya.',
+    descriptionEn: 'Calculate exact age in years, months, days with birthday countdown.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'tanggalLahir', labelId: 'Tanggal lahir (YYYY-MM-DD)', labelEn: 'Birth date (YYYY-MM-DD)', type: 'text', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const hasil = hitungUmur(String(ctx.values['tanggalLahir'] ?? ''));
+      return {
+        output: { teks: formatUmurTeks(hasil), hasil },
+        steps: [`Umur: ${hasil.tahun} thn ${hasil.bulan} bln ${hasil.hari} hari`],
+      };
+    },
+  },
+];
+
 export const ALL_TOOLS: ToolDefinition[] = [
   ...formulaTools(),
   ...pdfTools,
@@ -1551,4 +1754,5 @@ export const ALL_TOOLS: ToolDefinition[] = [
   ...bisnisTools,
   ...ternakTools,
   ...batch1Tools,
+  ...batch2Tools,
 ];
