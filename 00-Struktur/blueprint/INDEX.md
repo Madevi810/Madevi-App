@@ -121,12 +121,18 @@ Branch kerja: `muse/kerja`. Push otomatis ke branch kerja setelah tiap item lulu
 ### Fase A1: Perbaiki temuan deploy
 | Item | Status | Catatan |
 |---|---|---|
-| A1-1 | PROSES | Teks loading sesuai lingkungan (lokal/demo online). File: `src/app/loading.tsx` |
-| A1-2 | BELUM | Data Explore tampil di Vercel (cek koneksi DB, fallback seed) |
+| A1-1 | PASS | Teks loading sesuai lingkungan (lokal/demo online). File: `src/app/loading.tsx` |
+| A1-2 | PASS | Data Explore tampil di Vercel (cek koneksi DB, fallback seed) |
 | A1-3 | PASS | Duplikasi "Madevi" header/footer: tidak ada duplikasi visual (logo animasi + sr-only disengaja) |
 | A1-4 | PASS | noindex dipertahankan (`robots: index false, follow false` di layout) |
 
-### Fase A2-A5: (menyusul setelah A1)
+### Fase A2-A5: PASS (18 Okt 2026)
+- A2: tokens.css dimuat + docs/DESIGN-SYSTEM.md
+- A3: mesin simulasi terpusat + migration 0053 (commit 081f7bb)
+- A4: content floor check (commit 5e53bda)
+- A5: indeks pencarian statis (commit 0743070)
+
+### Fase B: mulai — Explore & Learn (berikutnya)
 - A2: Design system tokens + hapus CSS duplikat
 - A3: Mesin simulasi terpusat
 - A4: Seed data realistis ID
@@ -134,3 +140,17 @@ Branch kerja: `muse/kerja`. Push otomatis ke branch kerja setelah tiap item lulu
 
 ### Fase B: Ruang (urutan)
 Explore & Learn → Tutorial & Problem Solve → Madevi School → Tools & Equipment → Madevi Services → Madevi Line
+
+### Fase B1: Explore & Learn — RENCANA (18 Okt 2026)
+**Tujuan**: taxonomy rapi terverifikasi, browser berfungsi penuh, tidak ada halaman kosong.
+**Audit isi lama**:
+- Taxonomy: 27 node, 6 level (R→D→K→M→T→J), 0 orphan — STRUKTUR SEHAT.
+- explore-foundation.tsx: browser kategori + path + pencarian, sudah ada fallback (A1-2).
+- Kekurangan: belum ada verifikasi otomatis taxonomy; belum ada peta konsep visual.
+**Data**: taxonomy JSON existing + fallback categories.
+**Perilaku simulasi**: tidak ada (Explore murni konten).
+**Komponen reuse**: Card, Badge, EmptyState, RuangCard.
+**Kriteria selesai**:
+1. Script verifikasi taxonomy (0 orphan, level konsisten, slug unik) + test.
+2. Tidak ada regresi di browser existing.
+3. Content floor check lulus.
