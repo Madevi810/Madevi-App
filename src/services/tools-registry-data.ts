@@ -85,6 +85,7 @@ import { terbilang, formatTerbilangTeks } from '@/services/terbilang';
 import { hitungSiklus, formatSiklusTeks } from '@/services/kalender-haid';
 import { acakNama, formatAcakTeks } from '@/services/acak-nama';
 import { hitungLembur, formatLemburTeks, type JenisHariLembur } from '@/services/kalkulator-lembur';
+import { cekKeamananRangkaian, formatCekAmanTeks, type KomponenRangkaian } from '@/services/pcb-safety';
 
 /**
  * ============================================================
@@ -2126,6 +2127,47 @@ const batch5Tools: ToolDefinition[] = [
   },
 ];
 
+/**
+ * Fase 2 (18 Okt 2026): cek keamanan rangkaian (dari riset Eagle).
+ */
+const fase2Tools: ToolDefinition[] = [
+  {
+    id: 'cek-aman-rangkaian',
+    version: '1.0.0',
+    category: 'ELEKTRONIKA',
+    nameId: 'Cek Aman Rangkaian — Validasi Keamanan Elektronika',
+    nameEn: 'Circuit Safety Check',
+    descriptionId:
+      'Cek apakah rangkaian elektronika Anda aman: deteksi LED tanpa resistor, arus berlebih, ' +
+      'dan kemungkinan korsleting. Dijelaskan dalam Bahasa Indonesia beserta saran perbaikan.',
+    descriptionEn: 'Check if your electronic circuit is safe, with fix suggestions in Indonesian.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'komponen', labelId: 'Daftar komponen JSON: [{jenis, nilai, arusMA}]', labelEn: 'Components JSON', type: 'text', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 16 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      let komponen: KomponenRangkaian[];
+      try {
+        komponen = JSON.parse(String(ctx.values['komponen'] ?? '[]'));
+      } catch {
+        throw new Error('Format komponen harus JSON valid, contoh: [{"jenis":"led"},{"jenis":"resistor","nilai":"220Ω"}]');
+      }
+      if (!Array.isArray(komponen)) throw new Error('Komponen harus berupa array JSON');
+      const hasil = cekKeamananRangkaian(komponen);
+      return {
+        output: { teks: formatCekAmanTeks(hasil), hasil },
+        steps: hasil.peringatan.map((p) => `[${p.tingkat}] ${p.pesan}`),
+      };
+    },
+  },
+];
+
 export const ALL_TOOLS: ToolDefinition[] = [
   ...formulaTools(),
   ...pdfTools,
@@ -2143,4 +2185,5 @@ export const ALL_TOOLS: ToolDefinition[] = [
   ...batch2Tools,
   ...batch3Tools,
   ...batch5Tools,
+  ...fase2Tools,
 ];
