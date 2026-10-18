@@ -112,3 +112,25 @@ Eskalasi Owner wajib sebelum batch berikutnya bila salah satu batas berikut terc
   tindakan destruktif;
 - lebih dari 20 file source berubah dalam satu batch; atau
 - Agent 4 gagal dua kali pada ID yang sama.
+
+## Fondasi Kerja Muse (18 Okt 2026) — Rencana Fase A
+
+Sumber: perintah Ade 18 Okt 2026 malam. Satu item dalam satu waktu, tanpa paralel.
+Branch kerja: `muse/kerja`. Push otomatis ke branch kerja setelah tiap item lulus.
+
+### Fase A1: Perbaiki temuan deploy
+| Item | Status | Catatan |
+|---|---|---|
+| A1-1 | PROSES | Teks loading sesuai lingkungan (lokal/demo online). File: `src/app/loading.tsx` |
+| A1-2 | BELUM | Data Explore tampil di Vercel (cek koneksi DB, fallback seed) |
+| A1-3 | PASS | Duplikasi "Madevi" header/footer: tidak ada duplikasi visual (logo animasi + sr-only disengaja) |
+| A1-4 | PASS | noindex dipertahankan (`robots: index false, follow false` di layout) |
+
+### Fase A2-A5: (menyusul setelah A1)
+- A2: Design system tokens + hapus CSS duplikat
+- A3: Mesin simulasi terpusat
+- A4: Seed data realistis ID
+- A5: Navigasi, pencarian, Asisten Madevi
+
+### Fase B: Ruang (urutan)
+Explore & Learn → Tutorial & Problem Solve → Madevi School → Tools & Equipment → Madevi Services → Madevi Line
