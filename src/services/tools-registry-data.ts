@@ -60,6 +60,16 @@ import {
   type ModeJual,
 } from '@/services/ternak-gemuk';
 import type { ToolDefinition } from '@/contracts/tools-registry';
+import { hitungCicilan, formatCicilanTeks, type MetodeBunga } from '@/services/kalkulator-keuangan';
+import { validasiInputQR, formatQRTeks } from '@/services/generator-qr';
+import {
+  validasiInputPassword,
+  bangunKarakterSet,
+  estimasiEntropiBit,
+  nilaiKekuatan,
+} from '@/services/generator-password';
+import { hitungBMI, formatBMITeks } from '@/services/kalkulator-bmi';
+import { ZONA_WAKTU, konversiWaktu, formatWaktuTeks } from '@/services/konverter-waktu';
 
 /**
  * ============================================================
@@ -1313,6 +1323,220 @@ const ternakTools: ToolDefinition[] = [
   },
 ];
 
+/**
+ * Batch 1 (18 Okt 2026): 5 tools baru — keuangan, QR, password, BMI, waktu dunia.
+ */
+const batch1Tools: ToolDefinition[] = [
+  {
+    id: 'kalkulator-cicilan',
+    version: '1.0.0',
+    category: 'KEUANGAN',
+    nameId: 'Kalkulator Cicilan — Hitung Cicilan Pinjaman',
+    nameEn: 'Loan Installment Calculator',
+    descriptionId:
+      'Hitung cicilan pinjaman bank/kredit: masukkan pokok, bunga tahunan, tenor, ' +
+      'pilih metode flat atau anuitas — dapat cicilan per bulan, total bunga, dan total bayar.',
+    descriptionEn:
+      'Calculate loan installments: enter principal, annual interest, tenor, ' +
+      'choose flat or annuity method — get monthly payment, total interest, and total payment.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'pokokRp', labelId: 'Pokok pinjaman (Rp)', labelEn: 'Principal (IDR)', type: 'number', required: true, minimum: 1 },
+      { key: 'bungaTahunanPersen', labelId: 'Bunga per tahun (%)', labelEn: 'Annual interest (%)', type: 'number', required: true, minimum: 0 },
+      { key: 'tenorBulan', labelId: 'Tenor (bulan, 1–360)', labelEn: 'Tenor (months)', type: 'number', required: true, minimum: 1 },
+      { key: 'metode', labelId: 'Metode: flat atau anuitas', labelEn: 'Method: flat or annuity', type: 'text', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const metode = String(ctx.values['metode'] ?? 'anuitas').toLowerCase().includes('flat')
+        ? 'flat' as MetodeBunga
+        : 'anuitas' as MetodeBunga;
+      const input = {
+        pokokRp: Number(ctx.values['pokokRp'] ?? 0),
+        bungaTahunanPersen: Number(ctx.values['bungaTahunanPersen'] ?? 0),
+        tenorBulan: Math.round(Number(ctx.values['tenorBulan'] ?? 0)),
+        metode,
+      };
+      const hasil = hitungCicilan(input);
+      return {
+        output: { teks: formatCicilanTeks(hasil, input), hasil },
+        steps: hasil.langkah,
+      };
+    },
+  },
+  {
+    id: 'generator-qr',
+    version: '1.0.0',
+    category: 'UTILITAS',
+    nameId: 'Generator QR Code — Buat QR dari Teks/URL',
+    nameEn: 'QR Code Generator',
+    descriptionId:
+      'Buat QR code dari teks atau URL apa pun. QR dirender langsung di browser, ' +
+      'bisa diunduh sebagai gambar dan dipindai dengan kamera HP.',
+    descriptionEn:
+      'Generate a QR code from any text or URL. Rendered in the browser, ' +
+      'downloadable as an image.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'teks', labelId: 'Teks atau URL', labelEn: 'Text or URL', type: 'text', required: true },
+      { key: 'ukuranPx', labelId: 'Ukuran (px, 128–1024)', labelEn: 'Size (px)', type: 'number', required: false, minimum: 128 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const input = {
+        teks: String(ctx.values['teks'] ?? ''),
+        ukuranPx: Math.round(Number(ctx.values['ukuranPx'] ?? 256)),
+      };
+      const masalah = validasiInputQR(input);
+      if (masalah.length > 0) throw new Error(masalah.join('; '));
+      return {
+        output: { teks: formatQRTeks(input), qrTeks: input.teks, qrUkuran: input.ukuranPx },
+        steps: ['Validasi input OK', 'QR siap dirender di browser'],
+      };
+    },
+  },
+  {
+    id: 'generator-password',
+    version: '1.0.0',
+    category: 'KEAMANAN',
+    nameId: 'Generator Password Aman',
+    nameEn: 'Secure Password Generator',
+    descriptionId:
+      'Buat password kuat secara acak: atur panjang dan kombinasi huruf besar, angka, simbol. ' +
+      'Dilengkapi estimasi kekuatan (entropi bit). Password dibuat di perangkat Anda, tidak dikirim ke mana pun.',
+    descriptionEn:
+      'Generate a strong random password with configurable length and character sets. ' +
+      'Includes strength estimate. Generated on your device, never sent anywhere.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'panjang', labelId: 'Panjang (8–64)', labelEn: 'Length (8–64)', type: 'number', required: true, minimum: 8 },
+      { key: 'pakaiHurufBesar', labelId: 'Sertakan huruf besar? (ya/tidak)', labelEn: 'Include uppercase?', type: 'text', required: false },
+      { key: 'pakaiAngka', labelId: 'Sertakan angka? (ya/tidak)', labelEn: 'Include digits?', type: 'text', required: false },
+      { key: 'pakaiSimbol', labelId: 'Sertakan simbol? (ya/tidak)', labelEn: 'Include symbols?', type: 'text', required: false },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const ya = (k: string) => {
+        const v = String(ctx.values[k] ?? 'ya').toLowerCase();
+        return v === 'ya' || v === 'yes' || v === 'true' || v === '1';
+      };
+      const input = {
+        panjang: Math.round(Number(ctx.values['panjang'] ?? 16)),
+        pakaiHurufBesar: ya('pakaiHurufBesar'),
+        pakaiAngka: ya('pakaiAngka'),
+        pakaiSimbol: ya('pakaiSimbol'),
+      };
+      const masalah = validasiInputPassword(input);
+      if (masalah.length > 0) throw new Error(masalah.join('; '));
+      const set = bangunKarakterSet(input);
+      const entropi = estimasiEntropiBit(input.panjang, set.length);
+      const kekuatan = nilaiKekuatan(entropi);
+      // Password aktual dibuat di frontend via Web Crypto API; di sini hanya metadata.
+      return {
+        output: {
+          teks: [
+            '=== GENERATOR PASSWORD AMAN ===',
+            `Panjang: ${input.panjang} karakter`,
+            `Karakter: huruf kecil${input.pakaiHurufBesar ? ' + huruf BESAR' : ''}${input.pakaiAngka ? ' + angka' : ''}${input.pakaiSimbol ? ' + simbol' : ''}`,
+            `Estimasi kekuatan: ${entropi} bit (${kekuatan})`,
+            '',
+            'Password dibuat di browser Anda dengan Web Crypto API.',
+          ].join('\n'),
+          panjang: input.panjang,
+          entropiBit: entropi,
+          kekuatan,
+          butuhGenerateDiFrontend: true,
+        },
+        steps: ['Validasi input OK', `Estimasi entropi: ${entropi} bit (${kekuatan})`],
+      };
+    },
+  },
+  {
+    id: 'kalkulator-bmi',
+    version: '1.0.0',
+    category: 'KESEHATAN',
+    nameId: 'Kalkulator BMI — Indeks Massa Tubuh',
+    nameEn: 'BMI Calculator',
+    descriptionId:
+      'Hitung Indeks Massa Tubuh (BMI) dari berat dan tinggi badan. ' +
+      'Dapat kategori (kurus/normal/gemuk/obesitas), rentang berat ideal, dan saran kesehatan.',
+    descriptionEn:
+      'Calculate Body Mass Index from weight and height. ' +
+      'Get category, ideal weight range, and health advice.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'beratKg', labelId: 'Berat badan (kg)', labelEn: 'Weight (kg)', type: 'number', required: true, minimum: 1 },
+      { key: 'tinggiCm', labelId: 'Tinggi badan (cm)', labelEn: 'Height (cm)', type: 'number', required: true, minimum: 1 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const input = {
+        beratKg: Number(ctx.values['beratKg'] ?? 0),
+        tinggiCm: Number(ctx.values['tinggiCm'] ?? 0),
+      };
+      const hasil = hitungBMI(input);
+      return {
+        output: { teks: formatBMITeks(hasil, input), hasil },
+        steps: [`BMI = ${hasil.bmi} (${hasil.kategori})`],
+      };
+    },
+  },
+  {
+    id: 'konverter-waktu-dunia',
+    version: '1.0.0',
+    category: 'UTILITAS',
+    nameId: 'Konverter Waktu Dunia',
+    nameEn: 'World Time Converter',
+    descriptionId:
+      'Konversi jam antar zona waktu: WIB, WITA, WIT, UTC, Tokyo, Singapura, Dubai, London, Paris, New York, Los Angeles, Sydney.',
+    descriptionEn:
+      'Convert time between time zones: WIB, WITA, WIT, UTC, Tokyo, Singapore, Dubai, London, Paris, New York, Los Angeles, Sydney.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'jamMenit', labelId: 'Waktu (HH:MM, contoh 14:30)', labelEn: 'Time (HH:MM)', type: 'text', required: true },
+      { key: 'zonaAsal', labelId: 'Zona asal (WIB/WITA/WIT/UTC/...)', labelEn: 'From zone', type: 'text', required: true },
+      { key: 'zonaTujuan', labelId: 'Zona tujuan (WIB/WITA/WIT/UTC/...)', labelEn: 'To zone', type: 'text', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const hasil = konversiWaktu(
+        String(ctx.values['jamMenit'] ?? ''),
+        String(ctx.values['zonaAsal'] ?? 'WIB'),
+        String(ctx.values['zonaTujuan'] ?? 'UTC'),
+      );
+      return {
+        output: { teks: formatWaktuTeks(hasil), hasil, daftarZona: Object.keys(ZONA_WAKTU) },
+        steps: [`${hasil.waktuAsal} → ${hasil.waktuTujuan}`],
+      };
+    },
+  },
+];
+
 export const ALL_TOOLS: ToolDefinition[] = [
   ...formulaTools(),
   ...pdfTools,
@@ -1326,4 +1550,5 @@ export const ALL_TOOLS: ToolDefinition[] = [
   ...teksTools,
   ...bisnisTools,
   ...ternakTools,
+  ...batch1Tools,
 ];

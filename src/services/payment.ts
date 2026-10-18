@@ -362,6 +362,59 @@ export class PaymentService {
     );
     return { orderId, status: 'FROZEN' as const };
   }
+
+  /**
+   * Ringkasan order milik member — untuk halaman pembayaran simulasi.
+   * Mengembalikan null bila order bukan milik principal.
+   */
+  async getOrderSummary(orderId: string, principalId: string) {
+    const result = await this.pool.query(
+      `SELECT id, package_kind, base_price, discount_amount, final_price, status, is_simulation, created_at
+       FROM ${this.schema}.payment_orders
+       WHERE id = $1 AND principal_id = $2 LIMIT 1`,
+      [orderId, principalId],
+    );
+    if (!result.rowCount) return null;
+    const row = result.rows[0];
+    return {
+      id: row.id,
+      packageKind: row.package_kind,
+      basePrice: Number(row.base_price),
+      discountAmount: Number(row.discount_amount),
+      finalPrice: Number(row.final_price),
+      status: row.status,
+      isSimulation: row.is_simulation,
+      createdAt: row.created_at,
+    };
+  }
+
+  /**
+   * Bayar order via Mode Simulasi: langsung tandai PAID.
+   * Hanya untuk order simulasi milik principal yang berstatus CREATED.
+   */
+  async payWithSimulation(orderId: string, principalId: string, method: string) {
+    const order = await this.pool.query(
+      `SELECT id, status, is_simulation FROM ${this.schema}.payment_orders
+       WHERE id = $1 AND principal_id = $2 LIMIT 1`,
+      [orderId, principalId],
+    );
+    if (!order.rowCount) throw new Error('Order tidak ditemukan');
+    const row = order.rows[0];
+    if (!row.is_simulation) throw new Error('Order ini bukan order simulasi');
+    if (row.status === 'PAID') {
+      return { orderId, status: 'PAID' as const, alreadyPaid: true };
+    }
+    if (row.status !== 'CREATED') {
+      throw new Error(`Order tidak bisa dibayar pada status ${row.status}`);
+    }
+    await this.pool.query(
+      `UPDATE ${this.schema}.payment_orders
+       SET status = 'PAID', provider_event_id = $2, paid_at = NOW()
+       WHERE id = $1`,
+      [orderId, `sim-${method}-${Date.now()}`],
+    );
+    return { orderId, status: 'PAID' as const, method, alreadyPaid: false };
+  }
 }
 
 function hashCode(value: string) {
