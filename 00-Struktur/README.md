@@ -1,7 +1,7 @@
 # 00-Struktur — Pusat Aturan & Arsip Madevi
 
 Folder ini berisi aturan, arsip kerja, dan dokumen kontrol project Madevi.
-AI agent yang bekerja di project ini WAJIB membaca `00-Readme.md` di root
+AI agent yang bekerja di project ini WAJIB membaca `readme.md` di root
 project dulu, lalu folder ini.
 
 ## File gabungan (hasil ringkasan 16 Okt 2026)
@@ -27,7 +27,7 @@ setelah diverifikasi isinya masuk utuh ke file gabungan.
 | File | Fungsi |
 |---|---|
 | `ATURAN-WAJIB.md` | 44 aturan wajib Madevi — dibaca SEBELUM kerja apapun |
-| `../00-Agent.md` | Agent utama (1 saja) — rangkuman dari AGENTS-*.md + MADEVI-MASTER-AUTONOMOUS-AGENT-SCOPE.md |
+| `../agent.md` | Agent utama (1 saja) — rangkuman dari AGENTS-*.md + MADEVI-MASTER-AUTONOMOUS-AGENT-SCOPE.md |
 | `CONTROL-INDEX.md` | Indeks kontrol lama |
 | `INDEX.md` | Daftar isi folder ini |
 

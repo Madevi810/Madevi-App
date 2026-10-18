@@ -338,6 +338,65 @@ export class AccountsService {
     return this.session.create({ principal, audience: 'MEMBER' });
   }
 
+  /**
+   * Selesaikan login via OAuth tiruan (Mode Simulasi).
+   *
+   * Identitas sudah "diverifikasi" oleh provider tiruan, jadi tanpa password.
+   * Tetap hormati 2FA email bila aktif dan tolak akun non-ACTIVE/terkunci —
+   * sama seperti jalur login biasa.
+   */
+  async completeOAuthLogin(principalId: string): Promise<
+    | { status: 'AUTHENTICATED'; session: SessionBundle }
+    | {
+        status: 'MFA_REQUIRED';
+        challengeId: string;
+        transportMode: 'LOCAL_INBOX';
+      }
+  > {
+    const result = await this.pool.query<PrincipalRow>(
+      `${principalCredentialSelect(this.schema)}
+        WHERE p.id = $1 AND p.role = 'MEMBER' AND p.deleted_at IS NULL`,
+      [principalId],
+    );
+    const row = result.rows[0];
+    if (!row || row.lifecycle_status !== 'ACTIVE' || isLocked(row, this.now())) {
+      throw new ApiError('AUTHENTICATION_FAILED', GENERIC_LOGIN_MESSAGE);
+    }
+    await this.pool.query(
+      `UPDATE ${this.schema}.account_credentials SET failed_attempts = 0, locked_until = NULL
+        WHERE principal_id = $1`,
+      [row.id],
+    );
+    const mfa = await this.pool.query<{ id: string }>(
+      `SELECT id FROM ${this.schema}.mfa_factors
+        WHERE principal_id = $1 AND factor_kind = 'EMAIL' AND status = 'ACTIVE'`,
+      [row.id],
+    );
+    if (mfa.rows[0]) {
+      const challenge = await this.createMfaChallenge(row.id, 'LOGIN');
+      await this.pool.query(
+        `INSERT INTO ${this.schema}.owner_inbox_items
+           (id, sender_principal_id, item_kind, subject, body_text)
+         VALUES ($1, $2, 'APPEAL', $3, $4)`,
+        [
+          randomUUID(),
+          row.id,
+          'OTP login 2FA (OAuth Simulasi)',
+          `challengeId:${challenge.id} | kode:${challenge.code} | berlaku 10 menit`,
+        ],
+      );
+      return {
+        status: 'MFA_REQUIRED',
+        challengeId: challenge.id,
+        transportMode: 'LOCAL_INBOX' as const,
+      };
+    }
+    return {
+      status: 'AUTHENTICATED',
+      session: await this.session.create({ principal: toPrincipal(row), audience: 'MEMBER' }),
+    };
+  }
+
   async enableEmailMfa(principal: Principal) {
     const account = await this.pool.query<{
       email: string | null;

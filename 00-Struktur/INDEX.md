@@ -43,7 +43,7 @@
 
 - `README.md` — penjelasan folder ini
 - `ATURAN-WAJIB.md` — 44 aturan wajib (dibaca dulu sebelum kerja)
-- `../00-Agent.md` — agent utama (rangkuman AGENTS-*.md + MADEVI-MASTER-AUTONOMOUS-AGENT-SCOPE.md)
+- `../agent.md` — agent utama (rangkuman AGENTS-*.md + MADEVI-MASTER-AUTONOMOUS-AGENT-SCOPE.md)
 - `CONTROL-INDEX.md` — indeks kontrol lama
 
 ## Arsip lain
