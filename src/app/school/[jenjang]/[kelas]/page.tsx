@@ -5,6 +5,7 @@ import { PublicShell } from '@/components/public-shell';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/ui/empty-state';
+import { TanyaKonsep } from '@/components/school/tanya-konsep';
 import {
   JENJANG_LABEL,
   KELAS_PER_JENJANG,
@@ -103,6 +104,10 @@ export default async function KelasPage({
             ))}
           </div>
         )}
+
+        <div style={{ marginTop: 32 }}>
+          <TanyaKonsep />
+        </div>
       </main>
     </PublicShell>
   );
