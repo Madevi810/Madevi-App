@@ -75,6 +75,11 @@ import { konversiSuhu, formatSuhuTeks, SATUAN_SUHU, type SatuanSuhu } from '@/se
 import { hitungKata, formatHitungKataTeks } from '@/services/penghitung-kata';
 import { hitungDiskon, formatDiskonTeks } from '@/services/kalkulator-diskon';
 import { hitungUmur, formatUmurTeks } from '@/services/kalkulator-umur';
+import { hitungZakatMaal, formatZakatMaalTeks, hitungZakatFitrah, HARGA_EMAS_DEFAULT_RP_PER_GRAM } from '@/services/kalkulator-zakat';
+import { konversiMataUang, formatMataUangTeks, KURS_TERHADAP_IDR } from '@/services/konverter-mata-uang';
+import { hitungWinStreak, formatWRTeks } from '@/services/kalkulator-wr';
+import { hitungKebutuhanAir, formatAirTeks, type TingkatAktivitas, type Cuaca } from '@/services/kalkulator-air';
+import { buatJadwalPiket, formatPiketTeks } from '@/services/jadwal-piket';
 
 /**
  * ============================================================
@@ -1740,6 +1745,215 @@ const batch2Tools: ToolDefinition[] = [
   },
 ];
 
+/**
+ * Batch 3 (18 Okt 2026): 5 tools baru — zakat, mata uang, WR game, air, piket.
+ */
+const batch3Tools: ToolDefinition[] = [
+  {
+    id: 'kalkulator-zakat-maal',
+    version: '1.0.0',
+    category: 'KEAGAMAAN',
+    nameId: 'Kalkulator Zakat Maal',
+    nameEn: 'Zakat al-Mal Calculator',
+    descriptionId:
+      'Hitung zakat maal 2,5% dari total harta. Nisab = 85 gram emas; ' +
+      'masukkan harga emas per gram terkini untuk hasil akurat.',
+    descriptionEn: 'Calculate 2.5% zakat on wealth with 85g gold nisab.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'totalHartaRp', labelId: 'Total harta (Rp): tabungan, emas, investasi', labelEn: 'Total wealth (IDR)', type: 'number', required: true, minimum: 0 },
+      { key: 'hargaEmasRp', labelId: 'Harga emas per gram (Rp)', labelEn: 'Gold price per gram (IDR)', type: 'number', required: false, minimum: 1 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const hasil = hitungZakatMaal({
+        totalHartaRp: Number(ctx.values['totalHartaRp'] ?? 0),
+        hargaEmasPerGramRp: Number(ctx.values['hargaEmasRp'] ?? HARGA_EMAS_DEFAULT_RP_PER_GRAM),
+      });
+      return {
+        output: { teks: formatZakatMaalTeks(hasil), hasil },
+        steps: [`Nisab Rp${hasil.nisabRp.toLocaleString('id-ID')}: ${hasil.wajibZakat ? 'wajib' : 'belum wajib'}`],
+      };
+    },
+  },
+  {
+    id: 'kalkulator-zakat-fitrah',
+    version: '1.0.0',
+    category: 'KEAGAMAAN',
+    nameId: 'Kalkulator Zakat Fitrah',
+    nameEn: 'Zakat al-Fitr Calculator',
+    descriptionId:
+      'Hitung zakat fitrah: 2,5 kg beras per jiwa, dikonversi ke rupiah ' +
+      'berdasarkan harga beras per kg.',
+    descriptionEn: 'Calculate zakat al-fitr: 2.5 kg rice per person.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'jiwa', labelId: 'Jumlah jiwa', labelEn: 'Number of people', type: 'number', required: true, minimum: 1 },
+      { key: 'hargaBerasRp', labelId: 'Harga beras per kg (Rp)', labelEn: 'Rice price per kg (IDR)', type: 'number', required: true, minimum: 1 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const hasil = hitungZakatFitrah(
+        Math.round(Number(ctx.values['jiwa'] ?? 1)),
+        Number(ctx.values['hargaBerasRp'] ?? 0),
+      );
+      const teks = [
+        '=== ZAKAT FITRAH ===',
+        `Jiwa: ${hasil.jiwa}`,
+        `Beras: ${hasil.totalKg} kg`,
+        `Nominal: Rp${hasil.totalRp.toLocaleString('id-ID')}`,
+      ].join('\n');
+      return { output: { teks, hasil }, steps: [`${hasil.totalKg} kg × harga beras`] };
+    },
+  },
+  {
+    id: 'konverter-mata-uang',
+    version: '1.0.0',
+    category: 'KEUANGAN',
+    nameId: 'Konverter Mata Uang',
+    nameEn: 'Currency Converter',
+    descriptionId:
+      'Konversi antar 12 mata uang (IDR, USD, EUR, GBP, JPY, CNY, SGD, MYR, THB, AUD, KRW, SAR). ' +
+      'Kurs statis untuk estimasi cepat.',
+    descriptionEn: 'Convert between 12 currencies with static rates for quick estimates.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'jumlah', labelId: 'Jumlah', labelEn: 'Amount', type: 'number', required: true, minimum: 0 },
+      { key: 'dari', labelId: 'Dari (kode: USD, EUR, ...)', labelEn: 'From code', type: 'text', required: true },
+      { key: 'ke', labelId: 'Ke (kode: IDR, USD, ...)', labelEn: 'To code', type: 'text', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const hasil = konversiMataUang(
+        Number(ctx.values['jumlah'] ?? 0),
+        String(ctx.values['dari'] ?? 'USD'),
+        String(ctx.values['ke'] ?? 'IDR'),
+      );
+      return {
+        output: { teks: formatMataUangTeks(hasil), hasil, daftarKode: Object.keys(KURS_TERHADAP_IDR) },
+        steps: [`${hasil.jumlahAsal} ${hasil.dari} → ${hasil.jumlahTujuan} ${hasil.ke}`],
+      };
+    },
+  },
+  {
+    id: 'kalkulator-winrate',
+    version: '1.0.0',
+    category: 'HIBURAN',
+    nameId: 'Kalkulator Win Rate Game',
+    nameEn: 'Game Win Rate Calculator',
+    descriptionId:
+      'Hitung berapa win streak tanpa kalah yang dibutuhkan untuk mencapai target win rate. ' +
+      'Cocok untuk Mobile Legends dan game kompetitif lain.',
+    descriptionEn: 'Calculate win streak needed to reach target win rate.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'totalMatch', labelId: 'Total match dimainkan', labelEn: 'Total matches', type: 'number', required: true, minimum: 0 },
+      { key: 'wrSaatIni', labelId: 'WR saat ini (%)', labelEn: 'Current WR (%)', type: 'number', required: true, minimum: 0 },
+      { key: 'targetWr', labelId: 'Target WR (%)', labelEn: 'Target WR (%)', type: 'number', required: true, minimum: 0 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const hasil = hitungWinStreak(
+        Math.round(Number(ctx.values['totalMatch'] ?? 0)),
+        Number(ctx.values['wrSaatIni'] ?? 0),
+        Number(ctx.values['targetWr'] ?? 0),
+      );
+      return {
+        output: { teks: formatWRTeks(hasil), hasil },
+        steps: [`Target ${hasil.targetWrPersen}%: butuh ${hasil.winStreakDibutuhkan} win streak`],
+      };
+    },
+  },
+  {
+    id: 'kalkulator-air-harian',
+    version: '1.0.0',
+    category: 'KESEHATAN',
+    nameId: 'Kalkulator Kebutuhan Air Harian',
+    nameEn: 'Daily Water Intake Calculator',
+    descriptionId:
+      'Hitung kebutuhan air minum harian berdasarkan berat badan, tingkat aktivitas, dan cuaca. ' +
+      'Hasil dalam ml, liter, dan jumlah gelas.',
+    descriptionEn: 'Calculate daily water intake from weight, activity, and weather.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'beratKg', labelId: 'Berat badan (kg)', labelEn: 'Weight (kg)', type: 'number', required: true, minimum: 1 },
+      { key: 'aktivitas', labelId: 'Aktivitas: rendah/sedang/tinggi', labelEn: 'Activity level', type: 'text', required: false },
+      { key: 'cuaca', labelId: 'Cuaca: normal/panas', labelEn: 'Weather', type: 'text', required: false },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const norm = (v: unknown, d: string) => String(v ?? d).toLowerCase();
+      const aktivitas = (['rendah', 'sedang', 'tinggi'].includes(norm(ctx.values['aktivitas'], 'rendah'))
+        ? norm(ctx.values['aktivitas'], 'rendah') : 'rendah') as TingkatAktivitas;
+      const cuaca = (['normal', 'panas'].includes(norm(ctx.values['cuaca'], 'normal'))
+        ? norm(ctx.values['cuaca'], 'normal') : 'normal') as Cuaca;
+      const hasil = hitungKebutuhanAir({ beratKg: Number(ctx.values['beratKg'] ?? 0), aktivitas, cuaca });
+      return {
+        output: { teks: formatAirTeks(hasil), hasil },
+        steps: hasil.rincian,
+      };
+    },
+  },
+  {
+    id: 'jadwal-piket',
+    version: '1.0.0',
+    category: 'UTILITAS',
+    nameId: 'Generator Jadwal Piket',
+    nameEn: 'Duty Roster Generator',
+    descriptionId:
+      'Buat jadwal piket ronda, kelas, atau kantor: masukkan daftar nama dan hari, ' +
+      'dapatkan pembagian tugas yang adil dan bergiliran.',
+    descriptionEn: 'Generate fair rotating duty rosters from a name list.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'nama', labelId: 'Daftar nama, pisahkan koma', labelEn: 'Names, comma-separated', type: 'text', required: true },
+      { key: 'hari', labelId: 'Daftar hari, pisahkan koma (opsional)', labelEn: 'Days, comma-separated (optional)', type: 'text', required: false },
+      { key: 'orangPerHari', labelId: 'Orang per hari (default 1)', labelEn: 'People per day', type: 'number', required: false, minimum: 1 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 16 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const nama = String(ctx.values['nama'] ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+      const hariRaw = String(ctx.values['hari'] ?? '').trim();
+      const hari = hariRaw ? hariRaw.split(',').map((s) => s.trim()).filter(Boolean) : undefined;
+      const hasil = buatJadwalPiket(nama, hari, Math.round(Number(ctx.values['orangPerHari'] ?? 1)));
+      return {
+        output: { teks: formatPiketTeks(hasil), hasil },
+        steps: [`${hasil.totalOrang} orang dibagi ke ${hasil.totalHari} hari`],
+      };
+    },
+  },
+];
+
 export const ALL_TOOLS: ToolDefinition[] = [
   ...formulaTools(),
   ...pdfTools,
@@ -1755,4 +1969,5 @@ export const ALL_TOOLS: ToolDefinition[] = [
   ...ternakTools,
   ...batch1Tools,
   ...batch2Tools,
+  ...batch3Tools,
 ];
