@@ -80,6 +80,11 @@ import { konversiMataUang, formatMataUangTeks, KURS_TERHADAP_IDR } from '@/servi
 import { hitungWinStreak, formatWRTeks } from '@/services/kalkulator-wr';
 import { hitungKebutuhanAir, formatAirTeks, type TingkatAktivitas, type Cuaca } from '@/services/kalkulator-air';
 import { buatJadwalPiket, formatPiketTeks } from '@/services/jadwal-piket';
+import { hitungTHR, formatTHRTeks } from '@/services/kalkulator-thr';
+import { terbilang, formatTerbilangTeks } from '@/services/terbilang';
+import { hitungSiklus, formatSiklusTeks } from '@/services/kalender-haid';
+import { acakNama, formatAcakTeks } from '@/services/acak-nama';
+import { hitungLembur, formatLemburTeks, type JenisHariLembur } from '@/services/kalkulator-lembur';
 
 /**
  * ============================================================
@@ -1954,6 +1959,173 @@ const batch3Tools: ToolDefinition[] = [
   },
 ];
 
+/**
+ * Batch 5 (18 Okt 2026): 5 tools baru — THR, terbilang, siklus haid, acak nama, lembur.
+ */
+const batch5Tools: ToolDefinition[] = [
+  {
+    id: 'kalkulator-thr',
+    version: '1.0.0',
+    category: 'KEUANGAN',
+    nameId: 'Kalkulator THR',
+    nameEn: 'Holiday Bonus (THR) Calculator',
+    descriptionId:
+      'Hitung Tunjangan Hari Raya: 1x upah sebulan bila masa kerja ≥12 bulan, ' +
+      'proporsional bila kurang dari 12 bulan.',
+    descriptionEn: 'Calculate Indonesian holiday bonus (THR).',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'gajiPokokRp', labelId: 'Gaji pokok (Rp)', labelEn: 'Basic salary (IDR)', type: 'number', required: true, minimum: 0 },
+      { key: 'tunjanganTetapRp', labelId: 'Tunjangan tetap (Rp)', labelEn: 'Fixed allowance (IDR)', type: 'number', required: false, minimum: 0 },
+      { key: 'masaKerjaBulan', labelId: 'Masa kerja (bulan)', labelEn: 'Tenure (months)', type: 'number', required: true, minimum: 1 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const input = {
+        gajiPokokRp: Number(ctx.values['gajiPokokRp'] ?? 0),
+        tunjanganTetapRp: Number(ctx.values['tunjanganTetapRp'] ?? 0),
+        masaKerjaBulan: Math.round(Number(ctx.values['masaKerjaBulan'] ?? 12)),
+      };
+      const hasil = hitungTHR(input);
+      return {
+        output: { teks: formatTHRTeks(hasil, input), hasil },
+        steps: [`THR Rp${hasil.thrRp.toLocaleString('id-ID')} (${hasil.proporsional ? 'proporsional' : 'penuh'})`],
+      };
+    },
+  },
+  {
+    id: 'terbilang',
+    version: '1.0.0',
+    category: 'UTILITAS',
+    nameId: 'Terbilang — Angka ke Kata Bahasa Indonesia',
+    nameEn: 'Number to Indonesian Words',
+    descriptionId:
+      'Ubah angka menjadi kata Bahasa Indonesia (terbilang) untuk kwitansi, kontrak, dan dokumen resmi. ' +
+      'Mendukung hingga triliunan.',
+    descriptionEn: 'Convert numbers to Indonesian words for receipts and documents.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'angka', labelId: 'Angka (bulat)', labelEn: 'Number (integer)', type: 'number', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const angka = Math.round(Number(ctx.values['angka'] ?? 0));
+      return {
+        output: { teks: formatTerbilangTeks(angka), terbilang: terbilang(angka) },
+        steps: [`${angka} → "${terbilang(angka)}"`],
+      };
+    },
+  },
+  {
+    id: 'kalender-haid',
+    version: '1.0.0',
+    category: 'KESEHATAN',
+    nameId: 'Pelacak Siklus Haid',
+    nameEn: 'Menstrual Cycle Tracker',
+    descriptionId:
+      'Estimasi haid berikutnya, ovulasi, dan masa subur dari tanggal haid terakhir dan panjang siklus. ' +
+      'Bukan alat kontrasepsi medis.',
+    descriptionEn: 'Estimate next period, ovulation, and fertile window.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'haidTerakhir', labelId: 'Haid terakhir (YYYY-MM-DD)', labelEn: 'Last period (YYYY-MM-DD)', type: 'text', required: true },
+      { key: 'panjangSiklus', labelId: 'Panjang siklus hari (default 28)', labelEn: 'Cycle length (default 28)', type: 'number', required: false, minimum: 21 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const hasil = hitungSiklus(
+        String(ctx.values['haidTerakhir'] ?? ''),
+        Math.round(Number(ctx.values['panjangSiklus'] ?? 28)),
+      );
+      return {
+        output: { teks: formatSiklusTeks(hasil), hasil },
+        steps: [`Haid berikut: ${hasil.haidBerikutnya}`, `Ovulasi: ${hasil.estimasiOvulasi}`],
+      };
+    },
+  },
+  {
+    id: 'acak-nama',
+    version: '1.0.0',
+    category: 'UTILITAS',
+    nameId: 'Pengacak Nama — Arisan & Doorprize',
+    nameEn: 'Random Name Picker',
+    descriptionId:
+      'Acak daftar nama untuk arisan, doorprize, atau undian kelas. ' +
+      'Bebas duplikat, tentukan jumlah pemenang.',
+    descriptionEn: 'Shuffle names for raffles and prize draws.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'nama', labelId: 'Daftar nama, pisahkan koma', labelEn: 'Names, comma-separated', type: 'text', required: true },
+      { key: 'jumlahPemenang', labelId: 'Jumlah pemenang (default 1)', labelEn: 'Winners count', type: 'number', required: false, minimum: 1 },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 16 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const nama = String(ctx.values['nama'] ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+      const hasil = acakNama(nama, Math.round(Number(ctx.values['jumlahPemenang'] ?? 1)));
+      return {
+        output: { teks: formatAcakTeks(hasil), hasil },
+        steps: [`Pemenang: ${hasil.pemenang.join(', ')}`],
+      };
+    },
+  },
+  {
+    id: 'kalkulator-lembur',
+    version: '1.0.0',
+    category: 'KEUANGAN',
+    nameId: 'Kalkulator Upah Lembur',
+    nameEn: 'Overtime Pay Calculator',
+    descriptionId:
+      'Hitung upah lembur sesuai aturan Kemenaker: 1/173 × gaji sebulan per jam, ' +
+      'dengan pengali 1,5x/2x (hari kerja) dan 2x/3x/4x (hari libur).',
+    descriptionEn: 'Calculate overtime pay per Indonesian labor regulation.',
+    family: 'LOCAL_LIGHT',
+    risk: 'NONE',
+    packageAccess: 'TRIAL',
+    retention: 'NONE',
+    inputSchema: [
+      { key: 'gajiSebulanRp', labelId: 'Gaji sebulan (Rp)', labelEn: 'Monthly salary (IDR)', type: 'number', required: true, minimum: 1 },
+      { key: 'jamLembur', labelId: 'Jumlah jam lembur', labelEn: 'Overtime hours', type: 'number', required: true, minimum: 0 },
+      { key: 'jenisHari', labelId: 'Jenis hari: kerja/libur', labelEn: 'Day type: kerja/libur', type: 'text', required: true },
+    ],
+    outputSchema: { kind: 'TEXT' },
+    maxInputBytes: 4 * KB,
+    maxComputeSeconds: 5,
+    handler: (ctx) => {
+      const jenis = String(ctx.values['jenisHari'] ?? 'kerja').toLowerCase().includes('libur')
+        ? 'libur' as JenisHariLembur : 'kerja' as JenisHariLembur;
+      const hasil = hitungLembur(
+        Number(ctx.values['gajiSebulanRp'] ?? 0),
+        Number(ctx.values['jamLembur'] ?? 0),
+        jenis,
+      );
+      return {
+        output: { teks: formatLemburTeks(hasil, jenis), hasil },
+        steps: hasil.rincian,
+      };
+    },
+  },
+];
+
 export const ALL_TOOLS: ToolDefinition[] = [
   ...formulaTools(),
   ...pdfTools,
@@ -1970,4 +2142,5 @@ export const ALL_TOOLS: ToolDefinition[] = [
   ...batch1Tools,
   ...batch2Tools,
   ...batch3Tools,
+  ...batch5Tools,
 ];
