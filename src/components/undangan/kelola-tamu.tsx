@@ -69,6 +69,24 @@ export function KelolaTamu({ slug, namaMempelai, tamuAwal, onTamuChange }: Kelol
     }
   };
 
+  /**
+   * C4: Export daftar tamu ke CSV (dibuka di Excel).
+   * Pembeda dari katsudoto: gratis, satu klik, langsung dari browser.
+   */
+  const exportCSV = () => {
+    const header = 'Nama;Nomor WA;Grup;RSVP;Check-in';
+    const baris = tamu.map((t) =>
+      [t.nama, t.nomorWA ?? '', t.grup ?? '', t.statusRSVP, t.sudahCheckin ? 'Ya' : ''].join(';'),
+    );
+    const csv = '\uFEFF' + [header, ...baris].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `daftar-tamu-${slug}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
   return (
     <div>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
@@ -76,6 +94,12 @@ export function KelolaTamu({ slug, namaMempelai, tamuAwal, onTamuChange }: Kelol
         <Badge variant="success">✅ {statistik.hadir} hadir</Badge>
         <Badge variant="danger">❌ {statistik.tidak} tidak</Badge>
         <Badge variant="info">🎟 {statistik.checkin} check-in</Badge>
+      </div>
+
+      <div style={{ marginBottom: 16 }}>
+        <Button size="sm" variant="outline" onClick={exportCSV}>
+          📥 Export ke Excel (CSV)
+        </Button>
       </div>
 
       {/* Form tambah */}
