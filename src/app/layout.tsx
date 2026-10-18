@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 
+import '@/styles/tokens.css';
 import '@/styles/globals.css';
 import '@/styles/redesign.css';
 import '@/styles/madevi-on.css';
