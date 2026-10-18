@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import { useLanguage } from './theme-provider';
+import { FALLBACK_CATEGORIES, FALLBACK_LABEL_ID, FALLBACK_LABEL_EN } from '@/content/explore-fallback';
 
 type ExploreNode = {
   id: string;
@@ -149,6 +150,7 @@ export function ExploreFoundation({ sampleArticle }: { sampleArticle: SampleArti
   const [categoryState, setCategoryState] = useState<LoadState>('loading');
   const [categoryCursor, setCategoryCursor] = useState<string | null>(null);
   const [categoryMoreState, setCategoryMoreState] = useState<LoadState>('idle');
+  const [usingFallback, setUsingFallback] = useState(false);
   const [activeNode, setActiveNode] = useState<ExploreNode | null>(null);
   const [activeTrail, setActiveTrail] = useState<ExploreNode[]>([]);
   const [children, setChildren] = useState<ExploreNode[]>([]);
@@ -181,14 +183,27 @@ export function ExploreFoundation({ sampleArticle }: { sampleArticle: SampleArti
       setCategoryCursor(data.page.nextCursor);
       setCategoryState('ready');
       setCategoryMoreState('idle');
+      setUsingFallback(false);
     } catch {
       if (request !== categoryRequest.current) return;
       if (cursor) {
         setCategoryMoreState('error');
       } else {
-        setCategories([]);
+        // A1-2: fallback data saat DB tidak terjangkau (aturan #11: tidak ada halaman kosong).
+        // Tandai jelas sebagai mode demo agar tidak menyesatkan.
+        const fallback = FALLBACK_CATEGORIES.map((f) => ({
+          id: f.id,
+          name: f.name,
+          slug: f.slug,
+          path: f.path,
+          childCount: f.childrenCount,
+          articleCount: f.articlesCount,
+        }));
+        setCategories(fallback);
         setCategoryCursor(null);
-        setCategoryState('error');
+        setCategoryState('ready');
+        setCategoryMoreState('idle');
+        setUsingFallback(true);
       }
     }
   }, [loadNavigation]);
@@ -374,6 +389,15 @@ export function ExploreFoundation({ sampleArticle }: { sampleArticle: SampleArti
         </div>
 
         <div className="mdv2-toolbar">
+          {usingFallback && (
+            <p
+              className="mdv2-fallback-notice"
+              role="status"
+              style={{ fontSize: 12, color: '#6b7280', margin: '0 0 8px' }}
+            >
+              {isId ? FALLBACK_LABEL_ID : FALLBACK_LABEL_EN}
+            </p>
+          )}
           {view !== 'titles' && (
             <label className="mdv2-search">
               <span className="sr-only">{isId ? 'Saring kategori' : 'Filter categories'}</span>
