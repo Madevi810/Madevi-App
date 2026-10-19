@@ -4,6 +4,7 @@ import { SimPegas } from '@/components/sim/sim-pegas';
 import { SimGrafikFungsi } from '@/components/sim/sim-grafik-fungsi';
 import { SimPH } from '@/components/sim/sim-ph';
 import { SimPecahan } from '@/components/sim/sim-pecahan';
+import { SimBandul } from '@/components/sim/sim-bandul';
 import { WorksheetView } from '@/components/sim/worksheet-view';
 import { worksheetBySimId } from '@/services/sim-worksheet';
 import { PublicShell } from '@/components/public-shell';
@@ -36,6 +37,7 @@ export default function SimulasiPage() {
             { id: 'grafik-fungsi', el: <SimGrafikFungsi /> },
             { id: 'ph', el: <SimPH /> },
             { id: 'pecahan', el: <SimPecahan /> },
+            { id: 'bandul', el: <SimBandul /> },
           ].map(({ id, el }) => {
             const ws = worksheetBySimId(id);
             return (

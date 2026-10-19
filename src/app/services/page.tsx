@@ -11,29 +11,15 @@ export const metadata = {
   description: 'Jasa digital: undangan, desain, dan layanan profesional. Simulasi penuh, tanpa pembayaran nyata.',
 };
 
-const LAYANAN = [
-  {
-    href: '/undangan/buat',
-    ikon: '💌',
-    nama: 'Undangan Digital',
-    deskripsi: 'Undangan pernikahan digital: 12 template, RSVP, amplop digital, kelola tamu.',
-    badge: 'Populer',
-  },
-  {
-    href: '/undangan/template',
-    ikon: '🎨',
-    nama: 'Galeri Template',
-    deskripsi: 'Lihat semua 12 template undangan sebelum memilih.',
-    badge: null,
-  },
-  {
-    href: '/tools/cek-aman-rangkaian',
-    ikon: '⚡',
-    nama: 'Cek Aman Rangkaian',
-    deskripsi: 'Validasi keamanan rangkaian elektronika dalam Bahasa Indonesia.',
-    badge: 'Baru',
-  },
-];
+import { DAFTAR_LAYANAN, formatRupiah } from '@/content/services-data';
+
+const LAYANAN = DAFTAR_LAYANAN.map((l) => ({
+  href: `/services/${l.slug}`,
+  ikon: '🛠️',
+  nama: l.nama,
+  deskripsi: l.deskripsi,
+  badge: `${formatRupiah(l.tier[0].hargaMin)}+`,
+}));
 
 /**
  * Landing Madevi Services: daftar jasa digital.

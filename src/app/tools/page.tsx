@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { PublicShell } from '@/components/public-shell';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ALL_TOOLS } from '@/services/tools-registry-data';
 

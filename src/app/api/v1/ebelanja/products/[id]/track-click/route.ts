@@ -3,7 +3,7 @@ import { errorMessage } from '@/api/error-message';
 import { getPool } from '@/db/pool';
 import { EBelanjaService } from '@/services/ebelanja';
 
-export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const pool = await getPool();

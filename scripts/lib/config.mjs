@@ -4,6 +4,8 @@ import path from 'node:path';
 const APP_ENVIRONMENTS = new Set(['development', 'test', 'production-local']);
 const LOG_LEVELS = new Set(['debug', 'info', 'warn', 'error']);
 const WORKSPACE_ROOTS = ['/sdcard/project/Madevi', '/home/agentuser/.hermes/workspace/madevi'];
+// Cloud primer: izinkan override explisit via env (bukan Termux lagi).
+const EXTRA_WORKSPACE_ROOT = process.env.MADEVI_WORKSPACE_ROOT || '';
 
 export function projectRoot(metaUrl) {
   let current = path.dirname(new URL(metaUrl).pathname);
@@ -111,7 +113,8 @@ export function assertWorkspaceProject(root) {
 }
 
 function isWithinWorkspaceRoot(candidate) {
-  return WORKSPACE_ROOTS.some((workspaceRoot) => {
+  const roots = EXTRA_WORKSPACE_ROOT ? [...WORKSPACE_ROOTS, EXTRA_WORKSPACE_ROOT] : WORKSPACE_ROOTS;
+  return roots.some((workspaceRoot) => {
     let workspaceStats;
     try {
       workspaceStats = fs.statSync(workspaceRoot);

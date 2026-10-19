@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { errorResponse, successResponse } from '@/api/response';
 import { ApiError } from '@/api/errors';
 import { getPool } from '@/db/pool';

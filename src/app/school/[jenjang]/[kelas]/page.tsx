@@ -10,34 +10,13 @@ import {
   JENJANG_LABEL,
   KELAS_PER_JENJANG,
   type Jenjang,
-  type Bab,
 } from '@/services/school';
+import { babByJenjangKelas } from '@/content/school-data';
 
 export const dynamic = 'force-dynamic';
 
 const JENJANG_VALID = Object.keys(JENJANG_LABEL) as Jenjang[];
 
-// Contoh bab untuk SD Kelas 4 — isi bermakna (aturan #11).
-const CONTOH_BAB: Bab[] = [
-  {
-    id: 'sd4-matematika-pecahan',
-    judul: 'Pecahan Sederhana',
-    deskripsi: 'Mengenal pecahan, membaca dan menulis pecahan, serta membandingkan pecahan.',
-    urutan: 1,
-  },
-  {
-    id: 'sd4-matematika-perkalian',
-    judul: 'Perkalian Bilangan Cacah',
-    deskripsi: 'Perkalian sampai 100 dan penerapannya dalam soal cerita.',
-    urutan: 2,
-  },
-  {
-    id: 'sd4-bindo-karangan',
-    judul: 'Menulis Karangan Narasi',
-    deskripsi: 'Menyusun karangan narasi dengan urutan peristiwa yang jelas.',
-    urutan: 3,
-  },
-];
 
 /**
  * Halaman kelas: daftar bab dalam satu kelas.
@@ -55,9 +34,8 @@ export default async function KelasPage({
   if (isNaN(idx) || idx < 0 || idx >= daftarKelas.length) notFound();
   const namaKelas = daftarKelas[idx];
 
-  // Contoh bab hanya untuk SD kelas 4; lainnya empty state bermakna.
-  const isContoh = j === 'sd' && idx === 3;
-  const daftarBab = isContoh ? CONTOH_BAB : [];
+  // Data bab nyata dari school-data (Fase 4).
+  const daftarBab = babByJenjangKelas(j, namaKelas);
 
   return (
     <PublicShell>
@@ -73,7 +51,7 @@ export default async function KelasPage({
         {daftarBab.length === 0 ? (
           <EmptyState
             icon="📚"
-            title="Bab segera hadir"
+            title="Belum ada bab"
             description={`Materi ${namaKelas} sedang disusun mengikuti kurikulum terbaru.`}
           />
         ) : (
