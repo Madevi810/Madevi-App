@@ -4,7 +4,6 @@ import {
   AMBANG_SEIMBANG_PERSEN,
   DISCLAIMER_UMROH,
   KOMPONEN_BIAYA_UMROH,
-  UMROH_TIERS,
   analisisSensitivitas,
   buatRencanaUmroh,
   checklistPersiapan,

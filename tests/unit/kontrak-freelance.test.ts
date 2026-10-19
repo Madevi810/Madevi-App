@@ -13,12 +13,6 @@ import {
   type JawabanMapKontrak,
 } from '@/services/kontrak-freelance';
 
-function jawabanSemua(nilai: 'YA' | 'TIDAK'): JawabanMapKontrak {
-  const m: JawabanMapKontrak = {};
-  for (const item of KONTRAK_CHECKLIST) m[item.id] = nilai;
-  return m;
-}
-
 function jawabanAmanSemua(): JawabanMapKontrak {
   const m: JawabanMapKontrak = {};
   for (const item of KONTRAK_CHECKLIST) m[item.id] = item.jawabanAman;

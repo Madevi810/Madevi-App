@@ -3,7 +3,7 @@ import { spawnSync } from 'node:child_process';
 import { Pool } from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { SoftwareService } from '@/services/software';
-import type { Principal, ScannerAdapter } from '@/contracts/services';
+import type { Principal } from '@/contracts/services';
 
 const schema = 'test_prompt11';
 const pool = new Pool({
@@ -29,14 +29,6 @@ const member: Principal = {
 };
 let sw: SoftwareService;
 
-class MockScanner implements ScannerAdapter {
-  readonly mode = 'SIMULASI' as const;
-
-  async scan() {
-    return { status: 'SAFE' as const, report: { threats: [] } };
-  }
-}
-
 beforeAll(async () => {
   await pool.query(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);
   await pool.query('DELETE FROM public.madevi_migration_history WHERE schema_name=$1', [schema]);
@@ -52,7 +44,7 @@ beforeAll(async () => {
     `INSERT INTO "${schema}".principals (id,business_code,kind,role,approval_status,entitlement_status,social_status,display_name,username,is_test) VALUES ($1,'T11_OWNER','OWNER','OWNER','APPROVED','PAID','ENABLED','Owner11','owner11',true),($2,'T11_MEMBER','MEMBER','MEMBER','APPROVED','PAID','ENABLED','Member11','member11',true)`,
     [owner.id, member.id],
   );
-  sw = new SoftwareService(pool, schema, new MockScanner());
+  sw = new SoftwareService(pool, schema);
 }, 120_000);
 
 afterAll(async () => {

@@ -1,4 +1,3 @@
-import { randomUUID } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { Pool } from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';

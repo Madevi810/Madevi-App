@@ -8,17 +8,6 @@ import {
   type Circuit,
 } from '@/lib/emulator/circuit-model';
 
-function expectCircuitError(operation: () => unknown, code: string) {
-  let caught: unknown;
-  try {
-    operation();
-  } catch (error) {
-    caught = error;
-  }
-  expect(caught).toBeInstanceOf(CircuitModelError);
-  expect(caught).toMatchObject({ code });
-}
-
 describe('circuit DC steady-state MNA', () => {
   it('solves the 9 V source and 1 kΩ sample to 9 mA', () => {
     const result = solveCircuit(createSampleCircuit());

@@ -5,12 +5,12 @@ Disimpan 14 Okt 2026 23:25 WIB atas perintah Ade. Ini aturan wajib yang tidak bo
 ## ALUR KERJA
 
 1. Saya sebagai executor
-2. Siklus: rencana → eksekusi → edit/ubah/revisi
-3. Tiap 30 menit: cek hasil vs rencana — sesuai tidak? Kalau tidak, langsung revisi
-4. Tiap 1 jam: rencana baru masuk → langsung dikerjakan (harus ada kode yang berubah, bukan cuma ide)
-5. Tiap 12 jam: cek runtime
-6. Hasil dikirim ke Ade, lalu kerja lagi tanpa berhenti
-7. Status harus terus update biar Ade bisa pantau semua
+2. Siklus per item: riset → rencana → implementasi → test → audit → regresi → commit lokal
+3. Satu item dalam satu waktu, dilarang paralel
+4. Item dianggap selesai hanya bila terlihat dan bisa dipakai di aplikasi (definisi "nyata")
+5. Push HANYA atas perintah eksplisit Ade; tanpa itu dilarang push
+6. Bila item buntu: tandai "diblokir" beserta penyebabnya, lanjut ke item lain
+7. Status dicatat di Madevi-Control (INDEX.md sumber kebenaran)
 
 ## ATURAN KERJA
 
@@ -18,9 +18,11 @@ Disimpan 14 Okt 2026 23:25 WIB atas perintah Ade. Ini aturan wajib yang tidak bo
 2. Jangan berspekulasi atau mengarang fakta yang tidak diketahui
 3. Jangan berhenti, jangan tanya/minta konfirmasi untuk hal teknis rutin
 4. Jangan ubah stack: Next.js 16, React 19, TypeScript, Drizzle, pg, PostgreSQL 16
-5. Jangan ubah cara kerja Termux dan jangan ubah cara kerja system
+5. Cloud primer: database utama Supabase, deploy Vercel, kode GitHub.
+   Termux hanya mode presentasi — jangan hapus 00-Termux/, jangan rusak jalur
+   presentasinya, tetapi jangan korbankan pekerjaan utama demi Termux.
 6. Tepat 7 ruang, tidak boleh tambah ruang/menu utama baru
-7. Urutan pengerjaan: Shop → Tools → Services → Tutorial → Explore → School → Line (mudah ke berat)
+7. Urutan pengerjaan: Explore → Tutorial → School → Tools → Services → Line (Shop tidak disentuh)
 8. Tidak ada laporan realtime — hanya update berkala (apa yang selesai + hasilnya)
 9. Hanya hubungi Ade jika benar-benar buntu dan butuh keputusan yang cuma dia bisa ambil
 10. Jangan mengganggu bot LightVela lain yang sedang bekerja

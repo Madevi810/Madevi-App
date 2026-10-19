@@ -32,7 +32,6 @@ const safe: ModerationDecision = {
 const now = new Date('2026-09-22T05:00:00.000Z');
 let service: SocialService;
 let alicePostId = '';
-let bobPostId = '';
 let groupId = '';
 
 function principal(id: string, role: 'OWNER' | 'MEMBER', fixture: boolean): Principal {
@@ -99,8 +98,7 @@ describe.sequential('Prompt L05 — privasi sosial dan pengiriman', () => {
     );
     expect(publishedIndex.rows[0]?.is_indexed).toBe(true);
 
-    const bobPost = await service.createPost(bob, { body: 'Postingan L05 milik Bob' });
-    bobPostId = bobPost.id;
+    await service.createPost(bob, { body: 'Postingan L05 milik Bob' });
   });
 
   it('G-02: aksi lintas block ditolak dan feed menyembunyikan pasangan block', async () => {

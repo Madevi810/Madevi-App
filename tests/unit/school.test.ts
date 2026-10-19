@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  hitungNilai, syaratKenaikanKelas, KELAS_PER_JENJANG,
+  hitungNilai, KELAS_PER_JENJANG,
   nilaiKuisBab, analisisPerTopik, cekPeluang,
   buatRencanaMingguan, laporanOrangTua, asesmenMinatBakat,
   type Ujian, type KuisBab,

@@ -40,7 +40,6 @@ const accounts = new AccountsService(
 const sessions = new SessionService(pool, schema, secret, now);
 
 let owner: Principal;
-let ownerDeviceId: string;
 let ownerSession: Awaited<ReturnType<AccountsService['ownerLogin']>>;
 let member: Principal;
 let memberId: string;
@@ -62,7 +61,6 @@ beforeAll(async () => {
     password: 'Admin-Aman-2026!',
     deviceLabel: 'test-device', publicKeyPem: testDevicePublicKey, fixture: true,
   });
-  ownerDeviceId = 'mock-device';
   if (bootstrap.id !== seededOwnerId) throw new Error('Fixture Admin tidak diadopsi');
   const ownerRow = await principalById(bootstrap.id);
   owner = toPrincipal(ownerRow);
