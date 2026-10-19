@@ -8,8 +8,6 @@ import type { ModerationDecision, Principal } from '@/contracts/services';
 import { quotedSchema } from '@/db/schema-name';
 import { inTransaction } from '@/db/transaction';
 import {
-  BLOCKED_WORDS,
-  CRISIS_INDICATORS,
   findBlockedWord,
   findCrisisIndicator,
   type BlockedWordCategory,

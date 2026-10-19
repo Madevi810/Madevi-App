@@ -275,21 +275,6 @@ function isAiResponse(value: unknown): value is { data: { answer: string } } {
   );
 }
 
-function readApiError(value: unknown, fallback: string) {
-  if (
-    typeof value === 'object' &&
-    value !== null &&
-    'error' in value &&
-    typeof value.error === 'object' &&
-    value.error !== null &&
-    'message' in value.error &&
-    typeof value.error.message === 'string'
-  ) {
-    return value.error.message;
-  }
-  return fallback;
-}
-
 function HistoryIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">

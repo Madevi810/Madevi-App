@@ -29,6 +29,10 @@ export function parseServerEnv(source: Record<string, string | undefined>): Serv
   if (!APP_ENVIRONMENTS.includes(appEnvironment as AppEnvironment)) {
     problems.push('APP_ENV harus development, test, production-local, atau production');
   }
+  // Mode production hanya sah di Vercel — cegah eksekusi lokal tak sengaja ke DB produksi.
+  if (!isVercel && appEnvironment === 'production') {
+    problems.push('APP_ENV=production hanya diizinkan di Vercel');
+  }
   // Di Vercel, host/port/runtime-root tidak dikontrol aplikasi — lewati validasi localhost.
   if (!isVercel) {
     if (host !== '127.0.0.1') problems.push('APP_HOST harus 127.0.0.1');
@@ -68,7 +72,10 @@ export function parseServerEnv(source: Record<string, string | undefined>): Serv
 }
 
 function isWithinWorkspaceRoot(candidate: string) {
-  const workspaceRoots = ['/sdcard/project/Madevi', '/home/agentuser/.hermes/workspace/madevi'];
+  const extraRoot = process.env.MADEVI_WORKSPACE_ROOT;
+  const workspaceRoots = extraRoot
+    ? ['/sdcard/project/Madevi', '/home/agentuser/.hermes/workspace/madevi', extraRoot]
+    : ['/sdcard/project/Madevi', '/home/agentuser/.hermes/workspace/madevi'];
   const current = path.resolve(candidate);
   return workspaceRoots.some((workspaceRoot) => {
     // Validasi lexical duluan: path Termux (/sdcard, /mnt/sdcard, /storage/emulated/0)

@@ -17,7 +17,7 @@ export type TanyaKonsepProps = {
  */
 export function TanyaKonsep({ modeAwal = 'normal' }: TanyaKonsepProps) {
   const [pertanyaan, setPertanyaan] = useState('');
-  const [mode, setMode] = useState<ModeTanya>(modeAwal);
+  const [mode] = useState<ModeTanya>(modeAwal);
   const [hasil, setHasil] = useState<ReturnType<typeof tanyaKonsep> | null>(null);
 
   const tanya = () => {

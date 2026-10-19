@@ -6,7 +6,6 @@ import { getDatabaseSchema } from '@/db/schema-name';
 import { JasaService } from '@/services/jasa';
 import { PublicFeedbackService } from '@/services/public-feedback';
 import { requestIdFromHeaders } from '@/server/request-id';
-import { randomUUID } from 'crypto';
 
 export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
   const requestId = requestIdFromHeaders(request.headers);

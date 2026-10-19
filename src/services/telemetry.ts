@@ -1,6 +1,5 @@
 import { createHash, randomUUID } from 'crypto';
 import type { Pool } from 'pg';
-import { ApiError } from '@/api/errors';
 import { quotedSchema } from '@/db/schema-name';
 
 export interface TelemetryEvent {

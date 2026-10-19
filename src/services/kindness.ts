@@ -12,7 +12,6 @@
  *   - Tidak ada ranking antar-kota (tampil alfabetis).
  */
 
-import { randomUUID } from 'node:crypto';
 
 import type { Pool } from 'pg';
 
@@ -72,7 +71,6 @@ export class KindnessService {
   constructor(
     private readonly pool: Pool,
     schemaName: string,
-    private readonly now: () => Date = () => new Date(),
   ) {
     this.schema = quotedSchema(schemaName);
   }

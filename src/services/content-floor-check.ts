@@ -1,7 +1,8 @@
 /**
- * Content floor check (Fase A4, Aturan #11).
+ * Content floor check (Fase 3.4, Bagian 10 Perintah Utama).
  *
- * GAGAL bila ada kategori, daftar, atau halaman tanpa isi bermakna.
+ * GAGAL bila ada kategori, daftar, atau halaman tanpa isi bermakna
+ * atau di bawah lantai minimum Bagian 10.
  * Dijalankan sebagai bagian dari TEST setiap item.
  */
 import { DAFTAR_RUANG } from '@/services/ruang';
@@ -17,12 +18,30 @@ export interface FloorCheckResult {
   temuan: string[];
 }
 
+/** Lantai Bagian 10 */
+export const LANTAI = {
+  ruang: 7,
+  exploreKategori: 10,
+  exploreSubPerKategori: 3,
+  exploreArtikelPerSub: 5,
+  tutorial: 60,
+  schoolProgram: 6,
+  schoolPelajaranPerProgram: 8,
+  tools: 56,
+  services: 12,
+  lineProfil: 30,
+} as const;
+
+/**
+ * Cek lantai level kode (tanpa database).
+ * Untuk konten DB, gunakan contentFloorCheckDB().
+ */
 export function contentFloorCheck(): FloorCheckResult {
   const temuan: string[] = [];
 
   // 1. Tepat 7 ruang
-  if (DAFTAR_RUANG.length !== 7) {
-    temuan.push(`Ruang harus tepat 7, ditemukan ${DAFTAR_RUANG.length}`);
+  if (DAFTAR_RUANG.length !== LANTAI.ruang) {
+    temuan.push(`Ruang harus tepat ${LANTAI.ruang}, ditemukan ${DAFTAR_RUANG.length}`);
   }
   for (const r of DAFTAR_RUANG) {
     if (!r.nama || !r.deskripsi || !r.href) {
@@ -30,9 +49,9 @@ export function contentFloorCheck(): FloorCheckResult {
     }
   }
 
-  // 2. Tools tidak kosong
-  if (ALL_TOOLS.length === 0) {
-    temuan.push('Tidak ada tools terdaftar');
+  // 2. Tools ≥ 56
+  if (ALL_TOOLS.length < LANTAI.tools) {
+    temuan.push(`Tools: ${ALL_TOOLS.length}/${LANTAI.tools} (kurang ${LANTAI.tools - ALL_TOOLS.length})`);
   }
 
   // 3. Template undangan tidak kosong
@@ -58,6 +77,46 @@ export function contentFloorCheck(): FloorCheckResult {
   // 7. Aturan komunitas Line ada
   if (ATURAN_KOMUNITAS.length === 0) {
     temuan.push('Tidak ada aturan komunitas Line');
+  }
+
+  return { lulus: temuan.length === 0, temuan };
+}
+
+export interface FloorCheckDBInput {
+  artikelPublished: number;
+  kategoriExplore: number;
+  tutorialCount: number;
+  programSchool: number;
+  layananCount: number;
+  profilLine: number;
+}
+
+/**
+ * Cek lantai level database.
+ * Panggil dengan hasil query nyata ke Supabase.
+ */
+export function contentFloorCheckDB(d: FloorCheckDBInput): FloorCheckResult {
+  const temuan: string[] = [];
+
+  if (d.kategoriExplore < LANTAI.exploreKategori) {
+    temuan.push(`Kategori Explore: ${d.kategoriExplore}/${LANTAI.exploreKategori}`);
+  }
+  // 10 kategori × 3 sub × 5 artikel = 150
+  const minArtikel = LANTAI.exploreKategori * LANTAI.exploreSubPerKategori * LANTAI.exploreArtikelPerSub;
+  if (d.artikelPublished < minArtikel) {
+    temuan.push(`Artikel published: ${d.artikelPublished}/${minArtikel}`);
+  }
+  if (d.tutorialCount < LANTAI.tutorial) {
+    temuan.push(`Tutorial: ${d.tutorialCount}/${LANTAI.tutorial}`);
+  }
+  if (d.programSchool < LANTAI.schoolProgram) {
+    temuan.push(`Program School: ${d.programSchool}/${LANTAI.schoolProgram}`);
+  }
+  if (d.layananCount < LANTAI.services) {
+    temuan.push(`Layanan: ${d.layananCount}/${LANTAI.services}`);
+  }
+  if (d.profilLine < LANTAI.lineProfil) {
+    temuan.push(`Profil Line: ${d.profilLine}/${LANTAI.lineProfil}`);
   }
 
   return { lulus: temuan.length === 0, temuan };

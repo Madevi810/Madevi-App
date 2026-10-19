@@ -757,7 +757,6 @@ export function CircuitEmulator() {
           <text x={middleB.x} y={middleB.y - 11} className={styles.polarity}>−</text>
         </>}
         {component.type === 'CAPACITOR' && [0.47, 0.53].map((t) => {
-          const center = point(t);
           const normal = point(t, 14);
           const opposite = point(t, -14);
           return <line key={t} x1={normal.x} y1={normal.y} x2={opposite.x} y2={opposite.y} className={symbolClass} />;

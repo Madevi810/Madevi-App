@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 
 import type { Pool } from 'pg';
 
-import type { Principal, ScannerAdapter } from '@/contracts/services';
+import type { Principal } from '@/contracts/services';
 import { quotedSchema } from '@/db/schema-name';
 
 export type SoftwareLifecycle = 'ACTIVE' | 'DISABLED' | 'ARCHIVED';
@@ -35,7 +35,6 @@ export class SoftwareService {
   constructor(
     private readonly pool: Pool,
     schemaName: string,
-    private readonly scan: ScannerAdapter,
   ) {
     this.schema = quotedSchema(schemaName);
   }
@@ -224,7 +223,7 @@ export class SoftwareService {
   }
 
   // Batas keamanan: file UNSCANNED/UNSAFE tidak dapat diunduh. Fail-closed.
-  async prepareDownload(principal: Principal, versionId: string) {
+  async prepareDownload(_principal: Principal, versionId: string) {
     const res = await this.pool.query<{
       scan_status: ScanStatus;
       storage_object_id: string | null;

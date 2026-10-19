@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { performLogout } from '@/lib/logout';
-import { readCookie } from '@/lib/cookies';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';

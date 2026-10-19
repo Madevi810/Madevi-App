@@ -2,7 +2,6 @@ import type { Pool } from 'pg';
 
 import { ApiError } from '@/api/errors';
 import { quotedSchema } from '@/db/schema-name';
-import { inTransaction } from '@/db/transaction';
 
 export async function consumeRateLimit(
   pool: Pool,

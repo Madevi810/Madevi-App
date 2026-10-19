@@ -130,10 +130,6 @@ export class SearchService {
     return { ts: parsed.ts, id: parsed.id };
   }
 
-  private expandTerms(query: string): string[] {
-    return this.expandTermGroups(query).flat();
-  }
-
   /**
    * D08: grup istilah per kata (kata + sinonimnya). Antar-grup bersifat AND
    * (semua kata harus cocok di salah satu kolom) agar kueri sampah tidak

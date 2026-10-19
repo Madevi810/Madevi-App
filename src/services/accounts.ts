@@ -1318,39 +1318,6 @@ export class AccountsService {
     return result.rows[0];
   }
 
-  /**
-   * L03: tidak lagi dipanggil dari `register()`. Dipertahankan untuk retensi
-   * legacy (baris lama tetap dibaca/ditandai alur approval, tidak dihapus).
-   */
-  private async insertGuardian(client: PoolClient, principalId: string, input: RegistrationInput) {
-    if (input.guardian && input.noGuardianReason) {
-      throw new ApiError('VALIDATION_FAILED', 'Pilih data wali atau banding tanpa wali');
-    }
-    if (input.guardian) {
-      await client.query(
-        `INSERT INTO ${this.schema}.guardian_submissions
-           (principal_id, guardian_name, relationship, guardian_birth_date,
-            guardian_city, photo_object_id)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [
-          principalId,
-          requiredText(input.guardian.name, 2, 120, 'guardianName'),
-          input.guardian.relationship,
-          parseBirthDate(input.guardian.birthDate, this.now()),
-          requiredText(input.guardian.city, 2, 120, 'guardianCity'),
-          input.guardian.photoObjectId,
-        ],
-      );
-      return;
-    }
-    await client.query(
-      `INSERT INTO ${this.schema}.guardian_submissions
-         (principal_id, no_guardian_reason)
-       VALUES ($1, $2)`,
-      [principalId, requiredText(input.noGuardianReason, 20, 2000, 'noGuardianReason')],
-    );
-  }
-
   private async createMfaChallenge(principalId: string, purpose: 'LOGIN' | 'ENABLE_FACTOR') {
     const id = randomUUID();
     const code = this.verificationCode();

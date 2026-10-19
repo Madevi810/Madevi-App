@@ -1971,14 +1971,6 @@ export class SocialService {
     }
   }
 
-  private async assertPublishedPost(postId: string) {
-    const found = await this.pool.query(
-      `SELECT 1 FROM ${this.schema}.social_posts WHERE id=$1 AND status='PUBLISHED' AND moderation_status='SAFE'`,
-      [postId],
-    );
-    if (!found.rows[0]) throw new ApiError('NOT_FOUND', 'Posting tidak ditemukan');
-  }
-
   /**
    * L05 G-02: policy aksi per objek. Selain terbit+aman, pastikan viewer tidak
    * saling blokir dengan author dan (untuk post grup) viewer anggota aktif.

@@ -324,7 +324,7 @@ export function pindaiSlop(teks: string): HasilPindaiSlop {
   if (deretBerulang > 0) {
     tambahTemuan(
       'awalan-berulang',
-      kalimat.find((k, i) =>
+      kalimat.find((_, i) =>
         kataPertama[i] &&
         kataPertama[i] === kataPertama[i + 1] &&
         kataPertama[i] === kataPertama[i + 2],

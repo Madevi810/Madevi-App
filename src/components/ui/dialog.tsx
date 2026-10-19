@@ -1,10 +1,7 @@
-import { Slot } from '@radix-ui/react-slot';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { DialogProps as DialogPrimitiveProps } from '@radix-ui/react-dialog';
-import type { HTMLAttributes } from 'react';
 
-import { cn } from '@/lib/cn';
 
 const dialogVariants = cva('mdv-dialog', {
   variants: {

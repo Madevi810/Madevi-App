@@ -1,9 +1,7 @@
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { SelectProps as SelectPrimitiveProps } from '@radix-ui/react-select';
-import type { HTMLAttributes } from 'react';
 
-import { cn } from '@/lib/cn';
 
 const dropdownVariants = cva('mdv-dropdown', {
   variants: {

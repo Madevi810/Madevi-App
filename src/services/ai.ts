@@ -140,7 +140,6 @@ export class AiService {
     // Asisten Madevi tidak memiliki kuota pengguna. Perlindungan anti-abuse
     // diterapkan pada API action rate limit agar tidak menjadi paywall atau
     // batas harian yang terlihat pengguna.
-    const isGuest = !input.principal;
 
     // Cek/dapatkan percakapan.
     const conversationId = await this.ensureConversation(input);

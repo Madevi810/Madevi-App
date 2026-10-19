@@ -281,11 +281,304 @@ export function UndanganBuilder() {
             </Card>
           )}
 
-          {(langkah === 3 || langkah === 4) && (
+          {langkah === 3 && (
             <Card>
+              <CardHeader><h3>Galeri & Cerita Cinta</h3></CardHeader>
               <CardContent>
-                <p style={{ color: '#6b7280' }}>
-                  Bagian {LANGKAH[langkah]} dalam pengembangan — segera hadir.
+                <h4 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Foto Galeri (URL)</h4>
+                {(data.galeriFoto ?? []).map((url, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                    <input
+                      placeholder={`URL foto ${i + 1}`}
+                      value={url}
+                      onChange={(e) => {
+                        const galeriFoto = [...(data.galeriFoto ?? [])];
+                        galeriFoto[i] = e.target.value;
+                        ubah({ galeriFoto });
+                      }}
+                      style={{ ...inputStyle, flex: 1, marginBottom: 0 }}
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => ubah({ galeriFoto: (data.galeriFoto ?? []).filter((_, j) => j !== i) })}
+                    >
+                      Hapus
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => ubah({ galeriFoto: [...(data.galeriFoto ?? []), ''] })}
+                >
+                  ＋ Tambah foto
+                </Button>
+
+                <h4 style={{ fontSize: 14, fontWeight: 600, margin: '16px 0 8px' }}>Cerita Cinta</h4>
+                {(data.loveStory ?? []).map((s, i) => (
+                  <div key={i} style={{ marginBottom: 12, padding: 12, border: '1px solid #f3f4f6', borderRadius: 8 }}>
+                    <input
+                      placeholder="Judul (Pertama Bertemu)"
+                      value={s.judul}
+                      onChange={(e) => {
+                        const loveStory = [...(data.loveStory ?? [])];
+                        loveStory[i] = { ...s, judul: e.target.value };
+                        ubah({ loveStory });
+                      }}
+                      style={inputStyle}
+                    />
+                    <input
+                      type="date"
+                      value={s.tanggal}
+                      onChange={(e) => {
+                        const loveStory = [...(data.loveStory ?? [])];
+                        loveStory[i] = { ...s, tanggal: e.target.value };
+                        ubah({ loveStory });
+                      }}
+                      style={inputStyle}
+                    />
+                    <textarea
+                      placeholder="Ceritakan momen ini..."
+                      value={s.cerita}
+                      onChange={(e) => {
+                        const loveStory = [...(data.loveStory ?? [])];
+                        loveStory[i] = { ...s, cerita: e.target.value };
+                        ubah({ loveStory });
+                      }}
+                      rows={3}
+                      style={{ ...inputStyle, resize: 'vertical' }}
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => ubah({ loveStory: (data.loveStory ?? []).filter((_, j) => j !== i) })}
+                    >
+                      Hapus cerita
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    ubah({ loveStory: [...(data.loveStory ?? []), { judul: '', tanggal: '', cerita: '' }] })
+                  }
+                >
+                  ＋ Tambah cerita
+                </Button>
+
+                <h4 style={{ fontSize: 14, fontWeight: 600, margin: '16px 0 8px' }}>Video & Musik (opsional)</h4>
+                <input
+                  placeholder="URL video (YouTube/mp4)"
+                  value={data.videoUrl ?? ''}
+                  onChange={(e) => ubah({ videoUrl: e.target.value })}
+                  style={inputStyle}
+                />
+                <input
+                  placeholder="URL musik latar (mp3)"
+                  value={data.musikUrl ?? ''}
+                  onChange={(e) => ubah({ musikUrl: e.target.value })}
+                  style={inputStyle}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          {langkah === 4 && (
+            <Card>
+              <CardHeader><h3>RSVP & Amplop Digital</h3></CardHeader>
+              <CardContent>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, fontSize: 14 }}>
+                  <input
+                    type="checkbox"
+                    checked={data.rsvp.aktif}
+                    onChange={(e) => ubah({ rsvp: { ...data.rsvp, aktif: e.target.checked } })}
+                  />
+                  Aktifkan RSVP (konfirmasi kehadiran)
+                </label>
+                {data.rsvp.aktif && (
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={{ fontSize: 13, color: '#6b7280' }}>Batas RSVP</label>
+                    <input
+                      type="date"
+                      value={data.rsvp.deadline ?? ''}
+                      onChange={(e) => ubah({ rsvp: { ...data.rsvp, deadline: e.target.value } })}
+                      style={inputStyle}
+                    />
+                    <h4 style={{ fontSize: 14, fontWeight: 600, margin: '8px 0' }}>Pertanyaan tambahan</h4>
+                    {(data.rsvp.pertanyaanCustom ?? []).map((p, i) => (
+                      <div key={p.id} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                        <input
+                          placeholder="Contoh: Alergi makanan?"
+                          value={p.pertanyaan}
+                          onChange={(e) => {
+                            const pertanyaanCustom = [...(data.rsvp.pertanyaanCustom ?? [])];
+                            pertanyaanCustom[i] = { ...p, pertanyaan: e.target.value };
+                            ubah({ rsvp: { ...data.rsvp, pertanyaanCustom } });
+                          }}
+                          style={{ ...inputStyle, flex: 1, marginBottom: 0 }}
+                        />
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() =>
+                            ubah({
+                              rsvp: {
+                                ...data.rsvp,
+                                pertanyaanCustom: (data.rsvp.pertanyaanCustom ?? []).filter((_, j) => j !== i),
+                              },
+                            })
+                          }
+                        >
+                          Hapus
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        ubah({
+                          rsvp: {
+                            ...data.rsvp,
+                            pertanyaanCustom: [
+                              ...(data.rsvp.pertanyaanCustom ?? []),
+                              { id: `q-${Date.now()}`, pertanyaan: '', tipe: 'teks' as const },
+                            ],
+                          },
+                        })
+                      }
+                    >
+                      ＋ Tambah pertanyaan
+                    </Button>
+                  </div>
+                )}
+
+                <h4 style={{ fontSize: 14, fontWeight: 600, margin: '16px 0 8px' }}>Rekening Bank</h4>
+                {(data.amplop.bank ?? []).map((b, i) => (
+                  <div key={i} style={{ marginBottom: 8, padding: 8, border: '1px solid #f3f4f6', borderRadius: 8 }}>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <input
+                        placeholder="Bank (BCA)"
+                        value={b.bank}
+                        onChange={(e) => {
+                          const bank = [...(data.amplop.bank ?? [])];
+                          bank[i] = { ...b, bank: e.target.value };
+                          ubah({ amplop: { ...data.amplop, bank } });
+                        }}
+                        style={{ ...inputStyle, flex: 1, marginBottom: 4 }}
+                      />
+                      <input
+                        placeholder="Nomor rekening"
+                        value={b.nomor}
+                        onChange={(e) => {
+                          const bank = [...(data.amplop.bank ?? [])];
+                          bank[i] = { ...b, nomor: e.target.value };
+                          ubah({ amplop: { ...data.amplop, bank } });
+                        }}
+                        style={{ ...inputStyle, flex: 2, marginBottom: 4 }}
+                      />
+                    </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <input
+                        placeholder="Atas nama"
+                        value={b.atasNama}
+                        onChange={(e) => {
+                          const bank = [...(data.amplop.bank ?? [])];
+                          bank[i] = { ...b, atasNama: e.target.value };
+                          ubah({ amplop: { ...data.amplop, bank } });
+                        }}
+                        style={{ ...inputStyle, flex: 1, marginBottom: 0 }}
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() =>
+                          ubah({ amplop: { ...data.amplop, bank: (data.amplop.bank ?? []).filter((_, j) => j !== i) } })
+                        }
+                      >
+                        Hapus
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    ubah({
+                      amplop: {
+                        ...data.amplop,
+                        bank: [...(data.amplop.bank ?? []), { bank: '', nomor: '', atasNama: '' }],
+                      },
+                    })
+                  }
+                >
+                  ＋ Tambah rekening
+                </Button>
+
+                <h4 style={{ fontSize: 14, fontWeight: 600, margin: '16px 0 8px' }}>E-Wallet</h4>
+                {(data.amplop.ewallet ?? []).map((w, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                    <input
+                      placeholder="Provider (DANA/OVO/GoPay)"
+                      value={w.provider}
+                      onChange={(e) => {
+                        const ewallet = [...(data.amplop.ewallet ?? [])];
+                        ewallet[i] = { ...w, provider: e.target.value };
+                        ubah({ amplop: { ...data.amplop, ewallet } });
+                      }}
+                      style={{ ...inputStyle, flex: 1, marginBottom: 0 }}
+                    />
+                    <input
+                      placeholder="Nomor"
+                      value={w.nomor}
+                      onChange={(e) => {
+                        const ewallet = [...(data.amplop.ewallet ?? [])];
+                        ewallet[i] = { ...w, nomor: e.target.value };
+                        ubah({ amplop: { ...data.amplop, ewallet } });
+                      }}
+                      style={{ ...inputStyle, flex: 1, marginBottom: 0 }}
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        ubah({
+                          amplop: { ...data.amplop, ewallet: (data.amplop.ewallet ?? []).filter((_, j) => j !== i) },
+                        })
+                      }
+                    >
+                      Hapus
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    ubah({
+                      amplop: {
+                        ...data.amplop,
+                        ewallet: [...(data.amplop.ewallet ?? []), { provider: '', nomor: '', atasNama: '' }],
+                      },
+                    })
+                  }
+                >
+                  ＋ Tambah e-wallet
+                </Button>
+
+                <h4 style={{ fontSize: 14, fontWeight: 600, margin: '16px 0 8px' }}>Alamat Kirim Kado</h4>
+                <textarea
+                  placeholder="Alamat lengkap untuk kirim kado fisik"
+                  value={data.amplop.alamatKado ?? ''}
+                  onChange={(e) => ubah({ amplop: { ...data.amplop, alamatKado: e.target.value } })}
+                  rows={2}
+                  style={{ ...inputStyle, resize: 'vertical' }}
+                />
+                <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 8 }}>
+                  Simulasi: pembayaran dan transfer tidak nyata — data hanya tersimpan sebagai draf.
                 </p>
               </CardContent>
             </Card>
