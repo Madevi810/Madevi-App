@@ -30,7 +30,9 @@ Jangan ubah struktur folder tanpa perintah eksplisit dari Ade (owner).
 - Tepat **7 ruang induk** di sidebar (Explore & Learn, Tutorial & Problem Solve,
   Madevi School, Madevi Shop, Tools & Equipment, Madevi Services, Madevi Line)
 - **Full simulasi:** pembayaran, OAuth, OTP, email — semua simulasi jujur
-- **100% localhost-first:** dikembangkan dan jalan utama di Termux/Android
+- **Cloud primer:** database utama di Supabase, deploy di Vercel, kode di GitHub.
+  Termux hanya dipakai Ade saat presentasi (jangan hapus `00-Termux/`, jangan
+  rusak jalur presentasinya, tapi jangan korbankan pekerjaan utama demi Termux)
 
 ### Struktur Folder
 
@@ -76,6 +78,7 @@ Perintah setup: lihat `00-install-project.md` bagian Web.
 
 1. Tepat 7 ruang, tidak tambah tanpa perintah Ade
 2. Tidak ada popup/modal/animasi otomatis yang menyela
-3. Termux/lokal primer, cloud hanya tambahan
+3. Cloud primer (Vercel + Supabase + GitHub); Termux hanya mode presentasi
 4. Ketika Ade bertanya → jawab dulu, jangan langsung kerja
 5. Jangan minta Ade kerja manual — semua teknis dikerjakan AI
+6. Push HANYA atas perintah eksplisit Ade ("PUSH"/"boleh push"); commit lokal boleh

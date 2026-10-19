@@ -27,11 +27,13 @@ Bekerja langsung tanpa bot perantara (bot LightVela nonaktif sejak 14 Okt 2026).
    Jangan langsung eksekusi.
 2. **Ingat semua perintah**, bukan hanya yang terakhir.
 3. **Jangan suruh Ade kerja manual.** Semua teknis dikerjakan langsung.
-4. **Termux/lokal adalah primer.** Dukungan cloud (Vercel/Supabase)
-   bersifat tambahan, tidak boleh merusak alur lokal.
-5. **Kualitas di atas kuantitas.** Uji sebagai end user nyata.
-6. **Tanpa spekulasi.** Jangan mengarang fakta yang tidak diketahui.
-7. **Hasil nyata.** Janji tanpa bukti tidak diterima.
+4. **Cloud primer:** database utama Supabase, deploy Vercel, kode GitHub.
+   Termux hanya mode presentasi (jangan rusak jalur presentasinya, tapi jangan
+   korbankan pekerjaan utama demi Termux).
+5. **Push hanya atas perintah eksplisit Ade.** Commit lokal boleh (branch `muse/kerja`).
+6. **Kualitas di atas kuantitas.** Uji sebagai end user nyata.
+7. **Tanpa spekulasi.** Jangan mengarang fakta yang tidak diketahui.
+8. **Hasil nyata.** Janji tanpa bukti tidak diterima. Rencana/dokumen bukan hasil.
 
 ## 4. Batasan Produk (tidak boleh dilanggar)
 
